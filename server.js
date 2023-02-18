@@ -19,6 +19,7 @@ app.post('/api/finance/add',async (req,res)=>{
     const item = new financeItem(req.body)
     try{
         await item.save()
+        res.send({success:true})
     }catch(err) {console.log(err)}
 })
 
@@ -30,6 +31,26 @@ app.get('/api/finance/read',async (req,res)=>{
     })
 })
 
+app.post('/api/finance/update',async (req,res)=>{
+    let id = req.body.id
+    try{
+        await financeItem.findOneAndUpdate({id:id},req.body)
+        res.send({sucess:true})
+    }
+    catch(err){
+        console.log(err);
+    }
+})
+app.post('/api/finance/delete',async (req,res)=>{
+    let id = req.body.id
+    try{
+        await financeItem.findOneAndDelete({id:id},req.body)
+        res.send({sucess:true})
+    }
+    catch(err){
+        console.log(err);
+    }
+})
 app.listen(PORT,()=>{
     console.log(`Started Server on | http://localhost:${PORT}`);
 })
