@@ -1,12 +1,10 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import React from 'react'
+import Finance from './Components/Finance'
+import Navbar from './Components/Navbar'
 
-function App() {
-
-  return (
-    <div className="p-5 bg-green-600"></div>
-  )
+export default function App() {
+  return (<>
+  <Navbar/>
+  <Finance/>
+  </>)
 }
-
-export default App
