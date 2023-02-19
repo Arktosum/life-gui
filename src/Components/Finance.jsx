@@ -40,8 +40,18 @@ function FinanceItem(props){
   let {item,rerender} = props.props
   // Item card
   function handleDelete(){
-    POST('/api/finance/delete',item)
-    rerender()
+    let randNum = Math.floor(Math.random()*10)
+    let choice = prompt(`Are you sure you want to delete? Type ${randNum} to delete`);
+    if(choice!=randNum){
+      alert("Not successfull,try again");
+      return;
+    }
+    else{
+      alert("Deleted Successfully!");
+      POST('/api/finance/delete',item)
+      rerender()
+    }
+  
   }
   function handleUpdate(){
     item.checked = !item.checked
@@ -97,6 +107,7 @@ function FinanceForm(props){
     formData.timestamp = timestamp
     POST('/api/finance/add',formData)
     setformData({name:"",mode:"send",category:"food",amount:"",remarks:"",checked:false})
+    alert("ADDED AN ITEM!")
     render()
   }
   return(<>
@@ -113,6 +124,7 @@ function FinanceForm(props){
     <label htmlFor="category" className='text-white text-sm m-1'>Category: </label>
     <select name="category" value={formData.category} className="bg-inherit border-cyan-600 border-2 rounded-sm p-1 text-cyan-700" id="" onChange={(e)=>{setformData({...formData,category:e.target.value})}}>
       <option value="food" className="bg-black border-cyan-600 border-2 rounded-sm p-1 text-cyan-700">Food</option>
+      <option value="grooming" className="bg-black border-cyan-600 border-2 rounded-sm p-1 text-cyan-700">Grooming</option>
       <option value="education" className="bg-black border-cyan-600 border-2 rounded-sm p-1 text-cyan-700">Education</option>
       <option value="transport" className="bg-black border-cyan-600 border-2 rounded-sm p-1 text-cyan-700">Transport</option>
     </select>
