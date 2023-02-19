@@ -1,5 +1,7 @@
+let ORIGIN = `https://life-gui.blazingknightog.repl.co`
+
 export function POST(endpoint,data,callback=()=>{}){
-    fetch(endpoint, {
+    fetch(ORIGIN+endpoint, {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
@@ -11,7 +13,7 @@ export function POST(endpoint,data,callback=()=>{}){
 }
 
 export function GET(endpoint,callback=()=>{}){
-    fetch(endpoint)
+    fetch(ORIGIN+endpoint)
     .then(response => response.json())
     .then(response => callback(response))
 }

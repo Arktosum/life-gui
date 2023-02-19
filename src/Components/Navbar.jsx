@@ -3,8 +3,8 @@ import React from 'react'
 export default function Navbar() {
   let [navState,toggleNav] = React.useState(false)
   return (
-    <div className="max-h-[10vh] bg-gray-800 flex justify-end">
-      <div className='text-white text-2xl flex-1 p-5'>Mein Leiben</div>
+    <div className="min-h-[10vh] bg-[#18191e] flex justify-end items-center border-b-2 border-cyan-600">
+      <div className='text-cyan-600 animate-pulse duration-200 text-2xl flex-1 p-5'>Mein Leiben</div>
       <div className="p-5 cursor-pointer duration-200 ease-in-out" onClick={()=>{toggleNav(!navState)}}>
         <img src="hamburger-menu.png" alt="" className='w-full h-full hover:scale-125'/>
       </div>
