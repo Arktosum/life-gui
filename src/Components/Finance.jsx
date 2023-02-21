@@ -22,8 +22,8 @@ export default function Finance(props) {
   })
   return (
     <div className='min-h-screen bg-black flex flex-col'>
-      <FinanceForm render = {rerender}/>
-      <div className='font-bold text-white'>Balance : {balance}</div>
+      <FinanceForm render = {rerender} balance={balance}/>
+      
       <div className='grid gap-5
       sm:grid-cols-1
       md:grid-cols-2
@@ -111,7 +111,7 @@ function FinanceForm(props){
     render()
   }
   return(<>
-  <div className='grid grid-cols-2 gap-y-5 m-5 '>
+  <div className='grid grid-cols-2 gap-y-5 m-5 mx-10'>
     <label htmlFor="name" className='text-white text-sm m-1'>Name: </label>
     <input type="text" value={formData.name} className="bg-inherit border-cyan-600 border-2 rounded-sm p-1 text-cyan-700" onChange={(e)=>{setformData({...formData,name:e.target.value})}}/>
 
@@ -142,7 +142,7 @@ function FinanceForm(props){
     border-cyan-500 border-2 text-cyan-500 cursor-pointer
     hover:scale-125 duration-200 hover:bg-cyan-400 hover:text-black
     '>Submit</div>
-
+    <div className='font-bold text-white'>Balance : {props.balance}</div>
   </div>
   </>)
 }
