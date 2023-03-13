@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 let hamburgerIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-8 h-8">
@@ -7,6 +7,7 @@ let hamburgerIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox
 
 
 export default function Navbar() {
+  let [showdropDown,setshowdropDown] = useState(false);
   return (<>
     <nav className="bg-[#010101] p-8 justify-between hidden md:flex">
       <div className="text-bold text-xl text-white"><Link to="/">Mein Leiben</Link></div>
@@ -17,6 +18,12 @@ export default function Navbar() {
     </nav>
     <nav className="bg-[#010101] p-8 flex justify-between md:hidden border-b-cyan-600 border-2 border-black">
       <div className="text-bold text-xl text-white"><Link to="/">Mein Leiben</Link></div>
-      <div className="hover:scale-125">{hamburgerIcon}</div>
-  </nav>
+      <div className="hover:scale-125" onClick={()=>{setshowdropDown(prev=>!prev);}}>{hamburgerIcon}</div>
+    </nav>
+    <div className={`bg-[#000000] ${showdropDown?'':'hidden'} flex flex-col text-center`}>
+      <Link to="/todolist"><div className="text-bold text-sm text-white hover:bg-[#1d1d1d] py-2">TodoList</div></Link>
+      <Link to="/"><div className="text-bold text-sm text-white hover:bg-[#1d1d1d] py-2">Finance</div></Link>
+      <div className="text-bold text-sm text-white hover:bg-[#1d1d1d] py-2">Hall of Friends</div>
+      <div className="text-bold text-sm text-white hover:bg-[#1d1d1d] py-2">Daily Diary</div>
+    </div>
 </>)}
