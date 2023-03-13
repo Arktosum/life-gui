@@ -1,35 +1,22 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function Navbar() {
-  
-  return (
-    <div className="min-h-[10vh] bg-[#18191e] flex justify-end items-center border-b-2 border-cyan-600">
-      <div className='text-cyan-600 animate-pulse duration-200 text-2xl flex-1 p-5'>Mein Leiben</div>
-      <div className="p-5 cursor-pointer duration-200 ease-in-out" onClick={()=>{
-        let HIDDEN_BAR = document.getElementById('dropdown-menu')
-        if(HIDDEN_BAR.classList.contains('hidden')){
-          console.log("flex!")
-          HIDDEN_BAR.classList.remove('hidden')
-          HIDDEN_BAR.classList.add('flex')
-        }
-        else{
-          console.log("Hidden!")
-          HIDDEN_BAR.classList.remove('flex')
-          HIDDEN_BAR.classList.add('hidden')
-        }
-        
-      }}>
-        <img src="hamburger-menu.png" alt="" className='w-full h-full hover:scale-125'/>
-      </div>
+let hamburgerIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-8 h-8">
+<path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+</svg>
 
-      <div id="dropdown-menu" className="dropdown-menu hidden absolute bg-gray-900 flex-col justify-between top-[10vh] duration-200">
-      <Link to="/todos"><div className='text-white text-sm hover:bg-slate-700 p-5'>Todos</div></Link>
-        <Link to="/"><div className='text-white text-sm hover:bg-slate-700 p-5'>Finance</div></Link>
-        <div className='text-white text-sm hover:bg-slate-700 p-5'>Diary</div>
-        <div className='text-white text-sm hover:bg-slate-700 p-5'>Hall of Friends</div>
-      </div>
-      
-    </div>
-  )
-}
+
+export default function Navbar() {
+  return (<>
+    <nav className="bg-[#010101] p-8 justify-between hidden md:flex">
+      <div className="text-bold text-xl text-white"><Link to="/">Mein Leiben</Link></div>
+      <div className="text-bold text-sm text-white"><Link to="/todolist">TodoList</Link></div>
+      <div className="text-bold text-sm text-white"><Link to="/">Finance</Link></div>
+      <div className="text-bold text-sm text-white">Hall of Friends</div>
+      <div className="text-bold text-sm text-white">Daily Diary</div>
+    </nav>
+    <nav className="bg-[#010101] p-8 flex justify-between md:hidden border-b-cyan-600 border-2 border-black">
+      <div className="text-bold text-xl text-white"><Link to="/">Mein Leiben</Link></div>
+      <div className="hover:scale-125">{hamburgerIcon}</div>
+  </nav>
+</>)}

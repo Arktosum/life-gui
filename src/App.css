@@ -1,7 +1,21 @@
-
-
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@200;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 *{
-  font-family: 'Fira', sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
+
+::-webkit-scrollbar{
+  background-color:  gray;
+  width:0.5rem; /*For vertical*/
+  height:0.5rem; /*For horizontal*/
+}
+::-webkit-scrollbar-thumb{
+  background-color:rgb(31, 31, 31);
+  border-radius: 15px;
+}
+
+::-webkit-scrollbar-track{
+  background-color:  gray;
+  border-radius: 15px;
+}
+

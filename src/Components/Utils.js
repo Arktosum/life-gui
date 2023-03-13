@@ -1,5 +1,5 @@
 let ORIGIN = `https://life-gui.blazingknightog.repl.co`
-
+// export let ORIGIN = `http://localhost:3000`
 export function POST(endpoint,data,callback=()=>{}){
     fetch(ORIGIN+endpoint, {
     method: 'POST',
@@ -9,7 +9,7 @@ export function POST(endpoint,data,callback=()=>{}){
     body: JSON.stringify(data)
     })
     .then(response => response.json())
-    .then(response => callback(JSON.stringify(response)))
+    .then(response => callback(response))
 }
 
 export function GET(endpoint,callback=()=>{}){

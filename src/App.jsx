@@ -3,21 +3,20 @@ import { Routes, Route } from 'react-router-dom'
 import Finance from './Components/Finance'
 import Navbar from './Components/Navbar'
 import Todolist from './Components/Todolist'
-
+import './App.css'
 export default function App() {
-  let [renderState,render] = useState(false)
+  let [render,Rerender] = useState(false)
   function rerender(){
     setTimeout(()=>{
-      console.log('rerendering')
-      render(!renderState)
-    },300)
+      Rerender(prev=>!prev)
+    },200)
   }
-  return (<>
-  <Navbar props={{rerender,renderState}}/>
-  <Routes>
-    <Route path="/" element={<Finance props={{rerender,renderState}}/>}></Route>
-    <Route path="/todos" element={<Todolist props={{rerender,renderState}}/>}></Route>
-  </Routes>
-  
+  return (
+  <>
+    <Navbar/>
+    <Routes>
+      <Route path="/" element={<Finance props={{render,rerender}}/>}></Route>
+      <Route path="/todolist" element={<Todolist props={{render,rerender}}/>}></Route>
+    </Routes>
   </>)
 }
