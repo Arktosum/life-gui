@@ -58,23 +58,23 @@ function FinanceForm(props){
     <form onSubmit={(e)=>{addItem(e)}} className='bg-gray-800 rounded-xl p-2'>
       <div className='grid grid-cols-2 gap-5 p-5'>
         <label htmlFor="name" className={labelStyle}>Name</label>
-        <input type="text" name="name" id="" className={inputStyle}/>
+        <input type="text" name="name" id="" className={inputStyle} required/>
         <label htmlFor="mode" className={labelStyle}>Mode</label>
         <select name="mode" id=""className={inputStyle}>
           <option value="send" className={inputStyle}>Send</option>
           <option value="receive" className={inputStyle}>Receive</option>
         </select>
         <label htmlFor="amount" className={labelStyle}>Amount</label>
-        <input type="number" name="amount" id="" min="1"className={inputStyle}/>
+        <input type="number" name="amount" id="" min="1"className={inputStyle} required />
         <label htmlFor="category" className={labelStyle}>Category</label>
-        <select name="category" id=""className={inputStyle}>
+        <select name="category" id=""className={inputStyle} >
           <option value="education" className={inputStyle}>Education</option>
           <option value="grooming" className={inputStyle}>Grooming</option>
           <option value="transport" className={inputStyle}>Transport</option>
           <option value="food" className={inputStyle}>Food</option>
         </select>
         <label htmlFor="remarks" className={labelStyle}>Remarks</label>
-        <input type="text" name="remarks" id="" className={inputStyle}/>
+        <input type="text" name="remarks" id="" className={inputStyle} required/>
         <div className="p-5 inline-block bg-[#ff000061] font-bold hover:bg-[#ff000099]
         rounded-xl uppercase hover:scale-105 duration-200 text-center cursor-pointer" onClick={()=>{setShowModal(false);}}>cancel</div>
         <button className="p-5 inline-block bg-[#5eff0061] font-bold hover:bg-[#5eff0091]
@@ -99,6 +99,9 @@ function FinanceItem(props){
   let {item,rerender} = props.props
   let [date,time] = item.createdAt.split("T")
   function deleteItem(){
+    let randNum = parseInt(Math.random()*100)
+    let choice = prompt(`Enter | ${randNum} | to delete!`)
+    if(choice != randNum) return
     POST('/api/finances/delete',item,()=>{
       rerender();
     })
