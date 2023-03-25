@@ -26,7 +26,7 @@ export default function Finance(props) {
     <div className={`absolute w-full h-full bg-[#00000081] ${showModal? '':'hidden'}`}>
       <FinanceForm props={{rerender,setShowModal}}/>
     </div>
-    <div className="min-h-screen bg-[#0f0f0f]">
+    <div className="h-[90vh] bg-[#0f0f0f]">
       <div className="p-5 flex gap-5 justify-between">
         <div className="text-white px-4 py-2 border-green-600 border-2 
         inline-block rounded-xl
@@ -98,6 +98,7 @@ let uncheckedSVG = <svg xmlns="http://www.w3.org/2000/svg" fill="yellow" viewBox
 function FinanceItem(props){
   let {item,rerender} = props.props
   let [date,time] = item.createdAt.split("T")
+  let [Time,useless] = time.split(".")
   function deleteItem(){
     let randNum = parseInt(Math.random()*100)
     let choice = prompt(`Enter | ${randNum} | to delete!`)
@@ -120,12 +121,9 @@ function FinanceItem(props){
       <div className={`${item.mode == 'send' ? 'text-red-600' : 'text-green-600'} font-bold`}>{item.mode=='send' ? '-':'+'}₹ {item.amount}</div>
     </div>
     <div className="text-white py-1">{item.remarks}</div>
-    <div className='flex justify-between'>
-      <div>{item.completed}</div>
-      {/* <div>{date}-{time}</div> */}
-    </div>
     <div className='flex justify-between py-2'>
       <div className='hover:scale-125 duration-200' onClick={()=>deleteItem()}>{deleteBtnSVG}</div>
+      <div className='text-slate-700 italic font-bold'>{date} <span className='text-slate-500'>@{Time}</span></div>
       <div className='hover:scale-125 duration-200' onClick={()=>updateItem()}>{item.completed? checkedSVG : uncheckedSVG}</div>
     </div>
   </div>

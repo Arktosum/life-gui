@@ -23,7 +23,7 @@ export default function Todolist(props) {
   let [TodoItems,setTodoItems] = useState([])
   useEffect(()=>{
     POST('/api/todos/read',{},(data)=>{
-      console.log(data)
+      data.sort((a,b)=>a.checked - b.checked)
       setTodoItems(data)
     })
   },[render])
@@ -45,7 +45,7 @@ export default function Todolist(props) {
     return <TodoItem key={item._id} props={{item,rerender}}/>
   })
   return (<>
-  <div className="min-h-screen bg-[#0f0f0f]">
+  <div className="h-[90vh] bg-[#0f0f0f]">
     <div className="flex justify-center items-center flex-col">
       <div className='text-white text-xl my-5 font-extrabold p-5'>Todolist - What are we doing today?</div>
       <div className="m-5 flex items-center gap-5">

@@ -4,6 +4,7 @@ import Finance from './Components/Finance'
 import Navbar from './Components/Navbar'
 import Todolist from './Components/Todolist'
 import './App.css'
+import HoFriends from './Components/HoFriends'
 export default function App() {
   let [render,Rerender] = useState(false)
   function rerender(){
@@ -17,6 +18,8 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Finance props={{render,rerender}}/>}></Route>
       <Route path="/todolist" element={<Todolist props={{render,rerender}}/>}></Route>
+      <Route path="/hofriends" element={<HoFriends props={{render,rerender}}/>}></Route>
+      
     </Routes>
   </>)
 }
