@@ -19,66 +19,24 @@ let uncheckedSVG = <svg xmlns="http://www.w3.org/2000/svg" fill="yellow" viewBox
 
 export default function Todolist(props) {
   let {render,rerender} = props.props
-  let [TodoName,setTodoName] = useState("")
-  let [TodoItems,setTodoItems] = useState([])
-  useEffect(()=>{
-    POST('/api/todos/read',{},(data)=>{
-      data.sort((a,b)=>a.checked - b.checked)
-      setTodoItems(data)
-    })
-  },[render])
-  function addTodo(){
-    if(TodoName == "") return
-    
-    let todoitem = {
-      checked :false,
-      text : TodoName
-    }
-    POST('/api/todos/create',todoitem,(success)=>{
-      if(success)rerender()
-    })
-    setTodoName("")
-  }
-  
-  let todoitems = TodoItems.map((item)=>{
-    
-    return <TodoItem key={item._id} props={{item,rerender}}/>
-  })
   return (<>
-  <div className="h-[90vh] bg-[#0f0f0f]">
-    <div className="flex justify-center items-center flex-col">
-      <div className='text-white text-xl my-5 font-extrabold p-5'>Todolist - What are we doing today?</div>
-      <div className="m-5 flex items-center gap-5">
-        <input type="text" className="rounded-xl p-2 bg-inherit focus:outline-none border-cyan-600 border-2 text-white"
-        value={TodoName} onChange={(e)=>{setTodoName(e.target.value)}}/>
-        <button onClick={()=>{addTodo()}} className='cursor-pointer hover:scale-125 duration-200'>{addBtnSVG}</button>
+  <div className="h-[90vh] bg-[#0f0f0f] flex">
+    <div className="w-[20%] h-full bg-[#131313] ">
+      <div className='grid grid-cols-2 gap-x-10 p-5 h-[50%]'>
+        <div className="text-white">Today</div>
+        <span className="text-white">1</span>
+        <div className="text-white">Daily</div>
+        <span className="text-white">1</span>
+        <div className="text-white">Upcoming</div>
+        <span className="text-white">1</span>
+        <div className="text-white">Completed</div>
+        <span className="text-white">1</span>
       </div>
-      <div className='flex my-5 flex-col gap-5'>
-        {todoitems}
-      </div>
+    
     </div>
-  </div>
-  </>)
-}
-function TodoItem(props){
-  let {item,rerender} = props.props;
-  function updateTodo(){
-    POST('/api/todos/update',{filter:{_id: item._id},data:{checked:!item.checked}},(success)=>{
-      rerender();
-    })
-    
-  }
-  function deleteTodo(){
-    POST('/api/todos/delete',item,(success)=>{
-      rerender();
-    })
-  }
-  return (<>
-  <div className='flex items-center gap-5'>
-    <div className='w-1 h-1 bg-blue-600 rounded-full '></div>
-    <div className={`text-sm ${item.checked ? 'text-[#605f5f] line-through':'text-white'} w-[50vw]`}>{item.text}</div>
-    <div className='w-8 h-8 grid place-content-center cursor-pointer hover:scale-125 duration-200' onClick={()=>{updateTodo()}}>{item.checked? checkedSVG : uncheckedSVG}</div>
-    <div className='w-8 h-8 grid place-content-center cursor-pointer hover:scale-125 duration-200' onClick={()=>{deleteTodo()}}>{deleteBtnSVG}</div>
+    <div className="w-[80%] h-full">
+
+    </div>
   </div>
   </>)
 }
