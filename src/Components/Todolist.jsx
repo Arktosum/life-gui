@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { GET, POST } from './Utils'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import {createTodo} from './features/Todo';
 
 let addBtnSVG = <svg xmlns="http://www.w3.org/2000/svg" fill="green" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -27,6 +30,12 @@ let data = {
 
 export default function Todolist(props) {
   let {render,rerender} = props.props
+  const todo = useSelector((reducers)=>reducers.todo.value)
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    dispatch(createTodo({"yay" : "it works"}));
+  },[])
+  console.log(todo)
   let [selectedList,setselectedList] = useState("today");
   return (<>
   <div className="h-[90vh] bg-[#0f0f0f] flex overflow-hidden">

@@ -12,7 +12,7 @@ export default function Navbar() {
     <nav className="bg-[#010101] h-[10vh] p-5 items-center justify-between hidden md:flex">
       <div className="text-bold text-xl text-white"><Link to="/">Mein Leiben</Link></div>
       <div className="text-bold text-sm text-white"><Link to="/todolist">TodoList</Link></div>
-      <div className="text-bold text-sm text-white"><Link to="/">Finance</Link></div>
+      <div className="text-bold text-sm text-white"><Link to="/finance">Finance</Link></div>
       <div className="text-bold text-sm text-white"><Link to="/hofriends">Hall of Friends</Link></div>
       <div className="text-bold text-sm text-white">Daily Diary</div>
     </nav>
@@ -22,7 +22,7 @@ export default function Navbar() {
     </nav>
     <div className={`bg-[#000000] ${showdropDown?'drop-down':'come-back'} flex flex-col text-center`}>
       <Link to="/todolist"><div className="text-bold text-sm text-white hover:bg-[#1d1d1d] py-2">TodoList</div></Link>
-      <Link to="/"><div className="text-bold text-sm text-white hover:bg-[#1d1d1d] py-2">Finance</div></Link>
+      <Link to="/finance"><div className="text-bold text-sm text-white hover:bg-[#1d1d1d] py-2">Finance</div></Link>
       <Link to="/hofriends"><div className="text-bold text-sm text-white hover:bg-[#1d1d1d] py-2">Hall of Friends</div></Link>
       <div className="text-bold text-sm text-white hover:bg-[#1d1d1d] py-2">Daily Diary</div>
     </div>
