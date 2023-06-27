@@ -19,7 +19,6 @@ export default function App() {
       <Route path="/" element={<Finance props={{render,rerender}}/>}></Route>
       <Route path="/todolist" element={<Todolist props={{render,rerender}}/>}></Route>
       <Route path="/hofriends" element={<HoFriends props={{render,rerender}}/>}></Route>
-      
     </Routes>
   </>)
 }

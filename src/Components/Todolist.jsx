@@ -16,27 +16,75 @@ let uncheckedSVG = <svg xmlns="http://www.w3.org/2000/svg" fill="yellow" viewBox
 <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
 </svg>
 
+let data = {
+  "123912391239" : {
+    "start" : 21321312313,
+    "end" : 213213123,
+    "completed" : false,
+    "labels" : ["today"]
+  }
+}
 
 export default function Todolist(props) {
   let {render,rerender} = props.props
+  let [selectedList,setselectedList] = useState("today");
   return (<>
-  <div className="h-[90vh] bg-[#0f0f0f] flex">
+  <div className="h-[90vh] bg-[#0f0f0f] flex overflow-hidden">
     <div className="w-[20%] h-full bg-[#131313] ">
+      <div className="bg-green-600  cursor-pointer hover:bg-green-300 text-black p-5 uppercase">Add Item</div>
       <div className='grid grid-cols-2 gap-x-10 p-5 h-[50%]'>
-        <div className="text-white">Today</div>
-        <span className="text-white">1</span>
-        <div className="text-white">Daily</div>
-        <span className="text-white">1</span>
-        <div className="text-white">Upcoming</div>
-        <span className="text-white">1</span>
-        <div className="text-white">Completed</div>
-        <span className="text-white">1</span>
+        <div className="text-white cursor-pointer hover:bg-slate-600 duration-200" onClick={(e)=>{setselectedList('today')}}>Today</div>
+        <span className="text-white w-8 h-8 grid place-items-center bg-yellow-500 rounded-full">1</span>
+        <div className="text-white cursor-pointer hover:bg-slate-600 duration-200" onClick={(e)=>{setselectedList('daily')}}>Daily</div>
+        <span className="text-white w-8 h-8 grid place-items-center bg-yellow-500 rounded-full">1</span>
+        <div className="text-white cursor-pointer hover:bg-slate-600 duration-200" onClick={(e)=>{setselectedList('upcoming')}}>Upcoming</div>
+        <span className="text-white w-8 h-8 grid place-items-center bg-yellow-500 rounded-full">1</span>
+        <div className="text-white cursor-pointer hover:bg-slate-600 duration-200" onClick={(e)=>{setselectedList('completed')}}>Completed</div>
+        <span className="text-white w-8 h-8 grid place-items-center bg-yellow-500 rounded-full">1</span>
+        <div className="text-white cursor-pointer hover:bg-slate-600 duration-200" onClick={(e)=>{setselectedList('important')}}>Important</div>
+        <span className="text-white w-8 h-8 grid place-items-center bg-yellow-500 rounded-full">1</span>
+        <div className="text-white cursor-pointer hover:bg-slate-600 duration-200" onClick={(e)=>{setselectedList('overdue')}}>Overdue</div>
+        <span className="text-white w-8 h-8 grid place-items-center bg-yellow-500 rounded-full">1</span>
       </div>
     
     </div>
-    <div className="w-[80%] h-full">
-
+    <div className="w-[80%] h-full p-5">
+      <div className='text-white text-5xl'>{selectedList.toLocaleUpperCase()} , <span className="text-white text-2xl">{new Date().toLocaleString('us',{
+        "dateStyle" :"full"
+      })}</span></div>
+      <br />
+      <hr />
+      <div className='flex flex-col p-5 overflow-y-scroll max-h-full'>
+        <TodoItem/>
+        <TodoItem/>
+        <TodoItem/>
+        <TodoItem/>
+        <TodoItem/>
+        <TodoItem/>
+      </div>
+  
     </div>
   </div>
+  </>)
+}
+
+
+
+function TodoItem(){
+  return (<>
+  <div className='flex flex-col p-2'>
+    <div className='flex gap-5 items-center'>
+      <div><input type="radio" /></div>
+      <div className='text-white text-xl font-bold'>Title</div>
+    </div>
+    <div className='text-white'>
+      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Adipisci veritatis, nihil dolores inventore reiciendis possimus, nam labore rerum explicabo asperiores laboriosam vel reprehenderit deserunt voluptates minima soluta? Animi, iure aperiam?
+    </div>
+    <div className="flex justify-evenly px-5">
+      <div className="text-white"> From: {new Date().toLocaleString()}</div>
+      <div className='text-white'> To {new Date().toLocaleString()}</div>
+    </div>
+  </div>
+  <br/><hr className='bg-gray-600'/>
   </>)
 }
