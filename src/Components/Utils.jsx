@@ -1,5 +1,5 @@
-let ORIGIN = `https://life-gui.blazingknightog.repl.co`
-// export let ORIGIN = `http://localhost:3000`
+// let ORIGIN = `https://life-gui.blazingknightog.repl.co`
+export let ORIGIN = `http://localhost:3000`
 export async function POST(endpoint,data,callback=()=>{}){
     return fetch(ORIGIN+endpoint, {
     method: 'POST',
