@@ -1,35 +1,53 @@
 import { createSlice ,createAsyncThunk} from "@reduxjs/toolkit";
+import { POST } from "../Utils";
+
+let ORIGIN = `http://localhost:3000`
+
+let postOptions = (input) => { return {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(input)
+}}
+
+export const readTodo = createAsyncThunk('api/fetchData', async () => {
+    try {
+      const response = await fetch(ORIGIN+'/api/todos/read',postOptions({}));
+      if (!response.ok) {
+        throw Error('Failed to fetch data');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw Error('Failed to fetch data');
+    }
+  });
 
 
-export const createTodo = createAsyncThunk('createTodo',()=>{
-    return POST('/todos/read');
-})
 
-
-const INITIAL_STATE = {}
+const initialState = {
+    todos : []
+}
 export const todoSlice = createSlice({
     name : 'todo',
-    initialState : {value : INITIAL_STATE},
+    initialState,
     reducers : {
-        // createTodo : (state,action)=>{
-        //     state.value = action.payload
-        // },
-        // deleteTodo : (state)=>{
-        //     state.value = {}
-        // },
-    },
-    extraReducers:{
-        [createTodo.pending]:(state)=>{
-
+        createTodo : (state,action)=>{
+            POST('/api/todos/create',action.payload);
         },
-        [createTodo.fulfilled]:(state,action)=>{
-
-        },
-        [createTodo.rejected]:(state)=>{
-
+        updateTodo : (state,action)=>{
+            POST('/api/todos/update',action.payload);
         }
+        
+    },
+    extraReducers(builder){
+       builder.addCase(readTodo.fulfilled,(state,action)=>{
+        state.todos = action.payload
+       })
     }
 })
 
-// export const {createTodo,deleteTodo} = todoSlice.actions
+export const {createTodo,updateTodo} = todoSlice.actions
+
 export default todoSlice.reducer;

@@ -12,7 +12,6 @@ let mongodbURI = process.env.MONGODB_URI;
 const todoRoute = require("./routes/todos.js");
 const financeRoute = require("./routes/finances");
 
-
 app.use("/api/todos", todoRoute);
 app.use("/api/finances", financeRoute);
 
