@@ -84,15 +84,15 @@ function TodoItem(props){
   let {item} = props.props;
   let dispatch = useDispatch()
   async function updateItem(){
-    await dispatch(updateTodo({
+    dispatch(updateTodo({
       filter: {_id : item._id},
       data : {completed: !item.completed}
     }))
-    await dispatch(readTodo())
+     dispatch(readTodo())
   }
   async function deleteItem(){
-    await dispatch(deleteTodo({_id : item._id}))
-    await dispatch(readTodo())
+    dispatch(deleteTodo({_id : item._id}))
+    dispatch(readTodo())
     alert("deleted item!");
   }
   let strikeThrough = `line-through opacity-50`

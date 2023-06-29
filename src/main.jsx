@@ -3,15 +3,15 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./index.css";
-import { configureStore} from '@reduxjs/toolkit'
+import { applyMiddleware, configureStore} from '@reduxjs/toolkit'
+import thunk from "redux-thunk";
 import { Provider } from 'react-redux'
 import todoReducer from './Components/features/Todo'
 
-const store = configureStore({
-  reducer:{
-    todo : todoReducer
-  }
-})
+let reducer = {
+  todo : todoReducer
+}
+const store = configureStore({reducer},applyMiddleware(thunk))
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
