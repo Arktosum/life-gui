@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { GET, POST } from './Utils'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import {createTodo,readTodo, updateTodo} from './features/Todo';
+import {createTodo,deleteTodo,readTodo, updateTodo} from './features/Todo';
 import { addBtnSVG, checkedSVG } from '../assets/icons';
 
 let deleteBtnSVG = <svg xmlns="http://www.w3.org/2000/svg" fill="red" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -80,35 +80,40 @@ export default function Todolist(props) {
   </>)
 }
 
-
-
 function TodoItem(props){
   let {item} = props.props;
   let dispatch = useDispatch()
+  async function updateItem(){
+    await dispatch(updateTodo({
+      filter: {_id : item._id},
+      data : {completed: !item.completed}
+    }))
+    await dispatch(readTodo())
+  }
+  async function deleteItem(){
+    await dispatch(deleteTodo({_id : item._id}))
+    await dispatch(readTodo())
+    alert("deleted item!");
+  }
+  let strikeThrough = `line-through opacity-50`
   return (<>
-  <div className={`flex flex-col p-2 bg-[#141414] rounded-xl ${item.completed?'line-through text-gray-500 bg-[#00000050]' : ''}`}>
+  <div className={`flex flex-col p-2 bg-[#141414] rounded-xl`}>
     <div className='flex gap-5 items-center'>
-      {!item.completed ? <div 
-      onClick={()=>{
-        dispatch(updateTodo({
-          filter: {_id : item._id},
-          data : {completed: !item.completed}
-        }))
-        dispatch(readTodo());
-      }}
+      {!item.completed ? <div onClick={updateItem}
       className='w-5 h-5 border-white rounded-full border-2 cursor-pointer hover:bg-slate-500 duration-200'></div> : 
-      checkedSVG
+      <div onClick={updateItem} className='cursor-pointer'>{checkedSVG('green')}</div>
       }
-      <div className='text-white text-xl font-bold'>{item.title}</div>
+      <div className={`text-white text-xl font-bold ${item.completed? strikeThrough : ''}`}>{item.title}</div>
     </div>
-    <div className='text-gray-500 text-sm'>{item.description}</div>
+    <div className={`text-gray-500 text-sm ${item.completed? strikeThrough : ''}`}>{item.description}</div>
     <div className="flex justify-evenly px-5">
-      <div className="flex  gap-5 text-white">
+      <div className={`flex  gap-5 text-white ${item.completed? strikeThrough : ''}`}>
         <div>{item.startedAt.split('T')[0]}</div>
         <div>To</div> 
         <div>{item.endedAt.split('T')[0]}</div>
       </div>
     </div>
+    <div className="flex justify-end cursor-pointer" onClick={deleteItem}>{deleteBtnSVG}</div>
   </div>
   <br/>
   </>)
@@ -126,7 +131,13 @@ function TodoModal(props){
   }
   let [formData,setFormData] = useState(INITIAL_DATA)
   let dispatch = useDispatch()
-
+  async function addItem(){
+    await dispatch(createTodo(formData));
+    await  dispatch(readTodo())
+    setFormData(INITIAL_DATA);
+    setModal(prev=>!prev)
+    alert("Added item!");
+  }
   return(<>
     <div className='bg-[#0000007f] fixed h-[90vh] w-[100vw] flex justify-center items-center'>
       <div className='text-white bg-[#161616] w-[50vw] rounded-xl p-5'>
@@ -145,12 +156,7 @@ function TodoModal(props){
         <hr />
         <div className="flex justify-end gap-x-10 p-2">
           <div className="text-white bg-[#3d3d3d] rounded-xl py-2 px-5 uppercase cursor-pointer hover:bg-[#666666] duration-200" onClick={()=>setModal(prev=>!prev)}>cancel</div>
-          <div className="text-white bg-green-600 rounded-xl py-2 px-5 uppercase cursor-pointer hover:bg-[#0b8609] duration-200" onClick={()=>{
-            dispatch(createTodo(formData));
-            dispatch(readTodo())
-            setFormData(INITIAL_DATA);
-            setModal(prev=>!prev)
-          }}>add</div>
+          <div className="text-white bg-green-600 rounded-xl py-2 px-5 uppercase cursor-pointer hover:bg-[#0b8609] duration-200" onClick={addItem}>add</div>
         </div>
       </div>
     </div>

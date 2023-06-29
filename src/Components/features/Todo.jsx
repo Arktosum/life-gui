@@ -12,22 +12,15 @@ let postOptions = (input) => { return {
 }}
 
 export const readTodo = createAsyncThunk('api/fetchData', async () => {
-    try {
-      const response = await fetch(ORIGIN+'/api/todos/read',postOptions({}));
-      if (!response.ok) {
-        throw Error('Failed to fetch data');
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      throw Error('Failed to fetch data');
-    }
-  });
-
+    const response = await fetch(ORIGIN+'/api/todos/read',postOptions({}));
+    const data = await response.json();
+    return data;
+});
 
 
 const initialState = {
-    todos : []
+    todos : [],
+    render : false
 }
 export const todoSlice = createSlice({
     name : 'todo',
@@ -35,11 +28,16 @@ export const todoSlice = createSlice({
     reducers : {
         createTodo : (state,action)=>{
             POST('/api/todos/create',action.payload);
+            state.render = !state.render
         },
         updateTodo : (state,action)=>{
             POST('/api/todos/update',action.payload);
+            state.render = !state.render
+        },
+        deleteTodo : (state,action)=>{
+            POST('/api/todos/delete',action.payload);
+            state.render = !state.render
         }
-        
     },
     extraReducers(builder){
        builder.addCase(readTodo.fulfilled,(state,action)=>{
@@ -48,6 +46,6 @@ export const todoSlice = createSlice({
     }
 })
 
-export const {createTodo,updateTodo} = todoSlice.actions
+export const {createTodo,updateTodo,deleteTodo} = todoSlice.actions
 
 export default todoSlice.reducer;
