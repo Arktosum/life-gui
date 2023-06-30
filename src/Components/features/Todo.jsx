@@ -1,5 +1,7 @@
 import { createSlice ,createAsyncThunk} from "@reduxjs/toolkit";
+
 import { POST } from "../Utils";
+import { useDispatch } from "react-redux";
 
 let ORIGIN = `http://localhost:3000`
 
@@ -27,8 +29,7 @@ export const todoSlice = createSlice({
     initialState,
     reducers : {
         createTodo : (state,action)=>{
-            POST('/api/todos/create',action.payload);
-            state.render = !state.render
+            POST('/api/todos/create',action.payload,()=>{});
         },
         updateTodo : (state,action)=>{
             POST('/api/todos/update',action.payload);
