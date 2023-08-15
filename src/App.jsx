@@ -5,7 +5,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import Finance from "./components/Finance";
 import Navbar from "./components/Navbar";
 import TodoList from "./components/TodoList";
+import axios from 'axios';
 
+axios.defaults.baseURL = 'https://life-gui.blazingknightog.repl.co';
 function App() {
   return (<>
     <Navbar/>
