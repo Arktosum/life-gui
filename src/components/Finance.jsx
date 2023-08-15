@@ -25,8 +25,10 @@ export default function Finance() {
     <div className="h-[90vh] bg-black flex p-5">
       <div className="w-1/4 h-full bg-[#0B0B0B] rounded-xl">
         <div className="text-white text-center text-xl">
-          Balance :{" "}
-          <span className={`text-${balance < 0 ? "red" : "green"}-600`}>
+          Balance :
+          <span
+            className={`${balance < 0 ? "text-red-600" : "text-green-600"}`}
+          >
             {balance}
           </span>
         </div>
@@ -62,13 +64,13 @@ function FinanceItem({ item, setfinanceItems }) {
   let isSend = item.mode == "SEND";
   return (
     <div
-      className={`bg-[#141414] p-2 rounded-xl border-b-2 border-b-${
-        isSend ? "red" : "green"
-      }-600`}
+      className={`bg-[#141414] p-2 rounded-xl border-b-2 ${
+        isSend ? "border-b-red-600" : "border-b-green-600"
+      }`}
     >
       <div className="flex justify-between">
         <div className="text-white text-xl font-bold">{item.transactee}</div>
-        <div className={`text-${isSend ? "red" : "green"}-600`}>
+        <div className={`${isSend ? "text-red-600" : "text-green-600"}`}>
           {isSend ? "-" : "+"}${item.amount}
         </div>
       </div>
