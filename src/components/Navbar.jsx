@@ -1,25 +1,21 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+// src/components/Navbar.js
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-export default function Navbar() {
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <nav className='flex bg-[#101010] text-white h-[10vh] p-2 items-center justify-between border-b-2 border-b-cyan-500'>
-      <div className='text-xl font-bold'>Mein Lieben</div>
-      <div className='flex gap-5'>
-        <NavLink to='/finance'>
-          <div>Finance</div>
-        </NavLink>
-        <NavLink to='/todolist'>
-          <div>Todolist</div>
-        </NavLink>
-        <NavLink to='/todolist'>
-          <div>Hall of Friends</div>
-        </NavLink>
-        <NavLink to='/todolist'>
-          <div>Daily Diary</div>
-        </NavLink>
+    <nav className="bg-black h-[10vh] p-4 border-b-white border-1">
+      <div className="container mx-auto flex justify-between items-center">
+        <div className="text-white font-bold text-xl">Mein Lieben</div>
       </div>
-      
     </nav>
-  )
+  );
 }
+
+export default Navbar;

@@ -21,7 +21,6 @@ db.once('open', () => {
 });
 
 
-
 app.use('/api/finance', financeRouter); //
 
 
