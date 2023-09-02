@@ -78,7 +78,7 @@ export default function Finance() {
     return <FinanceItem key={item._id} props={{ item }} />;
   });
   return (
-    <div className="min-h-screen bg-[#121212] flex flex-col overflow-hidden">
+    <div className="h-[90vh] bg-[#121212] flex flex-col overflow-hidden">
       <div className="p-5 flex justify-evenly">
         <div className="text-white">
           Account :{" "}
