@@ -62,7 +62,6 @@ export default function Finance() {
   useEffect(() => {
     axios.get("/api/finance/read").then(({ data }) => {
       setFinanceItems(data);
-      console.log(data);
     });
   }, []);
 
@@ -72,7 +71,7 @@ export default function Finance() {
     return <FinanceItem key={item._id} props={{ item, setFinanceItems }} />;
   });
   return (
-    <div className="h-[90vh] bg-[#121212] flex flex-col overflow-hidden relative">
+    <div className="min-h-[90dvh] bg-[#121212] flex flex-col overflow-hidden relative">
       {showModal && (
         <Modal
           setshowModal={setshowModal}
@@ -83,13 +82,13 @@ export default function Finance() {
         <div className="text-white">
           Account :{" "}
           <span className={account < 0 ? "text-red-600" : "text-green-600"}>
-            ${account}
+            {account < 0 ? "-" : "+"}${account}
           </span>
         </div>
         <div className="text-white">
           Due :{" "}
           <span className={due < 0 ? "text-red-600" : "text-green-600"}>
-            ${due}
+            {due < 0 ? "-" : "+"}${due}
           </span>
         </div>
       </div>
@@ -127,7 +126,6 @@ function Modal({ setshowModal, setFinanceItems }) {
   let [formData, setFormData] = useState(INITIAL_FORM);
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(formData);
     axios.post("/api/finance/create", formData).then((res) => {
       if (res.status == 201) {
         toast.success("Successfully added a transaction!");
@@ -227,6 +225,7 @@ function FinanceItem(props) {
       });
     });
   }
+
   return (
     <>
       <div
@@ -236,9 +235,9 @@ function FinanceItem(props) {
       >
         <p className="flex justify-between">
           <span className="text-blue-500 font-bold">{item.transactee}</span>
-          <span className="text-white">${item.amount}</span>
+          <span className={`${item.mode == "SEND" ? "text-red-600" : "text-green-600"}`}>{item.mode == 'SEND' ? '-':'+'}${item.amount}</span>
         </p>
-        <p className="text-white">{item.description}</p>
+        <p className="text-gray-500">{item.description}</p>
         <p className="">{item.category}</p>
         <div className="flex gap-5">
           <div onClick={handleDelete}>{deleteIcon}</div>
