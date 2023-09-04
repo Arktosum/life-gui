@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+
 let deleteIcon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -54,31 +55,30 @@ let completedIcon = (
 
 export default function Finance() {
   let account = 0;
-  let owed = 0;
-  let [financeItems, setFinanceItems] = useState([
-    {
-      _id: "1913992139",
-      transactee: "Raghul",
-      description: "lorem ipsum dolor sit amet, consect",
-    },
-  ]);
+  let due = 0;
+  let [financeItems, setFinanceItems] = useState([]);
+  let [showModal, setshowModal] = useState(false);
 
   useEffect(() => {
     axios.get("/api/finance/read").then(({ data }) => {
       setFinanceItems(data);
+      console.log(data);
     });
   }, []);
 
   let financeElements = financeItems.map((item) => {
-    account +=
-      item.amount *
-      (item.status == "PAID" ? 0 : 1) *
-      (item.mode == "SEND" ? -1 : 1);
-    owed += item.amount * (item.status == "PAID" ? 0 : 1);
-    return <FinanceItem key={item._id} props={{ item }} />;
+    account += item.amount * (item.status == "PAID" ? 1 : 0)*(item.mode == "RECEIVE" ? 1:-1 );
+    due += item.amount * (item.status == "UNPAID" ? 1 : 0)*(item.mode == "RECEIVE" ? -1:1 );
+    return <FinanceItem key={item._id} props={{ item, setFinanceItems }} />;
   });
   return (
-    <div className="h-[90vh] bg-[#121212] flex flex-col overflow-hidden">
+    <div className="h-[90vh] bg-[#121212] flex flex-col overflow-hidden relative">
+      {showModal && (
+        <Modal
+          setshowModal={setshowModal}
+          setFinanceItems={setFinanceItems}
+        ></Modal>
+      )}
       <div className="p-5 flex justify-evenly">
         <div className="text-white">
           Account :{" "}
@@ -87,9 +87,9 @@ export default function Finance() {
           </span>
         </div>
         <div className="text-white">
-          Owed :{" "}
-          <span className={owed < 0 ? "text-red-600" : "text-green-600"}>
-            ${owed}
+          Due :{" "}
+          <span className={due < 0 ? "text-red-600" : "text-green-600"}>
+            ${due}
           </span>
         </div>
       </div>
@@ -104,6 +104,7 @@ export default function Finance() {
           strokeWidth={1}
           stroke="currentColor"
           className="w-full h-full"
+          onClick={() => setshowModal(true)}
         >
           <path
             strokeLinecap="round"
@@ -112,12 +113,120 @@ export default function Finance() {
           />
         </svg>
       </div>
+      <ToastContainer></ToastContainer>
     </div>
   );
 }
 
+function Modal({ setshowModal, setFinanceItems }) {
+  let INITIAL_FORM = {
+    status: "UNPAID",
+    mode: "SEND",
+    category: "FOOD",
+  };
+  let [formData, setFormData] = useState(INITIAL_FORM);
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log(formData);
+    axios.post("/api/finance/create", formData).then((res) => {
+      if (res.status == 201) {
+        toast.success("Successfully added a transaction!");
+        setFinanceItems((prev)=>[...prev,res.data]);
+      }
+    });
+    setFormData(INITIAL_FORM);
+    setshowModal(false);
+  }
+  function handleChange(e) {
+    setFormData((prev) => {
+      return {
+        ...prev,
+        [e.target.name]: e.target.value,
+      };
+    });
+  }
+  return (
+    <>
+      <div className="bg-[#0000007f] w-full h-full absolute">
+        <form
+          action=""
+          className="text-black flex flex-col gap-5 m-5 bg-gray-600 p-5"
+          onSubmit={handleSubmit}
+        >
+          <input
+            type="text"
+            name="transactee"
+            onChange={handleChange}
+            className=""
+            required
+          />
+          <textarea
+            type="text"
+            name="description"
+            onChange={handleChange}
+            className=""
+            required
+          />
+          <input
+            type="number"
+            name="amount"
+            onChange={handleChange}
+            className=""
+            required
+          />
+          <select name="mode" id="" required onChange={handleChange}>
+            <option value="SEND">SEND</option>
+            <option value="RECEIVE">RECEIVE</option>
+          </select>
+          <select name="category" id=""  onChange={handleChange}>
+            <option value="FOOD">FOOD</option>
+            <option value="TRANSPORT">TRANSPORT</option>
+            <option value="GROOMING">GROOMING</option>
+            <option value="OTHER">OTHER</option>
+            <option value="EDUCATION">EDUCATION</option>
+          </select>
+          <button className="px-5 py-2 bg-green-500">SEND</button>
+          <div onClick={()=>setshowModal(false)}
+        className="px-5 py-2 bg-red-500 text-center">CANCEL</div>
+        </form>
+        
+      </div>
+    </>
+  );
+}
+
 function FinanceItem(props) {
-  let { item } = props.props;
+  let { item, setFinanceItems } = props.props;
+
+  function handleDelete() {
+    let choice = prompt("Are you sure you want to delete? y | n");
+    if (choice != "y") return;
+    axios.get("/api/finance/delete/" + item._id).then((res) => {
+      if (res.status == 200) {
+        toast.success("Deleted Transaction successfully!");
+        setFinanceItems((prev)=>{
+          return prev.filter((x) => x._id != item._id);
+        });
+      }
+    });
+  }
+  function handleToggle() {
+    let newStatus = item.status == "PAID" ? "UNPAID" : "PAID";
+    let data = {
+      _id: item._id,
+      update: {
+        status: newStatus,
+      },
+    };
+    axios.post("/api/finance/update", data).then((res) => {
+      setFinanceItems((prev)=>{
+        return prev.map((x)=>{
+          if(x._id == item._id) return {...x,status:newStatus};
+          return x;
+        })
+      });
+    });
+  }
   return (
     <>
       <div
@@ -126,14 +235,16 @@ function FinanceItem(props) {
         } rounded-xl`}
       >
         <p className="flex justify-between">
-          <p className="text-blue-500 font-bold">{item.transactee}</p>
-          <p className="text-white">${item.amount}</p>
+          <span className="text-blue-500 font-bold">{item.transactee}</span>
+          <span className="text-white">${item.amount}</span>
         </p>
         <p className="text-white">{item.description}</p>
         <p className="">{item.category}</p>
         <div className="flex gap-5">
-          <div>{deleteIcon}</div>
-          <div>{item.status == "PAID" ? completedIcon : incompletedIcon}</div>
+          <div onClick={handleDelete}>{deleteIcon}</div>
+          <div onClick={handleToggle}>
+            {item.status == "PAID" ? completedIcon : incompletedIcon}
+          </div>
         </div>
       </div>
     </>
