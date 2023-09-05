@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-
+import moment from 'moment';
 let deleteIcon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -60,14 +60,17 @@ export default function Finance() {
   let [showModal, setshowModal] = useState(false);
 
   useEffect(() => {
-    axios.get("/api/finance/read").then(({ data }) => {
+    axios.get("/api/finance/read").then(({ data }) => { 
+      data = data.sort((a,b)=>{
+        return new Date(b.updatedAt) - new Date(a.updatedAt);
+      })
       setFinanceItems(data);
     });
   }, []);
 
   let financeElements = financeItems.map((item) => {
     account += item.amount * (item.status == "PAID" ? 1 : 0)*(item.mode == "RECEIVE" ? 1:-1 );
-    due += item.amount * (item.status == "UNPAID" ? 1 : 0)*(item.mode == "RECEIVE" ? -1:1 );
+    due += item.amount * (item.status == "UNPAID" ? 1 : 0)*(item.mode == "RECEIVE" ? 1:-1 );
     return <FinanceItem key={item._id} props={{ item, setFinanceItems }} />;
   });
   return (
@@ -92,7 +95,7 @@ export default function Finance() {
           </span>
         </div>
       </div>
-      <div className="flex-grow flex flex-col gap-5 overflow-y-scroll">
+      <div className="h-[70vh] flex flex-col gap-5 overflow-y-scroll">
         {financeElements}
       </div>
       <div className="my-auto bg-[#171616] h-[10vh] flex item-center justify-center border-t-gray-700 border-t-2">
@@ -195,6 +198,8 @@ function Modal({ setshowModal, setFinanceItems }) {
 
 function FinanceItem(props) {
   let { item, setFinanceItems } = props.props;
+  let createdAt = moment(item.createdAt).format("DD-MM-YYYY @HH:mm");
+  let updatedAt = moment(item.updatedAt).format("DD-MM-YYYY @HH:mm");
 
   function handleDelete() {
     let choice = prompt("Are you sure you want to delete? y | n");
@@ -225,7 +230,6 @@ function FinanceItem(props) {
       });
     });
   }
-
   return (
     <>
       <div
@@ -238,13 +242,19 @@ function FinanceItem(props) {
           <span className={`${item.mode == "SEND" ? "text-red-600" : "text-green-600"}`}>{item.mode == 'SEND' ? '-':'+'}${item.amount}</span>
         </p>
         <p className="text-gray-500">{item.description}</p>
-        <p className="">{item.category}</p>
+        <p className="text-gray-600">{item.category}</p>
+
         <div className="flex gap-5">
           <div onClick={handleDelete}>{deleteIcon}</div>
           <div onClick={handleToggle}>
             {item.status == "PAID" ? completedIcon : incompletedIcon}
           </div>
         </div>
+        <div className="flex justify-evenly">
+          <p className="text-gray-600">{createdAt}</p>
+          <p className="text-gray-600">{updatedAt}</p>
+        </div>
+
       </div>
     </>
   );
