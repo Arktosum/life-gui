@@ -230,8 +230,8 @@ function FinanceItem(props) {
         } rounded-xl`}
       >
         <p className="flex justify-between">
-          <span className="text-blue-500 font-bold">{item.transactee}</span>
-          <span className={`${item.mode == "SEND" ? "text-red-600" : "text-green-600"}`}>{item.mode == 'SEND' ? '-':'+'}${item.amount}</span>
+          <span className="text-white font-bold">{item.transactee}</span>
+          <span className={`font-bold ${item.mode == "SEND" ? "text-red-600" : "text-green-600"}`}>{item.mode == 'SEND' ? '-':'+'}${item.amount}</span>
         </p>
         <p className="text-gray-500">{item.description}</p>
         <p className="text-gray-600">{item.category}</p>
@@ -243,8 +243,8 @@ function FinanceItem(props) {
           </div>
         </div>
         <div className="flex justify-evenly">
-          <p className="text-gray-600">{createdAt}</p>
-          <p className="text-gray-600">{updatedAt}</p>
+          <p className="text-gray-600 text-sm">{createdAt}</p>
+          <p className="text-gray-600 text-sm">{updatedAt}</p>
         </div>
 
       </div>

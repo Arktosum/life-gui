@@ -1,4 +1,4 @@
-/* Target all scrollbars */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');/* Target all scrollbars */
 ::-webkit-scrollbar {
     width: 8px; /* Width of the scrollbar */
     border-radius: 15px;
@@ -20,8 +20,11 @@
     background: rgb(74, 73, 73)F3F; /* Color of the scrollbar handle on hover */
   }
   
+
+
   *{
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    
   }
 
 .fade-out{
