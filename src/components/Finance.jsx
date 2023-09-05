@@ -2,6 +2,257 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import moment from 'moment';
+import '../App.css';
+
+export default function Finance() {
+  let account = 0;
+  let due = 0;
+  let [financeItems, setFinanceItems] = useState([]);
+  let [showModal, setshowModal] = useState(false);
+
+  useEffect(() => {
+    axios.get("/api/finance/read").then(({ data }) => { 
+      data = data.sort((a,b)=>{
+        return new Date(b.updatedAt) - new Date(a.updatedAt);
+      })
+      setFinanceItems(data);
+    });
+  }, []);
+
+  let financeElements = financeItems.map((item) => {
+    account += item.amount * (item.status == "PAID" ? 1 : 0)*(item.mode == "RECEIVE" ? 1:-1 );
+    due += item.amount * (item.status == "UNPAID" ? 1 : 0)*(item.mode == "RECEIVE" ? 1:-1 );
+    return <FinanceItem key={item._id} props={{ item, setFinanceItems }} />;
+  });
+
+  return (
+    <div 
+    className={`min-h-[90dvh] bg-[#121212] flex flex-col overflow-hidden relative duration-200`}>
+      {showModal && <Modal
+          setshowModal={setshowModal}
+          showModal={showModal}
+          setFinanceItems={setFinanceItems}
+      ></Modal>}
+      <div className="p-5 flex justify-evenly ">
+        <div className="text-white ">
+          Account :{" "}
+          <span className={account < 0 ? "text-red-600" : "text-green-600"}>
+            {account < 0 ? "-" : "+"}${account}
+          </span>
+        </div>
+        <div className="text-white">
+          Due :{" "}
+          <span className={due < 0 ? "text-red-600" : "text-green-600"}>
+            {due < 0 ? "-" : "+"}${due}
+          </span>
+        </div>
+      </div>
+      <div className="h-[70vh] flex flex-col gap-5 overflow-y-scroll">
+        {financeElements}
+      </div>
+      <div className="my-auto bg-[#171616] h-[10vh] flex item-center justify-center border-t-gray-700 border-t-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="green"
+          viewBox="0 0 24 24"
+          strokeWidth={1}
+          stroke="currentColor"
+          className="w-full h-full"
+          onClick={() => setshowModal(true)}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      </div>
+      <ToastContainer></ToastContainer>
+    </div>
+  );
+}
+
+function Modal({ setshowModal, showModal,setFinanceItems }) {
+  let INITIAL_FORM = {
+    status: "UNPAID",
+    mode: "SEND",
+    category: "FOOD",
+  };
+  let [formData, setFormData] = useState(INITIAL_FORM);
+  function handleSubmit(e) {
+    e.preventDefault();
+    axios.post("/api/finance/create", formData).then((res) => {
+      if (res.status == 201) {
+        toast.success("Successfully added a transaction!");
+        setFinanceItems((prev)=>[...prev,res.data]);
+      }
+    });
+    setFormData(INITIAL_FORM);
+    setshowModal(false);
+  }
+  function handleChange(e) {
+    setFormData((prev) => {
+      return {
+        ...prev,
+        [e.target.name]: e.target.value,
+      };
+    });
+  }
+  return (
+    <>
+      <div className={`bg-[#0000007f] w-full h-full absolute ${showModal ? ' fade-in':' fade-out'}`}>
+        <form onSubmit={handleSubmit} className="bg-gray-800 p-4 rounded-lg m-5">
+          <div className="mb-4">
+            <label htmlFor="transactee" className="text-white">
+              Transactee
+            </label>
+            <input
+              type="text"
+              name="transactee"
+              onChange={handleChange}
+              className="bg-gray-700 text-white rounded-lg p-2 w-full transition-opacity duration-300"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="description" className="text-white">
+              Description
+            </label>
+            <textarea
+              name="description"
+              onChange={handleChange}
+              className="bg-gray-700 text-white rounded-lg p-2 w-full transition-opacity duration-300"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="amount" className="text-white">
+              Amount
+            </label>
+            <input
+              type="number"
+              name="amount"
+              onChange={handleChange}
+              className="bg-gray-700 text-white rounded-lg p-2 w-full transition-opacity duration-300"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="mode" className="text-white">
+              Mode
+            </label>
+            <select
+              name="mode"
+              onChange={handleChange}
+              className="bg-gray-700 text-white rounded-lg p-2 w-full transition-opacity duration-300"
+              required
+            >
+              <option value="SEND">SEND</option>
+              <option value="RECEIVE">RECEIVE</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="category" className="text-white">
+              Category
+            </label>
+            <select
+              name="category"
+              onChange={handleChange}
+              className="bg-gray-700 text-white rounded-lg p-2 w-full transition-opacity duration-300"
+            >
+              <option value="FOOD">FOOD</option>
+              <option value="TRANSPORT">TRANSPORT</option>
+              <option value="GROOMING">GROOMING</option>
+              <option value="OTHER">OTHER</option>
+              <option value="EDUCATION">EDUCATION</option>
+            </select>
+          </div>
+          <div className="flex justify-evenly">
+            <button
+              type="submit"
+              className="px-5 py-2 bg-green-500 rounded-lg text-white hover:bg-green-600 transition-colors duration-300"
+            >
+              SEND
+            </button>
+            <div
+              onClick={() => setshowModal(false)}
+              className="px-5 py-2 bg-red-500 text-center rounded-lg text-white cursor-pointer hover:bg-red-600 transition-colors duration-300"
+            >
+              CANCEL
+            </div>
+          </div>
+         
+        </form>
+      </div>
+    </>
+  );
+}
+
+function FinanceItem(props) {
+  let { item, setFinanceItems } = props.props;
+  let createdAt = moment(item.createdAt).format("DD-MM-YYYY @HH:mm");
+  let updatedAt = moment(item.updatedAt).format("DD-MM-YYYY @HH:mm");
+
+  function handleDelete() {
+    let choice = prompt("Are you sure you want to delete? y | n");
+    if (choice != "y") return;
+    axios.get("/api/finance/delete/" + item._id).then((res) => {
+      if (res.status == 200) {
+        toast.success("Deleted Transaction successfully!");
+        setFinanceItems((prev)=>{
+          return prev.filter((x) => x._id != item._id);
+        });
+      }
+    });
+  }
+  function handleToggle() {
+    let newStatus = item.status == "PAID" ? "UNPAID" : "PAID";
+    let data = {
+      _id: item._id,
+      update: {
+        status: newStatus,
+      },
+    };
+    axios.post("/api/finance/update", data).then((res) => {
+      setFinanceItems((prev)=>{
+        return prev.map((x)=>{
+          if(x._id == item._id) return {...x,status:newStatus};
+          return x;
+        })
+      });
+    });
+  }
+  return (
+    <>
+      <div
+        className={`bg-[#000000] p-5 mx-2 border-b-2 ${
+          item.mode == "SEND" ? "border-b-red-600" : "border-b-green-600"
+        } rounded-xl`}
+      >
+        <p className="flex justify-between">
+          <span className="text-blue-500 font-bold">{item.transactee}</span>
+          <span className={`${item.mode == "SEND" ? "text-red-600" : "text-green-600"}`}>{item.mode == 'SEND' ? '-':'+'}${item.amount}</span>
+        </p>
+        <p className="text-gray-500">{item.description}</p>
+        <p className="text-gray-600">{item.category}</p>
+
+        <div className="flex gap-5">
+          <div onClick={handleDelete}>{deleteIcon}</div>
+          <div onClick={handleToggle}>
+            {item.status == "PAID" ? completedIcon : incompletedIcon}
+          </div>
+        </div>
+        <div className="flex justify-evenly">
+          <p className="text-gray-600">{createdAt}</p>
+          <p className="text-gray-600">{updatedAt}</p>
+        </div>
+
+      </div>
+    </>
+  );
+}
+
+
 let deleteIcon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -52,210 +303,3 @@ let completedIcon = (
     />
   </svg>
 );
-
-export default function Finance() {
-  let account = 0;
-  let due = 0;
-  let [financeItems, setFinanceItems] = useState([]);
-  let [showModal, setshowModal] = useState(false);
-
-  useEffect(() => {
-    axios.get("/api/finance/read").then(({ data }) => { 
-      data = data.sort((a,b)=>{
-        return new Date(b.updatedAt) - new Date(a.updatedAt);
-      })
-      setFinanceItems(data);
-    });
-  }, []);
-
-  let financeElements = financeItems.map((item) => {
-    account += item.amount * (item.status == "PAID" ? 1 : 0)*(item.mode == "RECEIVE" ? 1:-1 );
-    due += item.amount * (item.status == "UNPAID" ? 1 : 0)*(item.mode == "RECEIVE" ? 1:-1 );
-    return <FinanceItem key={item._id} props={{ item, setFinanceItems }} />;
-  });
-  return (
-    <div className="min-h-[90dvh] bg-[#121212] flex flex-col overflow-hidden relative">
-      {showModal && (
-        <Modal
-          setshowModal={setshowModal}
-          setFinanceItems={setFinanceItems}
-        ></Modal>
-      )}
-      <div className="p-5 flex justify-evenly">
-        <div className="text-white">
-          Account :{" "}
-          <span className={account < 0 ? "text-red-600" : "text-green-600"}>
-            {account < 0 ? "-" : "+"}${account}
-          </span>
-        </div>
-        <div className="text-white">
-          Due :{" "}
-          <span className={due < 0 ? "text-red-600" : "text-green-600"}>
-            {due < 0 ? "-" : "+"}${due}
-          </span>
-        </div>
-      </div>
-      <div className="h-[70vh] flex flex-col gap-5 overflow-y-scroll">
-        {financeElements}
-      </div>
-      <div className="my-auto bg-[#171616] h-[10vh] flex item-center justify-center border-t-gray-700 border-t-2">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="green"
-          viewBox="0 0 24 24"
-          strokeWidth={1}
-          stroke="currentColor"
-          className="w-full h-full"
-          onClick={() => setshowModal(true)}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-      </div>
-      <ToastContainer></ToastContainer>
-    </div>
-  );
-}
-
-function Modal({ setshowModal, setFinanceItems }) {
-  let INITIAL_FORM = {
-    status: "UNPAID",
-    mode: "SEND",
-    category: "FOOD",
-  };
-  let [formData, setFormData] = useState(INITIAL_FORM);
-  function handleSubmit(e) {
-    e.preventDefault();
-    axios.post("/api/finance/create", formData).then((res) => {
-      if (res.status == 201) {
-        toast.success("Successfully added a transaction!");
-        setFinanceItems((prev)=>[...prev,res.data]);
-      }
-    });
-    setFormData(INITIAL_FORM);
-    setshowModal(false);
-  }
-  function handleChange(e) {
-    setFormData((prev) => {
-      return {
-        ...prev,
-        [e.target.name]: e.target.value,
-      };
-    });
-  }
-  return (
-    <>
-      <div className="bg-[#0000007f] w-full h-full absolute">
-        <form
-          action=""
-          className="text-black flex flex-col gap-5 m-5 bg-gray-600 p-5"
-          onSubmit={handleSubmit}
-        >
-          <input
-            type="text"
-            name="transactee"
-            onChange={handleChange}
-            className=""
-            required
-          />
-          <textarea
-            type="text"
-            name="description"
-            onChange={handleChange}
-            className=""
-            required
-          />
-          <input
-            type="number"
-            name="amount"
-            onChange={handleChange}
-            className=""
-            required
-          />
-          <select name="mode" id="" required onChange={handleChange}>
-            <option value="SEND">SEND</option>
-            <option value="RECEIVE">RECEIVE</option>
-          </select>
-          <select name="category" id=""  onChange={handleChange}>
-            <option value="FOOD">FOOD</option>
-            <option value="TRANSPORT">TRANSPORT</option>
-            <option value="GROOMING">GROOMING</option>
-            <option value="OTHER">OTHER</option>
-            <option value="EDUCATION">EDUCATION</option>
-          </select>
-          <button className="px-5 py-2 bg-green-500">SEND</button>
-          <div onClick={()=>setshowModal(false)}
-        className="px-5 py-2 bg-red-500 text-center">CANCEL</div>
-        </form>
-        
-      </div>
-    </>
-  );
-}
-
-function FinanceItem(props) {
-  let { item, setFinanceItems } = props.props;
-  let createdAt = moment(item.createdAt).format("DD-MM-YYYY @HH:mm");
-  let updatedAt = moment(item.updatedAt).format("DD-MM-YYYY @HH:mm");
-
-  function handleDelete() {
-    let choice = prompt("Are you sure you want to delete? y | n");
-    if (choice != "y") return;
-    axios.get("/api/finance/delete/" + item._id).then((res) => {
-      if (res.status == 200) {
-        toast.success("Deleted Transaction successfully!");
-        setFinanceItems((prev)=>{
-          return prev.filter((x) => x._id != item._id);
-        });
-      }
-    });
-  }
-  function handleToggle() {
-    let newStatus = item.status == "PAID" ? "UNPAID" : "PAID";
-    let data = {
-      _id: item._id,
-      update: {
-        status: newStatus,
-      },
-    };
-    axios.post("/api/finance/update", data).then((res) => {
-      setFinanceItems((prev)=>{
-        return prev.map((x)=>{
-          if(x._id == item._id) return {...x,status:newStatus};
-          return x;
-        })
-      });
-    });
-  }
-  return (
-    <>
-      <div
-        className={`bg-slate-950 p-5 mx-2 border-b-2 ${
-          item.mode == "SEND" ? "border-b-red-600" : "border-b-green-600"
-        } rounded-xl`}
-      >
-        <p className="flex justify-between">
-          <span className="text-blue-500 font-bold">{item.transactee}</span>
-          <span className={`${item.mode == "SEND" ? "text-red-600" : "text-green-600"}`}>{item.mode == 'SEND' ? '-':'+'}${item.amount}</span>
-        </p>
-        <p className="text-gray-500">{item.description}</p>
-        <p className="text-gray-600">{item.category}</p>
-
-        <div className="flex gap-5">
-          <div onClick={handleDelete}>{deleteIcon}</div>
-          <div onClick={handleToggle}>
-            {item.status == "PAID" ? completedIcon : incompletedIcon}
-          </div>
-        </div>
-        <div className="flex justify-evenly">
-          <p className="text-gray-600">{createdAt}</p>
-          <p className="text-gray-600">{updatedAt}</p>
-        </div>
-
-      </div>
-    </>
-  );
-}
