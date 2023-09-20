@@ -37,13 +37,13 @@ export default function Finance() {
         <div className="text-white ">
           Account :{" "}
           <span className={account < 0 ? "text-red-600" : "text-green-600"}>
-            {account < 0 ? "-" : "+"}${account}
+            {account < 0 ? "-" : "+"}₹{account}
           </span>
         </div>
         <div className="text-white">
           Due :{" "}
           <span className={due < 0 ? "text-red-600" : "text-green-600"}>
-            {due < 0 ? "-" : "+"}${due}
+            {due < 0 ? "-" : "+"}₹{due}
           </span>
         </div>
       </div>
@@ -231,7 +231,7 @@ function FinanceItem(props) {
       >
         <p className="flex justify-between">
           <span className="text-white font-bold">{item.transactee}</span>
-          <span className={`font-bold ${item.mode == "SEND" ? "text-red-600" : "text-green-600"}`}>{item.mode == 'SEND' ? '-':'+'}${item.amount}</span>
+          <span className={`font-bold ${item.mode == "SEND" ? "text-red-600" : "text-green-600"}`}>{item.mode == 'SEND' ? '-':'+'}₹{item.amount}</span>
         </p>
         <p className="text-gray-500">{item.description}</p>
         <p className="text-gray-600">{item.category}</p>
