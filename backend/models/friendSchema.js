@@ -11,6 +11,10 @@ const friendSchema = new mongoose.Schema(
     displayImage: String,
     description: String,
     story: String,
+    gender : {
+      enum : ["MALE","FEMALE","OTHER"],
+      default : "OTHER"
+    }
   },
   { timestamps: true }
 );
