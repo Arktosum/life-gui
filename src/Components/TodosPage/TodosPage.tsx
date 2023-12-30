@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import { addTodo, fetchPosts } from '../../features/todoSlice'
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import Navbar from '../Navbar';
 
 
 function TodosComponent() {
@@ -13,7 +14,13 @@ function TodosComponent() {
   dispatch(fetchPosts());
 
   return (
-    <div>TodosComponent</div>
+    <div className="h-screen bg-white flex">
+      <div id="side-nav" className="w-1/4 bg-[#121212]"></div>
+      <div className='flex flex-col w-full'>
+        <div className="h-[10%]"><Navbar page="todos"/></div>
+        <div id="content" className="h-[90%] bg-black"></div>
+      </div>
+    </div>
   )
 }
 
