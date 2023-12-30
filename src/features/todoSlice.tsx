@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
+import {PayloadAction, createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios';
 
 
@@ -18,13 +18,13 @@ export const todoSlice = createSlice({
     name : 'todo',
     initialState,
     reducers : {
-        addTodo : (state,action)=>{
+        addTodo : (state)=>{
 
         }
     },
     extraReducers(builder){
         builder
-        .addCase(fetchPosts.pending,(state,action)=>{
+        .addCase(fetchPosts.pending,(state,action:PayloadAction<any>)=>{
 
         })
         .addCase(fetchPosts.fulfilled,(state,action)=>{
