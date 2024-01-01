@@ -14,7 +14,10 @@ export default function FriendItem({item : item , setformState,setModal} : any){
     const dispatch = useAppDispatch();
   
     const handleDelete = () => {
-      dispatch(deleteFriend(friend._id!));
+      let choice :string | null = prompt("Are you sure you want to delete? y/n");
+      if(choice?.toLowerCase() === 'y'){
+        dispatch(deleteFriend(friend._id!));
+      }
     };
 
     function handleEdit(){

@@ -6,7 +6,12 @@ export default function TodoItem({item : item , setformState,setModal} : any){
     const dispatch = useAppDispatch();
   
     const handleDelete = () => {
-      dispatch(deleteTodo(todo._id!));
+      let choice :string | null = prompt("Are you sure you want to delete? y/n");
+      if(choice?.toLowerCase() === 'y'){
+        dispatch(deleteTodo(todo._id!));
+      }
+
+      
     };
   
     const handleToggleStatus = () => {

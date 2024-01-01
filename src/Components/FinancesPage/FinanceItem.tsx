@@ -7,7 +7,10 @@ export default function FinanceItem({item : item , setformState,setModal} : any)
     const dispatch = useAppDispatch();
   
     const handleDelete = () => {
-      dispatch(deleteFinance(finance._id!));
+      let choice :string | null = prompt("Are you sure you want to delete? y/n");
+      if(choice?.toLowerCase() === 'y'){
+        dispatch(deleteFinance(finance._id!));
+      }
     };
   
     const handleToggleStatus = () => {
