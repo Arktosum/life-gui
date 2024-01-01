@@ -1,9 +1,10 @@
 import {PayloadAction, createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios';
 import { RootState } from '../app/store';
+import { ORIGIN } from '../Components/Utils';
 
+let origin = ORIGIN + "/api"
 
-const ORIGIN = 'http://localhost:8080/api'
 
 export type Gender = "MALE" | "FEMALE" | "OTHER"
 export interface Friend{
@@ -18,31 +19,31 @@ export interface Friend{
 }
 
 
-export const fetchFriends = createAsyncThunk<Friend[],undefined,{state: RootState}>('Friends/fetchFriends',async (arg,thunkAPI)=>{
+export const fetchFriends = createAsyncThunk<Friend[],undefined,{state: RootState}>('Friends/fetchFriends',async (_arg,thunkAPI)=>{
     const state = thunkAPI.getState()
     const token = state.auth.token
-    const response = await axios.get(`${ORIGIN}/friends/`,{ headers: {"Authorization" : `Bearer ${token}`}})
+    const response = await axios.get(`${origin}/friends/`,{ headers: {"Authorization" : `Bearer ${token}`}})
     return response.data
 })
 
 export const createFriend = createAsyncThunk<Friend,Friend,{state: RootState}>('Friends/createFriend',async (item,thunkAPI)=>{
     const state = thunkAPI.getState()
     const token = state.auth.token
-    const response = await axios.post(`${ORIGIN}/friends/`,item,{ headers: {"Authorization" : `Bearer ${token}`}})
+    const response = await axios.post(`${origin}/friends/`,item,{ headers: {"Authorization" : `Bearer ${token}`}})
     return response.data
 })
 
 export const editFriend = createAsyncThunk<Friend,Friend,{state: RootState}>('Friends/editFriend',async (item,thunkAPI)=>{
     const state = thunkAPI.getState()
     const token = state.auth.token
-    const response = await axios.put(`${ORIGIN}/friends/${item._id}`,item,{ headers: {"Authorization" : `Bearer ${token}`}})
+    const response = await axios.put(`${origin}/friends/${item._id}`,item,{ headers: {"Authorization" : `Bearer ${token}`}})
     return response.data
 })
 
 export const deleteFriend = createAsyncThunk<{taskId : string, response : any},string,{state: RootState}>('Friends/deleteFriend',async (taskId,thunkAPI)=>{
     const state = thunkAPI.getState()
     const token = state.auth.token
-    const response = await axios.delete(`${ORIGIN}/friends/${taskId}`,{ headers: {"Authorization" : `Bearer ${token}`}})
+    const response = await axios.delete(`${origin}/friends/${taskId}`,{ headers: {"Authorization" : `Bearer ${token}`}})
     return {taskId, response : response.data}
 })
 

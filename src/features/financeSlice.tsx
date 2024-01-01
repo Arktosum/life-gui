@@ -1,9 +1,10 @@
 import {PayloadAction, createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios';
 import { RootState } from '../app/store';
+import { ORIGIN } from '../Components/Utils';
 
 
-const ORIGIN = 'http://localhost:8080/api'
+let origin = ORIGIN + "/api"
 
 export type Status = "PAID" | "UNPAID" | "PARTIAL"
 export type Mode = "SEND" | "RECEIVE"
@@ -18,31 +19,31 @@ export interface Finance{
 }
 
 
-export const fetchFinances = createAsyncThunk<Finance[],undefined,{state: RootState}>('Finances/fetchFinances',async (arg,thunkAPI)=>{
+export const fetchFinances = createAsyncThunk<Finance[],undefined,{state: RootState}>('Finances/fetchFinances',async (_arg,thunkAPI)=>{
     const state = thunkAPI.getState()
     const token = state.auth.token
-    const response = await axios.get(`${ORIGIN}/finances/`,{ headers: {"Authorization" : `Bearer ${token}`}})
+    const response = await axios.get(`${origin}/finances/`,{ headers: {"Authorization" : `Bearer ${token}`}})
     return response.data
 })
 
 export const createFinance = createAsyncThunk<Finance,Finance,{state: RootState}>('Finances/createFinance',async (item,thunkAPI)=>{
     const state = thunkAPI.getState()
     const token = state.auth.token
-    const response = await axios.post(`${ORIGIN}/finances/`,item,{ headers: {"Authorization" : `Bearer ${token}`}})
+    const response = await axios.post(`${origin}/finances/`,item,{ headers: {"Authorization" : `Bearer ${token}`}})
     return response.data
 })
 
 export const editFinance = createAsyncThunk<Finance,Finance,{state: RootState}>('Finances/editFinance',async (item,thunkAPI)=>{
     const state = thunkAPI.getState()
     const token = state.auth.token
-    const response = await axios.put(`${ORIGIN}/finances/${item._id}`,item,{ headers: {"Authorization" : `Bearer ${token}`}})
+    const response = await axios.put(`${origin}/finances/${item._id}`,item,{ headers: {"Authorization" : `Bearer ${token}`}})
     return response.data
 })
 
 export const deleteFinance = createAsyncThunk<{taskId : string, response : any},string,{state: RootState}>('Finances/deleteFinance',async (taskId,thunkAPI)=>{
     const state = thunkAPI.getState()
     const token = state.auth.token
-    const response = await axios.delete(`${ORIGIN}/finances/${taskId}`,{ headers: {"Authorization" : `Bearer ${token}`}})
+    const response = await axios.delete(`${origin}/finances/${taskId}`,{ headers: {"Authorization" : `Bearer ${token}`}})
     return {taskId, response : response.data}
 })
 

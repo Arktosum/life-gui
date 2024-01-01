@@ -1,9 +1,10 @@
 import {PayloadAction, createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios';
 import { RootState } from '../app/store';
+import { ORIGIN } from '../Components/Utils';
 
+let origin = ORIGIN + "/api"
 
-const ORIGIN = 'http://localhost:8080/api'
 
 export type Priority = "LOW" | "MEDIUM" | "HIGH"
 export type Status = "PENDING" | "COMPLETED"
@@ -21,35 +22,35 @@ export interface Todo{
 export const fetchTodos = createAsyncThunk<Todo[],undefined,{state: RootState}>('todos/fetchTodos',async ( _arg , thunkAPI)=>{
     const state = thunkAPI.getState()
     const token = state.auth.token
-    const response = await axios.get(`${ORIGIN}/todos/`,{ headers: {"Authorization" : `Bearer ${token}`}})
+    const response = await axios.get(`${origin}/todos/`,{ headers: {"Authorization" : `Bearer ${token}`}})
     return response.data
 })
 
 export const createTodo = createAsyncThunk<Todo,Todo,{state: RootState}>('todos/createTodo',async (item,thunkAPI)=>{
     const state = thunkAPI.getState()
     const token = state.auth.token
-    const response = await axios.post(`${ORIGIN}/todos/`,item,{ headers: {"Authorization" : `Bearer ${token}`}})
+    const response = await axios.post(`${origin}/todos/`,item,{ headers: {"Authorization" : `Bearer ${token}`}})
     return response.data
 })
 
 export const createSubtask = createAsyncThunk<Todo,{parentId:string,item:Todo},{state: RootState}>('todos/createSubtask',async ({parentId,item},thunkAPI)=>{
     const state = thunkAPI.getState()
     const token = state.auth.token
-    const response = await axios.post(`${ORIGIN}/todos/${parentId}/subtasks`,item,{ headers: {"Authorization" : `Bearer ${token}`}})
+    const response = await axios.post(`${origin}/todos/${parentId}/subtasks`,item,{ headers: {"Authorization" : `Bearer ${token}`}})
     return response.data
 })
 
 export const editTodo = createAsyncThunk<Todo,Todo,{state: RootState}>('todos/editTodo',async (item,thunkAPI)=>{
     const state = thunkAPI.getState()
     const token = state.auth.token
-    const response = await axios.put(`${ORIGIN}/todos/${item._id}`,item,{ headers: {"Authorization" : `Bearer ${token}`}})
+    const response = await axios.put(`${origin}/todos/${item._id}`,item,{ headers: {"Authorization" : `Bearer ${token}`}})
     return response.data
 })
 
 export const deleteTodo = createAsyncThunk<{taskId : string, response : any},string,{state: RootState}>('todos/deleteTodo',async (taskId,thunkAPI)=>{
     const state = thunkAPI.getState()
     const token = state.auth.token
-    const response = await axios.delete(`${ORIGIN}/todos/${taskId}`,{ headers: {"Authorization" : `Bearer ${token}`}})
+    const response = await axios.delete(`${origin}/todos/${taskId}`,{ headers: {"Authorization" : `Bearer ${token}`}})
     return {taskId, response : response.data}
 })
 

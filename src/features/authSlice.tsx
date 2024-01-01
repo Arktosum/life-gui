@@ -1,8 +1,7 @@
 import {PayloadAction, createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios';
+import { ORIGIN } from '../Components/Utils';
 
-
-const ORIGIN = 'http://localhost:8080'
 
 export interface User{
     username : string,
@@ -30,7 +29,7 @@ export const authSlice = createSlice({
         setToken : (state, action) =>{
             state.token = action.payload
         },
-        logout : (state, action) =>{
+        logout : (state, _action) =>{
             state.token = null
         }
     },
@@ -39,7 +38,7 @@ export const authSlice = createSlice({
         addCase(loginUser.fulfilled, (state, action : PayloadAction<{token:string}> ) => {
             state.token = action.payload.token;
         })
-        .addCase(loginUser.rejected, (state, action : any) => {
+        .addCase(loginUser.rejected, (_state, _action : any) => {
             alert("Wrong username/ password!");
         })
     },
