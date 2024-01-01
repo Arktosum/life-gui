@@ -6,6 +6,7 @@ import otherPlaceholder from '../../assets/other_placeholder.jpg'
 import maleSymbol from '../../assets/male_symbol.png'
 import femaleSymbol from '../../assets/female_symbol.png'
 import otherSymbol from '../../assets/other_symbol.png'
+import moment from "moment";
 
 
 export default function FriendItem({item : item , setformState,setModal} : any){
@@ -42,6 +43,7 @@ export default function FriendItem({item : item , setformState,setModal} : any){
           </div>
           <p>{friend.description}</p>
           <p className='text-gray-500'>🎂 {friend.dateOfBirth.toString().split("T")[0]}</p>
+          <p className='text-gray-500'>🎂 {moment().diff(friend.dateOfBirth.toString().split("T")[0],'years',false)} years old.</p>
           <p>{friend.phoneNumber}</p>
         {/* <div className="text-ellipsis overflow-hidden whitespace-nowrap">{friend.story}</div> */}
         </div>
