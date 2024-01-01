@@ -6,15 +6,16 @@ const friendSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    phoneNumber: [Number],
+    phoneNumber: String,
     dateOfBirth: Date,
     displayImage: String,
     description: String,
     story: String,
-    gender : {
-      enum : ["MALE","FEMALE","OTHER"],
-      default : "OTHER"
-    }
+    gender: {
+      type: String,
+      enum: ["MALE", "FEMALE", "OTHER"],
+      default: "OTHER",
+    },
   },
   { timestamps: true }
 );

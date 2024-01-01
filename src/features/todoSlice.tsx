@@ -1,41 +1,98 @@
 import {PayloadAction, createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios';
+import { RootState } from '../app/store';
 
 
-const POSTS_URL = ''
+const ORIGIN = 'http://localhost:8080/api'
 
-export const fetchPosts = createAsyncThunk('posts/fetchPosts',async ()=>{
-    await axios.get(POSTS_URL)
-    .then((response)=>[...response.data])
-    .catch(error => error.message);
-})
-
-const initialState = {
-    todos : []
+export type Priority = "LOW" | "MEDIUM" | "HIGH"
+export type Status = "PENDING" | "COMPLETED"
+export interface Todo{
+    _id?: string;
+    title: string;
+    description: string;
+    priority: Priority;
+    status: Status;
+    subtasks: Todo[]; 
+    isSubtask: boolean;
+    dueDate: Date;
 }
 
-export const todoSlice = createSlice({
-    name : 'todo',
-    initialState,
-    reducers : {
-        addTodo : (state)=>{
-
-        }
-    },
-    extraReducers(builder){
-        builder
-        .addCase(fetchPosts.pending,(state,action:PayloadAction<any>)=>{
-
-        })
-        .addCase(fetchPosts.fulfilled,(state,action)=>{
-            
-        })
-        .addCase(fetchPosts.rejected,(state,action)=>{
-            
-        })
-    }
+export const fetchTodos = createAsyncThunk<Todo[],undefined,{state: RootState}>('todos/fetchTodos',async ( _arg , thunkAPI)=>{
+    const state = thunkAPI.getState()
+    const token = state.auth.token
+    const response = await axios.get(`${ORIGIN}/todos/`,{ headers: {"Authorization" : `Bearer ${token}`}})
+    return response.data
 })
 
-export const {addTodo} = todoSlice.actions
+export const createTodo = createAsyncThunk<Todo,Todo,{state: RootState}>('todos/createTodo',async (item,thunkAPI)=>{
+    const state = thunkAPI.getState()
+    const token = state.auth.token
+    const response = await axios.post(`${ORIGIN}/todos/`,item,{ headers: {"Authorization" : `Bearer ${token}`}})
+    return response.data
+})
+
+export const createSubtask = createAsyncThunk<Todo,{parentId:string,item:Todo},{state: RootState}>('todos/createSubtask',async ({parentId,item},thunkAPI)=>{
+    const state = thunkAPI.getState()
+    const token = state.auth.token
+    const response = await axios.post(`${ORIGIN}/todos/${parentId}/subtasks`,item,{ headers: {"Authorization" : `Bearer ${token}`}})
+    return response.data
+})
+
+export const editTodo = createAsyncThunk<Todo,Todo,{state: RootState}>('todos/editTodo',async (item,thunkAPI)=>{
+    const state = thunkAPI.getState()
+    const token = state.auth.token
+    const response = await axios.put(`${ORIGIN}/todos/${item._id}`,item,{ headers: {"Authorization" : `Bearer ${token}`}})
+    return response.data
+})
+
+export const deleteTodo = createAsyncThunk<{taskId : string, response : any},string,{state: RootState}>('todos/deleteTodo',async (taskId,thunkAPI)=>{
+    const state = thunkAPI.getState()
+    const token = state.auth.token
+    const response = await axios.delete(`${ORIGIN}/todos/${taskId}`,{ headers: {"Authorization" : `Bearer ${token}`}})
+    return {taskId, response : response.data}
+})
+
+interface startState{
+    todos : Todo[],
+}
+const initialState : startState = {
+    todos : [],
+}
+
+export const initialFormState  : Todo= {
+    title : "",
+    description : "",
+    priority : "LOW" as Priority,
+    status : "PENDING" as Status,
+    dueDate : new Date(Date.now()) as Date,
+    subtasks : [],
+    isSubtask : false,
+  }
+  
+export const todoSlice = createSlice({
+    name: 'todo',
+    initialState,
+    reducers: {
+    },
+    extraReducers: (builder) => {
+        builder.
+        addCase(fetchTodos.fulfilled, (state, action: PayloadAction<Todo[]>) => {
+          state.todos = action.payload;
+        })
+        .addCase(createTodo.fulfilled, (state, action: PayloadAction<Todo>) => {
+          state.todos = [action.payload, ...state.todos];
+        })
+        .addCase(deleteTodo.fulfilled, (state, action: PayloadAction<{ taskId: string; response: any }>) => {
+          state.todos = state.todos.filter((item) => item._id !== action.payload.taskId);
+        })
+        .addCase(editTodo.fulfilled, (state, action: PayloadAction<Todo>) => {
+          state.todos = state.todos.map((item) => (item._id === action.payload._id ? action.payload : item));
+        });
+    },
+});
+
+
+export const {} = todoSlice.actions
 
 export default todoSlice.reducer;

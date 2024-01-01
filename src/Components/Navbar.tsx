@@ -1,5 +1,4 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+
 import { Link } from 'react-router-dom'
 
 
@@ -7,9 +6,7 @@ interface Props{
   page : String
 }
 
-function pageStyle(){
 
-}
 const navLinkStyle = 'text-white border-b-2 font-bold h-full flex justify-center items-center hover:border-b-green-500 px-4 '
 function Navbar(props : Props) {
   const currentPage = props.page

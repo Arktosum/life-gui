@@ -16,8 +16,7 @@ const todoSchema = new mongoose.Schema(
     },
     subtasks : [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Todo",
-      required: true
+      ref: "todo",
     }],
     isSubtask : Boolean,
     dueDate: Date,
