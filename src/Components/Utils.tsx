@@ -1,4 +1,4 @@
 
 
-export const ORIGIN = 'https://life-gui.blazingknightog.repl.co'
+export const ORIGIN = 'https://life-gui.onrender.com'
 // export const ORIGIN = 'http:localhost:8080'
