@@ -47,7 +47,7 @@ export default function FriendForm({setModal,formState,setformState} : any){
     return (
       <form onSubmit={handleSubmit} className='flex justify-center'>
       <label htmlFor="displayImage" className='cursor-pointer relative w-[500px] h-[500px]'>
-        <img width="500px" height="500px" className='top-0 left-0 absolute' src={FriendItem.displayImage || genderImgMapping[FriendItem.gender]} alt="" />
+        <img width="500px" height="500px" className='top-0 left-0 absolute ' src={FriendItem.displayImage || genderImgMapping[FriendItem.gender]} alt="" />
         <div className='duration-200 top-0 left-0 absolute w-[500px] h-[500px] opacity-0 hover:opacity-100 hover:bg-[#0000005b] text-white'>{EDIT_PENCIL}</div>
       </label>
       <div className='flex flex-col w-[500px] h-[500px]'>
@@ -61,7 +61,7 @@ export default function FriendForm({setModal,formState,setformState} : any){
         <input
             type="datetime-local"
             value={new Date(FriendItem.dateOfBirth).toISOString().replace("Z","")}
-            onChange={(e) => setFriendItem({ ...FriendItem, dateOfBirth: new Date(e.target.value)})}
+            onChange={(e) => {setFriendItem((prev)=>{return {...prev,dateOfBirth :  new Date(e.target.value + "Z") }})}}
           />
         <input type="text" name="phoneNumber" value={FriendItem.phoneNumber} id="" onChange={handleChange}/>
         <input type="text" name="description" value={FriendItem.description} id="" onChange={handleChange}/>

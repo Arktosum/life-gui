@@ -31,18 +31,19 @@ export default function FriendItem({item : item , setformState,setModal} : any){
 
     
     return (
-      <div className='border-gray-500 border-2 w-[300px] h-[425px] text-white rounded-xl p-2'>
-        <img  className="rounded-b-none rounded-xl" width="300px" height="300px" src={friend.displayImage || genderImgMapping[friend.gender].image} alt="" />
+      <div className='border-gray-500 border-2 text-white rounded-xl'>
+        <div className='w-[300px]'> 
+          <img  className="rounded-b-none rounded-xl object-cover h-[300px]" width="300px" height="300px" src={friend.displayImage || genderImgMapping[friend.gender].image} alt="" />
+        </div>
         <div>
           <div className="flex justify-between items-center">
             <h3 className='font-bold'>{friend.name}</h3>
             <img  className="rounded-b-none rounded-xl" width="30px" height="30px" src={genderImgMapping[friend.gender].icon} alt="" />
           </div>
           <p>{friend.description}</p>
-          <p className='text-gray-500'>{friend.dateOfBirth.toString()}</p>
+          <p className='text-gray-500'>🎂 {friend.dateOfBirth.toString().split("T")[0]}</p>
           <p>{friend.phoneNumber}</p>
-        
-        <div className="text-ellipsis overflow-hidden whitespace-nowrap">{friend.story}</div>
+        {/* <div className="text-ellipsis overflow-hidden whitespace-nowrap">{friend.story}</div> */}
         </div>
         <div className='flex justify-evenly text-white'>
             <button onClick={handleDelete}>Delete</button>
