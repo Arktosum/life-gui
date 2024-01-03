@@ -27,7 +27,7 @@ export default function FriendsPage() {
   return (  
     <div className="h-screen bg-white flex">
       {modal ?
-      <div className="w-screen h-screen fixed bg-[#000000ad] grid place-content-center">
+      <div className="w-screen h-screen fixed bg-[#000000ad] grid place-content-center z-10">
           <FriendForm setModal={setModal} formState={formState} setformState={setformState} /> 
       </div>:<></>
       }
@@ -36,7 +36,7 @@ export default function FriendsPage() {
       </div>
       <div className='flex flex-col w-full'>
         <div className="h-[10%]"><Navbar page="friends"/></div>
-        <div id="content" className="h-[90%] bg-black overflow-y-scroll p-5 grid grid-cols-4 gap-5">
+        <div id="content" className="h-[90%] bg-black overflow-y-scroll p-5 grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {friendElements}
         </div>
       </div>

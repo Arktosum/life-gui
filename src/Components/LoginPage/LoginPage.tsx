@@ -1,29 +1,26 @@
 import  { useEffect, useState } from 'react'
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { useAppDispatch, useAppSelector} from '../../app/hooks'
 import { loginUser } from '../../features/authSlice';
 import { useNavigate } from 'react-router-dom';
 
-function HomeComponent() {
+function LoginPage() {
   let initialState = {
     username : "",
     password : "",
   }
-  
   const dispatch = useAppDispatch();
-
   const navigate = useNavigate();
-  const token = useAppSelector(state=> state.auth.token)
-  useEffect(()=>{
-    if(token != null){
+  let [formData,setFormData] = useState(initialState)
+  async function handleSubmit(e: { preventDefault: () => void }){
+    e.preventDefault()
+    let response = await dispatch(loginUser(formData));
+    if(response.meta.requestStatus == "fulfilled"){
       navigate('/todos');
     }
-  },[token,dispatch])
-
-  let [formData,setFormData] = useState(initialState)
-  function handleSubmit(e: { preventDefault: () => void }){
-    e.preventDefault()
-    dispatch(loginUser(formData));
+    if(response.meta.requestStatus == "rejected"){
+      console.log("Rejected!");
+    }
     setFormData(initialState);
   }
   function handleInput(e: { target: { name: any; value: any } }){
@@ -46,6 +43,5 @@ function HomeComponent() {
   )
 }
 
-HomeComponent.propTypes = {}
 
-export default HomeComponent
+export default LoginPage

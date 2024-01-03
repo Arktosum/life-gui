@@ -37,6 +37,7 @@ export const authSlice = createSlice({
         builder.
         addCase(loginUser.fulfilled, (state, action : PayloadAction<{token:string}> ) => {
             state.token = action.payload.token;
+
         })
         .addCase(loginUser.rejected, (_state, _action : any) => {
             alert("Wrong username/ password!");

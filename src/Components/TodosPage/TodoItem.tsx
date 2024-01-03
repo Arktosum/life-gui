@@ -13,7 +13,7 @@ export default function TodoItem({item : item , setformState,setModal} : any){
 
       
     };
-  
+
     const handleToggleStatus = () => {
       const updatedTodo: Todo = { ...todo, status: todo.status === 'PENDING' ? 'COMPLETED' : 'PENDING' };
       dispatch(editTodo(updatedTodo));

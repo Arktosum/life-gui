@@ -33,26 +33,26 @@ export default function FriendItem({item : item , setformState,setModal} : any){
       "OTHER" : {image : otherPlaceholder,icon : otherSymbol},
     }
 
+
+    let friendImage = friend.displayImage || genderImgMapping[friend.gender].image
+    let friendIcon = genderImgMapping[friend.gender].icon
+    let friendName = friend.name
+    let friendDate = friend.dateOfBirth.toString().split("T")[0]
+    let friendAge = moment().diff(friend.dateOfBirth.toString().split("T")[0],'years',false)
+    let friendDescription = friend.description
+    let friendPhoneNumber = friend.phoneNumber
     
     return (
-      <div className='border-gray-500 border-2 text-white rounded-xl'>
-        <div className='w-[300px]'> 
-          <img  className="rounded-b-none rounded-xl object-cover h-[300px]" width="300px" height="300px" src={friend.displayImage || genderImgMapping[friend.gender].image} alt="" />
-        </div>
-        <div>
-          <div className="flex justify-between items-center">
-            <h3 className='font-bold'>{friend.name}</h3>
-            <img  className="rounded-b-none rounded-xl" width="30px" height="30px" src={genderImgMapping[friend.gender].icon} alt="" />
+      <div className='border-gray-500 border-2 w-[260px] text-white rounded-xl flex flex-col hover:scale-105 duration-200 ease-in-out cursor-pointer hover:brightness-110 hover:-z-100' onClick={handleEdit}>
+        <div className="w-[256px] h-[256px]"><img src={friendImage} alt="" className="rounded-t-xl h-full w-full object-cover"/></div>
+        <div className="bg-[#000] rounded-b-lg p-3">
+          <div className="flex justify-between">
+            <p className="font-bold">{friendName}</p>
+            <img width="30px" height="30px" src={friendIcon} alt="" />
           </div>
-          <p>{friend.description}</p>
-          <p className='text-gray-500'>🎂 {friend.dateOfBirth.toString().split("T")[0]}</p>
-          <p className='text-gray-500'>🎂 {moment().diff(friend.dateOfBirth.toString().split("T")[0],'years',false)} years old.</p>
-          <p>{friend.phoneNumber}</p>
-        {/* <div className="text-ellipsis overflow-hidden whitespace-nowrap">{friend.story}</div> */}
-        </div>
-        <div className='flex justify-evenly text-white'>
-            <button onClick={handleDelete}>Delete</button>
-            <button onClick={handleEdit}>Edit</button>
+          <p className="text-sm text-gray-600">🎂 {friendDate} | <span className="font-bold text-green-600">{friendAge}</span> years old.</p>
+          {friendPhoneNumber && <p className="text-sm text-gray-600">📞 {friendPhoneNumber} </p>}
+          {friendDescription && <p className="py-2 font-bold">💬{friendDescription}</p>}
         </div>
       </div>
     );

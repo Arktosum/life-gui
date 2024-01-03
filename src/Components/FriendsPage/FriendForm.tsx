@@ -43,32 +43,38 @@ export default function FriendForm({setModal,formState,setformState} : any){
       });
       setModal(false);
     }
-    
+
     return (
-      <form onSubmit={handleSubmit} className='flex justify-center'>
-      <label htmlFor="displayImage" className='cursor-pointer relative w-[500px] h-[500px]'>
-        <img width="500px" height="500px" className='top-0 left-0 absolute ' src={FriendItem.displayImage || genderImgMapping[FriendItem.gender]} alt="" />
-        <div className='duration-200 top-0 left-0 absolute w-[500px] h-[500px] opacity-0 hover:opacity-100 hover:bg-[#0000005b] text-white'>{EDIT_PENCIL}</div>
+      <form onSubmit={handleSubmit} className='flex justify-center bg-[#1b1b1b] p-5 gap-5 rounded-xl items-center'>
+       <div className='flex flex-col gap-5 justify-center'>
+       <label htmlFor="displayImage" className='cursor-pointer relative w-[200px] h-[200px] self-center'>
+        <img width="200px" height="200px" className='top-0 left-0 absolute rounded-full' src={FriendItem.displayImage || genderImgMapping[FriendItem.gender]} alt="" />
+        <div className='rounded-full duration-200 top-0 left-0 absolute w-[200px] h-[200px] opacity-0 hover:opacity-100 hover:bg-[#0000005b] text-white grid place-items-center'>{EDIT_PENCIL}</div>
       </label>
-      <div className='flex flex-col w-[500px] h-[500px]'>
-        <input type="file" className="hidden" id="displayImage" onChange={handlefileUpload}/>
-        <input type="text" name="name" value={FriendItem.name} id="" onChange={handleChange}/>
-        <select name="gender" id="" value={FriendItem.gender} onChange={handleChange}>
-          <option value="OTHER">OTHER</option>
+        <input type="file" className="hidden" id="displayImage" onChange={handlefileUpload} />
+        <input type="text" className="bg-inherit border-2 border-gray-600 px-5 py-2 rounded-xl text-white" name="name" value={FriendItem.name} id="" onChange={handleChange}/>
+        <select name="gender" className="bg-[#000000] border-2 border-gray-600 px-5 py-2 rounded-xl text-white" id="" value={FriendItem.gender} onChange={handleChange}>
+          <option value="OTHER" className="bg-[#000000]">OTHER</option>
           <option value="MALE">MALE</option>
           <option value="FEMALE">FEMALE</option>
         </select>
+        
         <input
-            type="datetime-local"
-            value={new Date(FriendItem.dateOfBirth).toISOString().replace("Z","")}
-            onChange={(e) => {setFriendItem((prev)=>{return {...prev,dateOfBirth :  new Date(e.target.value + "Z") }})}}
+          className="bg-inherit border-2 border-gray-600 p-5 rounded-xl text-white"
+          type="datetime-local"
+          value={new Date(FriendItem.dateOfBirth).toISOString().replace("Z","")}
+          onChange={(e) => {setFriendItem((prev)=>{return {...prev,dateOfBirth :  new Date(e.target.value + "Z") }})}}
           />
-        <input type="text" name="phoneNumber" value={FriendItem.phoneNumber} id="" onChange={handleChange}/>
-        <input type="text" name="description" value={FriendItem.description} id="" onChange={handleChange}/>
-        <textarea name="story" id="" cols={30} rows={10}  value ={FriendItem.story} onChange={handleChange}></textarea>
-        <button type="submit" className='px-5 py-2 border-2 border-green-600 text-green-600 '>Save</button>
-        <button type="button" className='px-5 py-2 border-2 border-red-600 text-red-600 ' onClick={onCancel}>Cancel</button>
+        <input type="text" className="bg-inherit border-[1px] border-gray-600 px-5 py-2 rounded-xl text-white" name="phoneNumber" value={FriendItem.phoneNumber} id="" onChange={handleChange} placeholder="Phone number"/>
+        <input type="text" className="bg-inherit border-[1px] border-gray-600 px-5 py-2 rounded-xl text-white" name="description" value={FriendItem.description} id="" onChange={handleChange} placeholder="Description"/>
+        
+        <div className="flex justify-evenly">
+          <button type="submit" className='px-10 py-2 border-[1px] border-green-600 text-green-600 rounded-xl hover:bg-green-600 hover:text-black duration-200 ease-in-out hover:scale-105'>Save</button>
+          <button type="button" className='px-10 py-2 border-[1px] border-red-600 text-red-600 rounded-xl hover:bg-red-600 hover:text-black duration-200 ease-in-out hover:scale-105' onClick={onCancel}>Cancel</button>
         </div>
+        </div>
+        <div className="border-[1px] border-[#515151] h-full"></div>
+        <textarea name="story" className="bg-inherit border-[1px] border-gray-600 px-5 py-2 rounded-xl text-white w-full h-full" id="" cols={100} rows={10}  value ={FriendItem.story} onChange={handleChange} placeholder="What to write..."></textarea>
       </form>
     );
   };

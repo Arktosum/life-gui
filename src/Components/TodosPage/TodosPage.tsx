@@ -9,9 +9,7 @@ import TodosideNavigation from './TodoSideNavigation';
 
 function TodosComponent() {
   const todos : Todo[] = useAppSelector(state=>state.todo.todos);
-  
   const dispatch = useAppDispatch();
-
   const [modal,setModal] = useState(false);
   const [formState,setformState] = useState({
     mode : "create",
