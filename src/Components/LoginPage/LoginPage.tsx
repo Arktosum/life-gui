@@ -1,6 +1,6 @@
-import  { useEffect, useState } from 'react'
+import  {  useState } from 'react'
 
-import { useAppDispatch, useAppSelector} from '../../app/hooks'
+import { useAppDispatch} from '../../app/hooks'
 import { loginUser } from '../../features/authSlice';
 import { useNavigate } from 'react-router-dom';
 import brandLogo from '../../assets/lifegui-logo.svg'
