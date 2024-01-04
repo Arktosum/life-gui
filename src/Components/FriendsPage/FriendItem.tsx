@@ -54,6 +54,7 @@ export default function FriendItem({item : item , setformState,setModal} : any){
           {friendPhoneNumber && <p className="text-sm text-gray-600">📞 {friendPhoneNumber} </p>}
           {friendDescription && <p className="py-2 font-bold">💬{friendDescription}</p>}
         </div>
+        <div className="px-5 py-2" onClick={handleDelete}>DELETE</div>
       </div>
     );
   }
