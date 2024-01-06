@@ -56,9 +56,14 @@ export const deleteTodo = createAsyncThunk<{taskId : string, response : any},str
 
 interface startState{
     todos : Todo[],
+    order : 'ASC' | 'DESC',
+    filter : 'title' | 'description' | 'priority' | 'dueDate'
+
 }
 const initialState : startState = {
     todos : [],
+    order : 'ASC',
+    filter : 'dueDate'
 }
 
 export const initialFormState  : Todo= {
@@ -70,11 +75,34 @@ export const initialFormState  : Todo= {
     subtasks : [],
     isSubtask : false,
   }
-  
+
+function compareFn(filter: string,a: Todo ,b: Todo,order: number){
+    switch(filter){
+        case "dueDate": return (new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime())*order;
+        case "title": return a.title.localeCompare(b.title)*order;
+        case "description":  return a.description.localeCompare(b.description)*order;
+        case "priority": return a.priority.localeCompare(b.priority)*-order;
+        default : return 0
+    }
+}
 export const todoSlice = createSlice({
     name: 'todo',
     initialState,
     reducers: {
+        setOrder: (state,action:PayloadAction<string>)=>{
+            state.order = action.payload as "ASC" | "DESC"
+            let order = state.order == "ASC" ? 1 : -1;
+            state.todos = state.todos.sort((a,b)=>{
+                return compareFn(state.filter,a,b,order);
+            })
+        },
+        setFilter: (state,action)=>{
+            state.filter = action.payload
+            let order = state.order == "ASC" ? 1 : -1;
+            state.todos = state.todos.sort((a,b)=>{
+                return compareFn(state.filter,a,b,order);
+            })
+        }
     },
     extraReducers: (builder) => {
         builder.
@@ -94,6 +122,6 @@ export const todoSlice = createSlice({
 });
 
 
-export const {} = todoSlice.actions
+export const {setOrder,setFilter} = todoSlice.actions
 
 export default todoSlice.reducer;

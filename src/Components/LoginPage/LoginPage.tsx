@@ -4,6 +4,7 @@ import { useAppDispatch} from '../../app/hooks'
 import { loginUser } from '../../features/authSlice';
 import { useNavigate } from 'react-router-dom';
 import brandLogo from '../../assets/lifegui-logo.svg'
+import { BorderButton } from '../Utils';
 function LoginPage() {
   let initialState = {
     username : "",
@@ -33,7 +34,7 @@ function LoginPage() {
         <label htmlFor="username" className='text-white font-bold flex gap-5 items-center justify-center'>
           Username
           <input 
-          className='bg-inherit border-[1px] border-gray-600 px-5 py-2 rounded-xl text-white'
+          className='bg-inherit border-[1px] border-gray-600 px-5 py-2 rounded-xl text-white' 
            value={formData.username} type="text" name="username" required onChange={handleInput} />
         </label>
         <label htmlFor="password" className='text-white font-bold flex gap-5 items-center justify-center'>
@@ -42,8 +43,14 @@ function LoginPage() {
           className='bg-inherit border-[1px] border-gray-600 px-5 py-2 rounded-xl text-white'
           value={formData.password}  type="password" name="password" required onChange={handleInput}/>
         </label>
-        <button type="submit" className='px-10 py-2 border-[1px] border-green-600 text-green-600 rounded-xl hover:bg-green-600 hover:text-black duration-200 ease-in-out hover:scale-105'>Login</button>
+        <button type="submit" className='px-10 py-2 border-[1px] border-green-600 text-green-600 rounded-xl hover:bg-green-600 hover:text-black duration-200 ease-in-out hover:scale-105'>LOGIN</button>
       </form>
+      <BorderButton
+        backgroundColor = "inherit"
+        borderColor = "red"
+        onClick={()=>{}}
+        textContent = "Click!"
+      />
     </div>
   )
 }
