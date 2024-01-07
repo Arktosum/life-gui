@@ -1,7 +1,7 @@
 
 
-// export const ORIGIN = 'https://life-gui.onrender.com'
-export const ORIGIN = 'http://localhost:8080'
+export const ORIGIN = 'https://life-gui.onrender.com'
+// export const ORIGIN = 'http://localhost:8080'
 
 
 export const BorderButton = ({backgroundColor,borderColor,onClick,textContent} : any)=>(
