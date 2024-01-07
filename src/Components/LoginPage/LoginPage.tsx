@@ -45,12 +45,6 @@ function LoginPage() {
         </label>
         <button type="submit" className='px-10 py-2 border-[1px] border-green-600 text-green-600 rounded-xl hover:bg-green-600 hover:text-black duration-200 ease-in-out hover:scale-105'>LOGIN</button>
       </form>
-      <BorderButton
-        backgroundColor = "inherit"
-        borderColor = "red"
-        onClick={()=>{}}
-        textContent = "Click!"
-      />
     </div>
   )
 }
