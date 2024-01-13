@@ -46,7 +46,7 @@ export default function FriendForm({setModal,formState,setformState} : any){
       <form onSubmit={handleSubmit} className='flex justify-center bg-[#1b1b1b] p-5 gap-5 rounded-xl items-center'>
        <div className='flex flex-col gap-5 justify-center'>
        <label htmlFor="displayImage" className='cursor-pointer relative w-[200px] h-[200px] self-center'>
-        <img width="200px" height="200px" className='top-0 left-0 absolute rounded-full' src={FriendItem.displayImage || genderImgMapping[FriendItem.gender]} alt="" />
+        <img className='top-0 left-0 absolute rounded-full h-[200px] w-[200px] object-cover' src={FriendItem.displayImage || genderImgMapping[FriendItem.gender]} alt="" />
         <div className='rounded-full duration-200 top-0 left-0 absolute w-[200px] h-[200px] opacity-0 hover:opacity-100 hover:bg-[#0000005b] text-white grid place-items-center'>{EDIT_PENCIL}</div>
       </label>
         <input type="file" className="hidden" id="displayImage" onChange={handlefileUpload} />

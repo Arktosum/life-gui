@@ -8,17 +8,16 @@ import femaleSymbol from '../../assets/female_symbol.png'
 import otherSymbol from '../../assets/other_symbol.png'
 import moment from "moment";
 
-
 export default function FriendItem({item : item , setformState,setModal} : any){
-    let friend : Friend= item
+    let friend : Friend = item
     const dispatch = useAppDispatch();
-  
     const handleDelete = () => {
       let choice :string | null = prompt("Are you sure you want to delete? y/n");
       if(choice?.toLowerCase() === 'y'){
         dispatch(deleteFriend(friend._id!));
       }
     };
+
 
     function handleEdit(){
       setformState({
