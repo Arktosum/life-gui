@@ -24,15 +24,15 @@ export default function FinanceForm({setModal,formState,setformState} : any){
     }
     
     return (
-      <form onSubmit={handleSubmit} className='flex justify-center'>
-      <input type="text" name="transactee" value={FinanceItem.transactee} id="" onChange={(e) => setTodoItem({ ...FinanceItem, transactee: e.target.value })}/>
-      <input type="number" name="amount" value={FinanceItem.amount} id="" onChange={(e) => setTodoItem({ ...FinanceItem, amount: Number(e.target.value) })}/>
-      <input type="text" name="description" value={FinanceItem.description} id="" onChange={(e) => setTodoItem({ ...FinanceItem, description: e.target.value })}/>
-      <select name="mode" id="" value={FinanceItem.mode} onChange={(e) => setTodoItem({ ...FinanceItem, mode: e.target.value })}>
+      <form onSubmit={handleSubmit} className='flex justify-center flex-col gap-5'>
+      <input className="px-5 py-2" type="text" name="transactee" value={FinanceItem.transactee} id="" onChange={(e) => setTodoItem({ ...FinanceItem, transactee: e.target.value })}/>
+      <input className="px-5 py-2" type="number" name="amount" value={FinanceItem.amount} id="" onChange={(e) => setTodoItem({ ...FinanceItem, amount: Number(e.target.value) })}/>
+      <input className="px-5 py-2" type="text" name="description" value={FinanceItem.description} id="" onChange={(e) => setTodoItem({ ...FinanceItem, description: e.target.value })}/>
+      <select className="px-5 py-2" name="mode" id="" value={FinanceItem.mode} onChange={(e) => setTodoItem({ ...FinanceItem, mode: e.target.value })}>
         <option value="SEND">SEND</option>
         <option value="RECEIVE">RECEIVE</option>
       </select>
-      <select name="category" id="" value={FinanceItem.category} onChange={(e) => setTodoItem({ ...FinanceItem, category: e.target.value })}>
+      <select className="px-5 py-2" name="category" id="" value={FinanceItem.category} onChange={(e) => setTodoItem({ ...FinanceItem, category: e.target.value })}>
         <option value="FOOD">FOOD</option>
         <option value="TRANSPORT">TRANSPORT</option>
         <option value="OTHER">OTHER</option>

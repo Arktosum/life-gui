@@ -34,7 +34,7 @@ function FinancesComponent() {
       </div>
       <div className='flex flex-col w-full'>
         <div className="h-[10%]"><Navbar page="finances"/></div>
-        <div id="content" className="h-[90%] bg-black overflow-y-scroll">
+        <div id="content" className="h-[90%] bg-black overflow-y-scroll flex flex-col items-center gap-10">
           {financeElements}
         </div>
       </div>
