@@ -8,10 +8,25 @@ export default defineConfig({
     VitePWA({
       manifest : {
         icons : [ {
-          src : "src\assets\brand.svg",
+          src : "/icons/ninja.png",
           sizes : "512x512",
-          type :  "image/svg+xml",
+          type :  "image/png",
           purpose : "any maskable"
+        }]
+
+      },
+      workbox:{
+        runtimeCaching : [{
+          urlPattern : ({url}) =>{
+            return true;
+          },
+          handler : "CacheFirst" as const,
+          options : {
+            cacheName : "api-cache",
+            cacheableResponse : {
+              statuses : [0,200]
+            }
+          }
         }]
       }
     })

@@ -2,14 +2,14 @@ import {PayloadAction, createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios';
 import { ORIGIN } from '../Components/Utils';
 
-
+let origin = ORIGIN + "/api"
 export interface User{
     username : string,
     password : string
 }
 
 export const loginUser = createAsyncThunk<{token:string},User>('auth/loginUser',async (userData)=>{
-    const response = await axios.post(`${ORIGIN}/login`, userData);
+    const response = await axios.post(`${origin}/login`, userData);
     return response.data;
 })
 

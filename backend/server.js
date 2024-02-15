@@ -47,7 +47,7 @@ function hashPassword(password) {
 
 // Login and get a JWT token
 const secretKey = process.env.HASH_SECRET_KEY;
-app.post("/login", async (req, res) => {
+app.post("/api/login", async (req, res) => {
   // incoming password is plain text!
   let { username, password } = req.body;
   password = hashPassword(password);
