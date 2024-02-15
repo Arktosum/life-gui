@@ -3,6 +3,7 @@ import axios from 'axios';
 import { ORIGIN } from '../Components/Utils';
 
 let origin = ORIGIN + "/api"
+
 export interface User{
     username : string,
     password : string
@@ -18,7 +19,7 @@ interface startState{
     token : string | null
 }
 const initialState : startState = {
-    token : null
+    token : localStorage.getItem('token') ?? null,
 }
 
 
@@ -28,15 +29,18 @@ export const authSlice = createSlice({
     reducers: {
         setToken : (state, action) =>{
             state.token = action.payload
+            localStorage.setItem('token', action.payload);
         },
         logout : (state, _action) =>{
             state.token = null
+            localStorage.removeItem('token');
         }
     },
     extraReducers: (builder) => {
         builder.
         addCase(loginUser.fulfilled, (state, action : PayloadAction<{token:string}> ) => {
             state.token = action.payload.token;
+            localStorage.setItem('token', state.token);
 
         })
         .addCase(loginUser.rejected, (_state, _action : any) => {
