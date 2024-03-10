@@ -1,37 +1,27 @@
-import { Routes, Route } from "react-router-dom";
-
 import "./App.css";
-import TodosPage from "./Components/TodosPage/TodosPage";
-import AppOrigin from "./Components/AppOrigin";
+import Login from "./components/Login";
+import { useAppSelector } from "./hooks";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import Dashboard from "./components/Dashboard";
+import { useEffect } from "react";
 
 function App() {
+  const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    } else {
+      navigate("/login");
+    }
+  }, []);
+
   return (
-    <>
-      <Routes>
-        {/* Global Route */}
-        <Route path="/" element={<AppOrigin />}>
-          {/* Public Routes */}
-          {/* <Route path = "/" element={<LoginPage/>}/> */}
-          {/* <Route path = "/login" element={<LoginPage/>}/> */}
-          {/* <Route path = "unauthorized" element={<UnauthorizedPage/>}/> */}
-
-          {/* Protected Routes */}
-          {/* <Route element={<RequireAuth/>}> */}
-          <Route path="/" element={<TodosPage />} />
-          {/* </Route> */}
-
-          {/* Missing Routes */}
-          <Route
-            path="*"
-            element={
-              <>
-                <h1>Missing Route</h1>
-              </>
-            }
-          />
-        </Route>
-      </Routes>
-    </>
+    <Routes>
+      <Route path="/login" Component={Login} />
+      <Route path="/dashboard" Component={Dashboard} />
+    </Routes>
   );
 }
 
