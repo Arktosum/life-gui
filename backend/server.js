@@ -8,7 +8,7 @@ const app = express();
 const port = 3000;
 
 // Connect to MongoDB
-mongoose.connect("mongodb://localhost:27017/life-gui");
+mongoose.connect("mongodb+srv://siddhujaykay2:shiine1984@life-cluster.zopfx6x.mongodb.net/main");
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 

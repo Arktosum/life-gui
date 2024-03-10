@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { ORIGIN } from '../app/utils'
 
-
+const financeAPI = ORIGIN + '/finance'
 export interface FinanceItem {
   _id : string,
   transactee : string,
@@ -25,12 +26,12 @@ const initialState: financeState = {
 
 
 export const fetchFinanceItems = createAsyncThunk('finance/fetchAll',async () => {
-    const response = await axios.get("http://localhost:3000/api/finance");
+    const response = await axios.get(`${financeAPI}/`);
     return response.data
   },
 )
 export const createFinanceItem = createAsyncThunk('finance/create',async (data : FinanceFormData) => {
-  const response = await axios.post("http://localhost:3000/api/finance",data);
+  const response = await axios.post(`${financeAPI}/`,data);
   return response.data
 },
 )

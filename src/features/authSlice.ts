@@ -3,7 +3,10 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 import Cookies from 'js-cookie';
 
+import { ORIGIN } from '../app/utils';
 
+
+const authAPI = ORIGIN+'/auth'
 interface authState {
   user : User | null,
   token : string | null
@@ -20,8 +23,14 @@ interface User{
   password : string
 }
 export const loginUser = createAsyncThunk('auth/loginUser',async (data : User) => {
-    const response = await axios.post("http://localhost:3000/api/auth/login",data);
+  try{
+    const response = await axios.post(`${authAPI}/login`,data);
     return response.data
+  }
+catch(err){
+  alert(err.message);
+  throw err;
+}
   },
 )
 

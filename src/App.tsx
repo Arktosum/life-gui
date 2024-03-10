@@ -1,6 +1,6 @@
 import "./App.css";
 import Login from "./components/Login";
-import { useAppSelector } from "./hooks";
+import { useAppSelector } from "./app/hooks";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
 import { useEffect } from "react";
