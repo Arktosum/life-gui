@@ -28,7 +28,6 @@ export const loginUser = createAsyncThunk('auth/loginUser',async (data : User) =
     return response.data
   }
 catch(err){
-  alert(err.message);
   throw err;
 }
   },

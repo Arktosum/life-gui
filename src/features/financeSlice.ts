@@ -24,7 +24,6 @@ const initialState: financeState = {
   items : []
 }
 
-
 export const fetchFinanceItems = createAsyncThunk('finance/fetchAll',async () => {
     const response = await axios.get(`${financeAPI}/`);
     return response.data
@@ -32,6 +31,18 @@ export const fetchFinanceItems = createAsyncThunk('finance/fetchAll',async () =>
 )
 export const createFinanceItem = createAsyncThunk('finance/create',async (data : FinanceFormData) => {
   const response = await axios.post(`${financeAPI}/`,data);
+  return response.data
+},
+)
+
+export const deleteFinanceItem = createAsyncThunk('finance/delete',async (data : FinanceItem) => {
+  const response = await axios.delete(`${financeAPI}/${data._id}`);
+  return response.data
+},
+)
+
+export const updateFinanceItem = createAsyncThunk('finance/patch',async (data : FinanceItem) => {
+  const response = await axios.patch(`${financeAPI}/${data._id}`,data);
   return response.data
 },
 )
@@ -46,11 +57,19 @@ export const financeSlice = createSlice({
   extraReducers : (builder)=>{
     builder
     .addCase(fetchFinanceItems.fulfilled,(state ,action : PayloadAction<FinanceItem[]>)=>{
-      state.items = action.payload;
+      state.items = action.payload
     })
     .addCase(createFinanceItem.fulfilled,(state ,action : PayloadAction<FinanceItem>)=>{
       // state.items = action.payload;
-      console.log(action.payload);
+      state.items = [action.payload,...state.items]
+    })
+    .addCase(updateFinanceItem.fulfilled,(state ,action : PayloadAction<FinanceItem>)=>{
+      // state.items = action.payload;
+      state.items = state.items.map((item)=>item._id == action.payload._id ? action.payload : item)
+    })
+    .addCase(deleteFinanceItem.fulfilled,(state ,action : PayloadAction<FinanceItem>)=>{
+      // state.items = action.payload;
+      state.items = state.items.filter((item)=>item._id != action.payload._id);
     })
     
   }

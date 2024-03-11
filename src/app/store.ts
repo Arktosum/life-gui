@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authSlice from '../features/authSlice'
 import financeSlice from '../features/financeSlice'
+import friendSlice from '../features/friendSlice'
 
 export const store = configureStore({
   reducer: {
     auth: authSlice,
-    finance : financeSlice
+    finance : financeSlice,
+    friend : friendSlice
   },
 })
 // Infer the `RootState` and `AppDispatch` types from the store itself
