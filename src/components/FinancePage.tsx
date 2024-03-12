@@ -1,4 +1,4 @@
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
   FinanceFormData,
@@ -67,27 +67,7 @@ export default function FinancePage() {
     <div className="bg-black min-h-[100dvh] flex flex-col">
       {/* Top Navbar */}
       {isModalOpen && <Modal closeModal={closeModal} />}
-      <nav className="flex items-center justify-between bg-[#121212] p-4 sticky top-0 z-10">
-        {/* Hamburger Icon */}
-        <button className="text-white focus:outline-none hover:scale-125 duration-200 ease-in-out">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16m-7 6h7"
-            />
-          </svg>
-        </button>
-        {/* Brand Logo SVG */}
-        <img src={brandLogo} alt="brand-logo" width="100" />
-      </nav>
+
       {/* Middle Section - Finance Items */}
       <div className="font-bold text-white p-4 text-xl sticky top-10 z-10">
         Current balance :{" "}
@@ -117,7 +97,7 @@ export default function FinancePage() {
         <img
           onClick={() => {
             dispatch(logoutUser());
-            navigate("/login");
+            navigate("/");
           }}
           src={logoutButton}
           alt="brand-logo"
@@ -145,7 +125,7 @@ function FinanceElement({ item }: { item: FinanceItem }) {
 
   return (
     <div
-      className={`text-white grid bg-[#0C0C0C] p-5 border-black border-2 ${
+      className={`text-white z-10 grid bg-[#0C0C0C] p-5 border-black border-2 ${
         hasPaid ? "border-b-green-600" : "border-b-red-600"
       }`}
     >
@@ -191,7 +171,7 @@ function FinanceForm({ closeModal }: { closeModal: () => void }) {
     dispatch(createFinanceItem(formData));
     closeModal();
   }
-  function handleChange(e: { target: { name: string; value: string; }; }) {
+  function handleChange(e: { target: { name: string; value: string } }) {
     setFormData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
