@@ -1,18 +1,9 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../app/hooks";
-import { logoutUser } from "../features/authSlice";
-import FinancePage from "./FinancePage";
+import { Link, Outlet } from "react-router-dom";
 import { useState } from "react";
 // import FriendPage from "./FriendPage";
 import brandLogo from "../assets/brand-logo.svg";
 
 export default function Dashboard() {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const handleLogout = () => {
-    dispatch(logoutUser());
-    navigate("/");
-  };
   const [isVisible, setIsVisible] = useState(false);
   // Automatic Deploy check!
   return (
@@ -27,7 +18,13 @@ export default function Dashboard() {
   );
 }
 
-const SideNav = ({ isVisible, onClose }) => {
+const SideNav = ({
+  isVisible,
+  onClose,
+}: {
+  isVisible: boolean;
+  onClose: () => void;
+}) => {
   return (
     <div
       className={`absolute w-72 z-20 bg-black shadow-md transition-transform transform ${
@@ -39,7 +36,7 @@ const SideNav = ({ isVisible, onClose }) => {
   );
 };
 
-function TopNav({ setIsVisible }) {
+function TopNav({ setIsVisible }: { setIsVisible: () => void }) {
   return (
     <nav className="flex items-center justify-between bg-[#121212] p-4 sticky top-0 z-10">
       {/* Hamburger Icon */}
