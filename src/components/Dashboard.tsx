@@ -36,13 +36,13 @@ const SideNav = ({
   );
 };
 
-function TopNav({ setIsVisible }: { setIsVisible: () => void }) {
+function TopNav({ setIsVisible }: { setIsVisible: React.Dispatch<React.SetStateAction<boolean>> }) {
   return (
     <nav className="flex items-center justify-between bg-[#121212] p-4 sticky top-0 z-10">
       {/* Hamburger Icon */}
       <button
         onClick={() => {
-          setIsVisible((prev) => !prev);
+          setIsVisible(prev=>!prev);
         }}
         className="text-white focus:outline-none hover:scale-125 duration-200 ease-in-out"
       >
@@ -67,7 +67,7 @@ function TopNav({ setIsVisible }: { setIsVisible: () => void }) {
   );
 }
 
-function SideNavContent({ onClose }) {
+function SideNavContent({ onClose } : {onClose: () => void}) {
   return (
     <>
       <div>

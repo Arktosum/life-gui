@@ -9,7 +9,6 @@ import {
 import { logoutUser } from "../features/authSlice";
 import { useNavigate } from "react-router-dom";
 
-import brandLogo from "../assets/brand-logo.svg";
 import homeButton from "../assets/home-button.svg";
 import addButton from "../assets/add-button.svg";
 import logoutButton from "../assets/logout-button.svg";
@@ -121,7 +120,7 @@ function FriendForm({ closeModal }: { closeModal: () => void }) {
     dispatch(createFriendItem(formData));
     closeModal();
   }
-  function handleChange(e: { target: { name: any; value: any } }) {
+  function handleChange(e: { target: { name: string; value: string } }) {
     setFormData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
