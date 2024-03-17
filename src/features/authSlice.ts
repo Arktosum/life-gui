@@ -22,6 +22,8 @@ interface User{
   username : string,
   password : string
 }
+
+
 export const loginUser = createAsyncThunk('auth/loginUser',async (data : User) => {
   try{
     const response = await axios.post(`${authAPI}/login`,data);

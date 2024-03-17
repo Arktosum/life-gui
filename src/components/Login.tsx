@@ -2,12 +2,11 @@ import { ChangeEvent, useState } from "react";
 import { useAppDispatch } from "../app/hooks";
 import { loginUser } from "../features/authSlice";
 import brandLogo from "../assets/brand-logo.svg";
-import { Bounce, ToastContainer, ToastOptions, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Bounce, ToastContainer, ToastOptions, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
-
-const toastOptions : ToastOptions<unknown> | undefined = {
+const toastOptions: ToastOptions<unknown> | undefined = {
   position: "top-right",
   autoClose: 1000,
   hideProgressBar: false,
@@ -17,7 +16,8 @@ const toastOptions : ToastOptions<unknown> | undefined = {
   progress: undefined,
   theme: "dark",
   transition: Bounce,
-}
+};
+
 interface FormData {
   username: string;
   password: string;
@@ -29,22 +29,19 @@ function Login() {
   });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     setFormData((prev) => {
       return { ...prev, [e.target.name]: e.target.value.trim() };
     });
   }
   async function handleSubmit() {
-    const res = await dispatch(loginUser(formData));
-    if(res.meta.requestStatus == 'fulfilled'){
-      toast.success('Login Successful!',toastOptions);
-      navigate('/');
-    }
-    if(res.meta.requestStatus == 'rejected'){
+    const response = await dispatch(loginUser(formData));
+    if ((response.meta.requestStatus = "fulfilled")) {
+      toast.success("Login Successful!", toastOptions);
+      navigate("/dashboard/home");
+    } else {
       toast.error("Login Unsucessful!", toastOptions);
     }
-    
   }
   return (
     <div className="min-h-[100dvh] bg-black grid place-content-center">
@@ -52,7 +49,7 @@ function Login() {
         <img src={brandLogo} alt="" />
       </div>
 
-      <div className="bg-[#121212] grid grid-cols-2 p-5 rounded-xl gap-5 items-center">
+      <div className="bg-[#121212] grid grid-cols-2 p-5 rounded-xl gap-5 items-center mx-5">
         <label htmlFor="username" className="text-white">
           Username
         </label>

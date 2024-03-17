@@ -4,9 +4,7 @@ import {
   FinanceFormData,
   FinanceItem,
   createFinanceItem,
-  deleteFinanceItem,
   fetchFinanceItems,
-  updateFinanceItem,
 } from "../features/financeSlice";
 import { logoutUser } from "../features/authSlice";
 import { useNavigate } from "react-router-dom";
@@ -14,35 +12,13 @@ import { useNavigate } from "react-router-dom";
 import homeButton from "../assets/home-button.svg";
 import addButton from "../assets/add-button.svg";
 import logoutButton from "../assets/logout-button.svg";
-import foodCat from "../assets/food-cat.svg";
-import tick from "../assets/tick.svg";
-import cross from "../assets/cross.svg";
-
-import moment from "moment";
-const deleteIcon = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="red"
-    className="w-6 h-6"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"
-    />
-  </svg>
-);
 
 export default function FinancePage() {
   const financeItems = useAppSelector((state) => state.finance.items);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   useEffect(() => {
     dispatch(fetchFinanceItems());
-  }, []);
+  }, [dispatch]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -63,23 +39,30 @@ export default function FinancePage() {
   });
 
   return (
-    <div className="bg-black min-h-[100dvh] flex flex-col">
+    <div className="bg-black flex-1 flex flex-col overflow-y-auto ">
       {/* Top Navbar */}
       {isModalOpen && <Modal closeModal={closeModal} />}
-
       {/* Middle Section - Finance Items */}
-      <div className="font-bold text-white p-4 text-xl sticky top-10 z-10">
+      <div className="font-bold text-white p-4 text-xl">
         Current balance :{" "}
         <span className={amount < 0 ? "text-red-600" : "text-green-600"}>
           ₹ {amount}
         </span>
       </div>
-      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-5">
+      <div className="flex-1 overflow-y-auto flex flex-col gap-5 ">
         {rowElements}
       </div>
+      <BottomNav openModal={openModal} />
+    </div>
+  );
+}
 
-      {/* Bottom Section */}
-      <div className="bg-[#121212] p-4 flex justify-between sticky bottom-0 z-10">
+function BottomNav({ openModal }: { openModal: () => void }) {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  return (
+    <>
+      <div className="bg-[#121212] p-4 flex justify-between sticky bottom-0">
         <img
           src={homeButton}
           alt="brand-logo"
@@ -104,54 +87,27 @@ export default function FinancePage() {
           className="hover:scale-125 duration-200 ease-in-out"
         />
       </div>
-    </div>
+    </>
   );
 }
 
 function FinanceElement({ item }: { item: FinanceItem }) {
-  const dispatch = useAppDispatch();
-  function updateStatus() {
-    const newStatus = item.status == "PAID" ? "UNPAID" : "PAID";
-    const newItem = { ...item, status: newStatus } as FinanceItem;
-    dispatch(updateFinanceItem(newItem));
-  }
-  function deleteItem() {
-    const choice = prompt("Are you sure you want to delete? y/n");
-    if (choice?.toLowerCase() !== "y") return;
-    dispatch(deleteFinanceItem(item));
-  }
-  const hasPaid = item.status == "PAID";
+  // const dispatch = useAppDispatch();
+  // function updateStatus() {
+  //   const newStatus = item.status == "PAID" ? "UNPAID" : "PAID";
+  //   const newItem = { ...item, status: newStatus } as FinanceItem;
+  //   dispatch(updateFinanceItem(newItem));
+  // }
+  // function deleteItem() {
+  //   const choice = prompt("Are you sure you want to delete? y/n");
+  //   if (choice?.toLowerCase() !== "y") return;
+  //   dispatch(deleteFinanceItem(item));
+  // }
+  // const hasPaid = item.status == "PAID";
 
   return (
-    <div
-      className={`text-white z-10 grid bg-[#0C0C0C] p-5 border-black border-2 ${
-        hasPaid ? "border-b-green-600" : "border-b-red-600"
-      }`}
-    >
-      <div className="grid grid-cols-5 place-content-center place-items-center">
-        <img src={foodCat} alt="" />
-        <div className="font-bold text-md col-span-3">{item.transactee}</div>
-        <div className={hasPaid ? "text-green-300" : "text-red-600"}>
-          ₹ {item.amount}
-        </div>
-      </div>
-      <div className="grid grid-cols-4">
-        <div className="text-sm text-gray-600 col-span-3">
-          {item.description}
-        </div>
-        <img
-          src={item.status == "PAID" ? tick : cross}
-          className="w-10 h-10"
-          alt=""
-          onMouseDown={updateStatus}
-        />
-      </div>
-      <div className="grid grid-cols-2 place-items-center">
-        <div className="text-sm text-gray-300 font-bold">
-          {moment(item.updatedAt).format("DD-MM-YYYY | HH:mm:ss")}
-        </div>
-        <div onMouseDown={deleteItem}>{deleteIcon}</div>
-      </div>
+    <div className="py-10 px-10 mx-5 bg-[#101010] rounded-xl border-b-red-600 border-b-2">
+      <div>{item.transactee}</div>
     </div>
   );
 }

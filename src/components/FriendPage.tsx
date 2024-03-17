@@ -6,48 +6,53 @@ import {
   createFriendItem,
   fetchFriendItems,
 } from "../features/friendSlice";
+
+import moment from "moment";
 import { logoutUser } from "../features/authSlice";
 import { useNavigate } from "react-router-dom";
 
-import homeButton from "../assets/home-button.svg";
-import addButton from "../assets/add-button.svg";
-import logoutButton from "../assets/logout-button.svg";
-
-import moment from "moment";
-
+import homeButton from '../assets/home-button.svg'
+import addButton from '../assets/add-button.svg'
+import logoutButton from '../assets/logout-button.svg'
 export default function FriendPage() {
   const friendItems = useAppSelector((state) => state.friend.items);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   useEffect(() => {
     dispatch(fetchFriendItems());
-  }, []);
+  }, [dispatch]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };  
+  const openModal = () => {
+    setIsModalOpen(true);
   };
-
   const rowElements = friendItems.map((item) => {
     return <FriendElement key={item._id} item={item} />;
   });
 
   return (
-    <div className="bg-black flex flex-col">
+    <div className="bg-black flex-1 flex flex-col overflow-y-auto">
       {/* Top Navbar */}
       {isModalOpen && <Modal closeModal={closeModal} />}
 
-      {/* Middle Section - Finance Items */}
+      {/* Middle Section - Friend Items */}
       <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-5">
         {rowElements}
       </div>
 
       {/* Bottom Section */}
-      <div className="bg-[#121212] p-4 flex justify-between sticky bottom-0 z-10">
+      <BottomNav openModal={openModal}/>
+    </div>
+  );
+}
+function BottomNav({ openModal } : {openModal: ()=>void}) {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  return (
+    <>
+      <div className="bg-[#121212] p-4 flex justify-between sticky bottom-0">
         <img
           src={homeButton}
           alt="brand-logo"
@@ -64,7 +69,7 @@ export default function FriendPage() {
         <img
           onClick={() => {
             dispatch(logoutUser());
-            navigate("/login");
+            navigate("/");
           }}
           src={logoutButton}
           alt="brand-logo"
@@ -72,10 +77,9 @@ export default function FriendPage() {
           className="hover:scale-125 duration-200 ease-in-out"
         />
       </div>
-    </div>
+    </>
   );
 }
-
 function FriendElement({ item }: { item: FriendItem }) {
   // const dispatch = useAppDispatch();
   // function updateStatus(){
@@ -88,8 +92,10 @@ function FriendElement({ item }: { item: FriendItem }) {
   //   dispatch(deleteFriendItem(item));
   // }
   return (
-    <div className={`text-white grid bg-[#202020] p-5 border-black border-2`}>
-      <img src={item.displayImage} alt="" />
+    <div
+      className={`text-white grid bg-[#202020] p-5 border-black border-2 w-[100%]`}
+    >
+      <img src={item.displayImage} alt="" className="" />
       <div className="text-white">
         {item.name}{" "}
         {item.gender == "MALE" ? "♂️" : item.gender == "FEMALE" ? "♀️" : "⚧️"}
