@@ -4,7 +4,9 @@ import {
   FinanceFormData,
   FinanceItem,
   createFinanceItem,
+  deleteFinanceItem,
   fetchFinanceItems,
+  updateFinanceItem,
 } from "../features/financeSlice";
 import { logoutUser } from "../features/authSlice";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +14,12 @@ import { useNavigate } from "react-router-dom";
 import homeButton from "../assets/home-button.svg";
 import addButton from "../assets/add-button.svg";
 import logoutButton from "../assets/logout-button.svg";
+import foodCat from "../assets/food-cat.svg";
+import tickSVG from "../assets/tick.svg";
+import crossSVG from "../assets/cross.svg";
+import trashSVG from "../assets/trash-icon.svg";
+import moment from "moment";
+
 
 export default function FinancePage() {
   const financeItems = useAppSelector((state) => state.finance.items);
@@ -62,17 +70,17 @@ function BottomNav({ openModal }: { openModal: () => void }) {
   const navigate = useNavigate();
   return (
     <>
-      <div className="bg-[#121212] p-4 flex justify-between sticky bottom-0">
+      <div className="bg-[#121212] px-2 py-3 rounded-full flex justify-between sticky bottom-0 m-5">
         <img
           src={homeButton}
           alt="brand-logo"
-          width="50"
+          width="40"
           className="hover:scale-125 duration-200 ease-in-out"
         />
         <img
           src={addButton}
           alt="brand-logo"
-          width="50"
+          width="40"
           className="hover:scale-125 duration-200 ease-in-out"
           onClick={openModal}
         />
@@ -83,7 +91,7 @@ function BottomNav({ openModal }: { openModal: () => void }) {
           }}
           src={logoutButton}
           alt="brand-logo"
-          width="50"
+          width="40"
           className="hover:scale-125 duration-200 ease-in-out"
         />
       </div>
@@ -92,22 +100,34 @@ function BottomNav({ openModal }: { openModal: () => void }) {
 }
 
 function FinanceElement({ item }: { item: FinanceItem }) {
-  // const dispatch = useAppDispatch();
-  // function updateStatus() {
-  //   const newStatus = item.status == "PAID" ? "UNPAID" : "PAID";
-  //   const newItem = { ...item, status: newStatus } as FinanceItem;
-  //   dispatch(updateFinanceItem(newItem));
-  // }
-  // function deleteItem() {
-  //   const choice = prompt("Are you sure you want to delete? y/n");
-  //   if (choice?.toLowerCase() !== "y") return;
-  //   dispatch(deleteFinanceItem(item));
-  // }
-  // const hasPaid = item.status == "PAID";
-
+  const dispatch = useAppDispatch();
+  function updateStatus() {
+    const newStatus = item.status == "PAID" ? "UNPAID" : "PAID";
+    const newItem = { ...item, status: newStatus } as FinanceItem;
+    dispatch(updateFinanceItem(newItem));
+  }
+  function deleteItem() {
+    const choice = prompt("Are you sure you want to delete? y/n");
+    if (choice?.toLowerCase() !== "y") return;
+    dispatch(deleteFinanceItem(item));
+  }
+  const hasPaid = item.status == "PAID";
+  const sending = item.mode == "SEND"
   return (
-    <div className="py-10 px-10 mx-5 bg-[#101010] rounded-xl border-b-red-600 border-b-2">
-      <div>{item.transactee}</div>
+    <div className={`px-5 py-2 flex flex-col gap-2 mx-5 bg-[#101010] rounded-xl ${sending ? 'border-b-red-600' : 'border-b-green-600'} border-b-2`}>
+      <div className="flex justify-between gap-5 items-center">
+        <img src={foodCat} className="w-[4rem] h-[4rem]"></img>
+        <div className="text-white text-xl font-bold">{item.transactee}</div>
+        <div className={sending ? 'text-red-600' : 'text-green-600'}>${item.amount}</div>
+      </div>
+      <div className="flex justify-between items-center">
+        <div className="text-white justify-self-start text-sm">{item.description}</div>
+        <div className="text-white rounded-full" onClick={updateStatus}><img src={hasPaid? tickSVG : crossSVG} alt="" className="w-10 h-10"/></div>
+        <div className="text-white rounded-full" onClick={deleteItem}><img src={trashSVG} alt="" className="w-10 h-10"/></div>
+      </div>
+      <div className="flex justify-end items-center">
+        <div className="text-gray-500 text-sm">{moment(item.updatedAt).format("DD-MM-YYYY || hh:mm:ss")}</div>
+      </div>
     </div>
   );
 }
