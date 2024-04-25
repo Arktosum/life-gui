@@ -1,12 +1,18 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const path = require("path");
+
+const envPath = path.resolve(__dirname, "../.env"); // Specify your custom path here
+dotenv.config({ path: envPath });
 dotenv.config();
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
+const userRouter = require("./routes/userRoutes");
 
 app.use(cors());
 app.use(express.json());
+app.use("/api/users", userRouter);
 
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -21,6 +27,6 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 8080;
 
-app.listen(() => {
+app.listen(PORT,() => {
   console.log(`Server listening on http://localhost:${PORT}`);
 });

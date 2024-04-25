@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 
 import brandLogo from "../assets/brand.svg";
+import { useAppDispatch } from "../app/hooks";
+import { loginUser } from "../features/userSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const INITIAL_FORM_DATA = {
@@ -8,12 +11,17 @@ export default function Login() {
     password: "",
   };
   const [formData, setformData] = useState(INITIAL_FORM_DATA);
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(formData);
-
-    setformData(INITIAL_FORM_DATA);
+    const response = await dispatch(loginUser(formData));
+    if (response.meta.requestStatus == "fulfilled") {
+      navigate("/dashboard");
+      setformData(INITIAL_FORM_DATA);
+    } else {
+      alert("Login failed!");
+    }
   }
   function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
     setformData((prev) => {
@@ -31,23 +39,25 @@ export default function Login() {
           Email <span className="text-red-600">*</span>
         </label>
         <input
+          value={formData.email}
           type="email"
           id="email"
           name="email"
           placeholder=""
           onChange={handleInput}
-          className="px-5 py-2 bg-inherit border-2 border-cyan-500 rounded-sm text-white text-sm"
+          className="px-5 py-2 bg-inherit border-2 border-cyan-500 rounded-xl text-white text-sm"
         />
         <label htmlFor="password" className="text-white font-bold text-xl">
           Password <span className="text-red-600">*</span>
         </label>
         <input
+          value={formData.password}
           type="password"
           id="password"
           name="password"
           placeholder=""
           onChange={handleInput}
-          className="px-5 py-2 bg-inherit border-2 border-cyan-500 rounded-sm text-white text-sm"
+          className="px-5 py-2 bg-inherit border-2 border-cyan-500 rounded-xl text-white text-sm"
         />
         <button className="px-5 py-2 border-2 border-green-600 rounded-sm uppercase text-white">
           Login
