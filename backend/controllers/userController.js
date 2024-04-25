@@ -16,7 +16,6 @@ const userController = {
         email,
         password: hashedPassword,
       });
-      console.log(user);
       await user.save();
       res.send("User registered successfully!");
     } catch (error) {
@@ -36,7 +35,7 @@ const userController = {
       if (!validPassword)
         return res.status(400).send("Invalid email or password");
 
-      const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+      const token = jwt.sign({ _id : user._id }, process.env.JWT_SECRET);
       res.cookie("jwt", token, { httpOnly: true });
       let { password, ...rest } = user._doc;
       res.send(rest);

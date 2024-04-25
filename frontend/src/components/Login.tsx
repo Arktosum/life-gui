@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import brandLogo from "../assets/brand.svg";
 import { useAppDispatch } from "../app/hooks";

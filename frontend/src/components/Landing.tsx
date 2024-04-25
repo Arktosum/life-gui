@@ -8,7 +8,7 @@ export default function Landing() {
   useEffect(() => {
     authorized ? navigate("/dashboard") : navigate("/login");
   }, [authorized, navigate]);
-
+  console.log("landing!");
   return (
     <>
       <Outlet />
