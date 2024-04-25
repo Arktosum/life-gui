@@ -3,10 +3,15 @@ const dotenv = require("dotenv");
 dotenv.config();
 const app = express();
 const cors = require("cors");
+const mongoose = require("mongoose");
 
 app.use(cors());
 app.use(express.json());
-connectMongoDB();
+
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then((data) => console.log("MongoDB connected", data.connection.host))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 // app.use('/users', userRouter);
 

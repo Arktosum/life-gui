@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export default function TodoPage() {
-  return (
-    <div>TodoPage</div>
-  )
+  return <div>TodoPage</div>;
 }

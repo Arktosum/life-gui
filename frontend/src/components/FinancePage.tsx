@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export default function FinancePage() {
-  return (
-    <div>FinancePage</div>
-  )
+  return <div>FinancePage</div>;
 }

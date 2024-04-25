@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export default function DiaryPage() {
-  return (
-    <div>DiaryPage</div>
-  )
+  return <div>DiaryPage</div>;
 }
