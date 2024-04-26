@@ -3,17 +3,16 @@ const express = require("express");
 const financeController = require("../controllers/financeController");
 const financeRouter = express.Router();
 
-financeRouter.post("/", financeController.createFinanceUser);
-financeRouter.put("/:id", financeController.updateFinanceUser);
-financeRouter.delete("/:id", financeController.deleteFinanceUser);
+financeRouter.post("/user/", financeController.createFinanceUser);
+financeRouter.put("/user/:id", financeController.updateFinanceUser);
+financeRouter.delete("/user/:id", financeController.deleteFinanceUser);
 
-financeRouter.get("/", financeController.fetchAllFinanceUsers);
+financeRouter.get("/user/", financeController.fetchAllFinanceUsers);
+financeRouter.get("/user/:regex", financeController.fetchFinanceUsersRegex);
 
 // financeRouter.post("/", financeController.createTransaction);
-financeRouter.delete("/:id", financeController.deleteTransaction);
-
-financeRouter.get("/", financeController.fetchAllTransactions);
-
-financeRouter.post('/:id',financeController.payFinanceUser);
+financeRouter.delete("/transaction/:id", financeController.deleteTransaction);
+financeRouter.get("/transaction", financeController.fetchAllTransactions);
+financeRouter.post("/transaction/:id", financeController.payFinanceUser);
 
 module.exports = financeRouter;

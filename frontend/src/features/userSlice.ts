@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { ORIGIN } from '../app/utils'
 
 
 interface User{
@@ -23,7 +24,7 @@ const initialState: UserState = {
 export const loginUser = createAsyncThunk<User,{email:string,password:string}>('user/login', async (loginData , thunkApi) => {
 
   try{
-      const response = await axios.post("http://localhost:8080/api/users/login",loginData);
+      const response = await axios.post(`${ORIGIN}/users/login`,loginData);
       return response.data;
   }
   catch(err) {
@@ -35,7 +36,7 @@ export const loginUser = createAsyncThunk<User,{email:string,password:string}>('
 export const logoutUser = createAsyncThunk('user/logout', async (_,thunkApi) => {
 
   try{
-      const response = await axios.get("http://localhost:8080/api/users/logout");
+      const response = await axios.get(`${ORIGIN}/users/logout`);
       return response.data;
   }
   catch(err) {

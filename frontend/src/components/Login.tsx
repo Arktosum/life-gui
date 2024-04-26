@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import brandLogo from "../assets/brand.svg";
 import { useAppDispatch } from "../app/hooks";
-import { loginUser } from "../features/userSlice";
+import { isAuthorized, loginUser } from "../features/userSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -13,6 +13,12 @@ export default function Login() {
   const [formData, setformData] = useState(INITIAL_FORM_DATA);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const authorized = isAuthorized();
+  useEffect(() => {
+    if (authorized) navigate("/dashboard");
+  }, [authorized, navigate]);
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const response = await dispatch(loginUser(formData));
