@@ -63,9 +63,13 @@ export default function Login() {
           name="password"
           placeholder=""
           onChange={handleInput}
-          className="px-5 py-2 bg-inherit border-2 border-cyan-500 rounded-xl text-white text-sm"
+          className="appearance-none px-5 py-2 bg-inherit border-2 border-cyan-500 rounded-xl text-white text-sm"
         />
-        <button className="px-5 py-2 border-2 border-green-600 rounded-sm uppercase text-white">
+        <button
+          className="px-5 py-2 border-2 border-green-600 rounded-sm uppercase text-white font-bold
+        hover:text-black
+        hover:bg-green-600 duration-200 ease-in-out"
+        >
           Login
         </button>
         <p className="text-blue-300 text-sm">

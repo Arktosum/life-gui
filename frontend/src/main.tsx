@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom/client";
 import "./index.css";
+import "./App.css";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -18,19 +19,22 @@ import PrivateRoute from "./components/PrivateRoute.tsx";
 import TodoPage from "./components/TodoPage.tsx";
 import ErrorPage from "./components/ErrorPage.tsx";
 import React from "react";
+import Landing from "./components/Landing.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Login />}>
+    <>
+      <Route path="/" element={<Landing />} />
+      <Route path="/login" element={<Login />} />
       <Route element={<PrivateRoute />}>
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="finance" element={<FinancePage />} />
-        <Route path="diary" element={<DiaryPage />} />
-        <Route path="friend" element={<FriendPage />} />
-        <Route path="todo" element={<TodoPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/finance" element={<FinancePage />} />
+        <Route path="/diary" element={<DiaryPage />} />
+        <Route path="/friend" element={<FriendPage />} />
+        <Route path="/todo" element={<TodoPage />} />
       </Route>
       <Route path="*" element={<ErrorPage />} />
-    </Route>
+    </>
   )
 );
 

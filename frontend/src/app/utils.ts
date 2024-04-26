@@ -1,2 +1,3 @@
 // export const ORIGIN = `http://localhost:8080/api`
-export const ORIGIN = `https://life-gui.onrender.com/api`
+export const ORIGIN = `http://192.168.0.110:8080/api`
+// export const ORIGIN = `https://life-gui.onrender.com/api`
