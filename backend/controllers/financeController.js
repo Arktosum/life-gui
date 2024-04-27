@@ -121,7 +121,16 @@ const payFinanceUser = async (req, res) => {
   }
 };
 
+const fetchRecentUsers = async (req, res) => {
+  try {
+    const data = await FinanceUser.find().sort({ updatedAt: -1 });
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 module.exports = {
+  fetchRecentUsers,
   fetchFinanceUserById,
   fetchFinanceUsersRegex,
   createFinanceUser,

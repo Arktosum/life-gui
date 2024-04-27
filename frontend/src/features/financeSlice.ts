@@ -93,6 +93,16 @@ export const deleteTransaction = createAsyncThunk<Transaction,string>('finance/d
       return thunkApi.rejectWithValue(err);
   }
 })
+export const fetchRecentUsers = createAsyncThunk<Transaction[]>('finance/fetchRecentUsers', async (_id,thunkApi) => {
+  try{
+      const response = await axios.get(`${ORIGIN}/finance/user/recent`);
+      return response.data;
+  }
+  catch(err) {
+      return thunkApi.rejectWithValue(err);
+  }
+})
+
 
 
 

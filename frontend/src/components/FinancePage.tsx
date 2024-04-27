@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch } from "../app/hooks";
 import {
   createFinanceUser,
+  fetchRecentUsers,
   fetchUsersByRegex,
   FinanceUser,
 } from "../features/financeSlice";
@@ -13,6 +14,14 @@ export default function FinancePage() {
   const [searchedUsers, setsearchedUsers] = useState<FinanceUser[]>([]);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (searchUserName == "") {
+      dispatch(fetchRecentUsers()).then((response) => {
+        setsearchedUsers(response.payload as FinanceUser[]);
+      });
+    }
+  }, [dispatch, searchUserName]);
   async function handleNewUserCreate() {
     const response = await dispatch(
       createFinanceUser(searchUserName.toUpperCase())
@@ -26,7 +35,6 @@ export default function FinancePage() {
   async function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
     const newSearchUsername = e.target.value;
     if (newSearchUsername == "") {
-      setsearchedUsers([]);
       setsearchUserName("");
       return;
     }
@@ -55,7 +63,6 @@ export default function FinancePage() {
     );
   });
 
-
   const duplicate = searchedUsers.filter(
     (item) => item.transactee == searchUserName
   );
@@ -72,7 +79,7 @@ export default function FinancePage() {
       </div>
     );
   }
- 
+
   return (
     <div className="h-[100dvh] bg-black flex flex-col items-center justify-center">
       <div className="top-nav h-[10%] flex justify-end p-2 gap-5 bg-[#171717]">
@@ -87,7 +94,7 @@ export default function FinancePage() {
           className=" px-5 w-full  bg-[#222222] py-3 self-center rounded-3xl text-white text-sm"
         />
       </div>
-      
+
       <div className="content w-full h-[10%]  flex-1 text-white flex flex-col gap-5 overflow-y-auto">
         {searchUserElements}
       </div>

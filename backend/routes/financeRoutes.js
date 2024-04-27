@@ -8,6 +8,7 @@ financeRouter.put("/user/:id", financeController.updateFinanceUser);
 financeRouter.delete("/user/:id", financeController.deleteFinanceUser);
 
 financeRouter.get("/user/", financeController.fetchAllFinanceUsers);
+financeRouter.get("/user/recent", financeController.fetchRecentUsers);
 financeRouter.get("/user/:id", financeController.fetchFinanceUserById);
 financeRouter.get("/user/regex/:regex", financeController.fetchFinanceUsersRegex);
 

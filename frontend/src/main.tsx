@@ -15,7 +15,6 @@ import DiaryPage from "./components/DiaryPage.tsx";
 import FinancePage from "./components/FinancePage.tsx";
 import FriendPage from "./components/FriendPage.tsx";
 import Login from "./components/Login.tsx";
-import PrivateRoute from "./components/PrivateRoute.tsx";
 import TodoPage from "./components/TodoPage.tsx";
 import ErrorPage from "./components/ErrorPage.tsx";
 import React from "react";
@@ -28,15 +27,13 @@ const router = createBrowserRouter(
     <>
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
-      <Route element={<PrivateRoute />}>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/finance" element={<FinancePage />} />
-        <Route path="/finance/:id" element={<FinancePayPage />} />
-        <Route path="/finance/history" element={<FinanceHistoryPage />} />
-        <Route path="/diary" element={<DiaryPage />} />
-        <Route path="/friend" element={<FriendPage />} />
-        <Route path="/todo" element={<TodoPage />} />
-      </Route>
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/finance" element={<FinancePage />} />
+      <Route path="/finance/:id" element={<FinancePayPage />} />
+      <Route path="/finance/history" element={<FinanceHistoryPage />} />
+      <Route path="/diary" element={<DiaryPage />} />
+      <Route path="/friend" element={<FriendPage />} />
+      <Route path="/todo" element={<TodoPage />} />
       <Route path="*" element={<ErrorPage />} />
     </>
   )
