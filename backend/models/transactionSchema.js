@@ -5,6 +5,7 @@ const transactionSchema = new mongoose.Schema(
     transactee: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "FinanceUser",
+      required: true,
     },
     amount: { type: Number, required: true },
     category: {
@@ -21,6 +22,9 @@ const transactionSchema = new mongoose.Schema(
       type: String,
       enum: ["SEND", "RECEIVE"],
       default: "SEND",
+    },
+    remarks: {
+      type: String,
     },
   },
   { timestamps: true }

@@ -5,51 +5,59 @@ import {
   fetchUsersByRegex,
   FinanceUser,
 } from "../features/financeSlice";
-const addIcon = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="w-8 h-8"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-    />
-  </svg>
-);
+import { Link, useNavigate } from "react-router-dom";
+import { addIcon, homeIcon, userIcon, historyIcon } from "../app/assets";
 
 export default function FinancePage() {
   const [searchUserName, setsearchUserName] = useState("");
   const [searchedUsers, setsearchedUsers] = useState<FinanceUser[]>([]);
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
   async function handleNewUserCreate() {
-    dispatch(createFinanceUser(searchUserName));
+    const response = await dispatch(
+      createFinanceUser(searchUserName.toUpperCase())
+    );
+    if (response.meta.requestStatus == "fulfilled") {
+      const user = response.payload as FinanceUser;
+      navigate(`/finance/${user._id}`);
+    }
   }
+
   async function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
-    setsearchUserName(e.target.value);
-    const response = await dispatch(fetchUsersByRegex(searchUserName));
+    const newSearchUsername = e.target.value;
+    if (newSearchUsername == "") {
+      setsearchedUsers([]);
+      setsearchUserName("");
+      return;
+    }
+    setsearchUserName(newSearchUsername.toUpperCase());
+
+    const response = await dispatch(
+      fetchUsersByRegex(newSearchUsername.toUpperCase())
+    );
     if (response.meta.requestStatus == "fulfilled") {
       setsearchedUsers(response.payload as FinanceUser[]);
     }
   }
+
   const searchUserElements = searchedUsers.map((item) => {
     return (
       <div
-        id={item._id}
-        className="grid grid-cols-2 w-full place-items-center gap-5 p-5 border-black border-b-green-600 border-2  bg-[#131313] hover:bg-[#262626] duration-200 ease-in-out"
+        onClick={() => {
+          navigate(`/finance/${item._id}`);
+        }}
+        key={item._id}
+        className="grid grid-cols-2 w-full place-items-center gap-5 p-5 border-black border-b-green-600 border-2  bg-[#111111] hover:bg-[#262626] duration-200 ease-in-out"
       >
-        <div className="text-left">{item.transactee.toUpperCase()}</div>
+        <div className="text-left">{item.transactee}</div>
         <div>{item.transactions.length}</div>
       </div>
     );
   });
+
+
   const duplicate = searchedUsers.filter(
-    (item) => item.transactee.toUpperCase() == searchUserName.toUpperCase()
+    (item) => item.transactee == searchUserName
   );
 
   if (searchUserName != "" && duplicate.length == 0) {
@@ -64,33 +72,36 @@ export default function FinancePage() {
       </div>
     );
   }
-  const BALANCE = 1000;
-  const theRed = BALANCE < 0;
-
+ 
   return (
     <div className="h-[100dvh] bg-black flex flex-col items-center justify-center">
-      <div className="top-nav h-[10%] flex justify-end p-2 gap-5">
-        <img src={"/logo.svg"} alt="" className="borderize" />
+      <div className="top-nav h-[10%] flex justify-end p-2 gap-5 bg-[#171717]">
+        <img src={"/logo.svg"} alt="" className="" />
         <input
           value={searchUserName}
           type="text"
           id="regex"
           name="regex"
-          placeholder=""
+          placeholder="Pay Anyone!"
           onChange={handleInput}
-          className="appearance-none px-5 w-full h-full bg-inherit border-[1px] border-cyan-500 rounded-xl text-white text-sm"
+          className=" px-5 w-full  bg-[#222222] py-3 self-center rounded-3xl text-white text-sm"
         />
       </div>
-      <div className="text-center text-xl p-5 font-bold text-white">
-        Balance <span className="text-green-600">|</span>{" "}
-        <span className={theRed ? "text-red-600" : "text-green-300"}>
-          {theRed ? "-" : "+"} ${BALANCE}
-        </span>
-      </div>
+      
       <div className="content w-full h-[10%]  flex-1 text-white flex flex-col gap-5 overflow-y-auto">
         {searchUserElements}
       </div>
-      <div className="bottom-nav borderize h-[10%] w-full"></div>
+      <div className="bottom-nav h-[10%] w-full bg-[#171717] text-white flex justify-evenly items-center">
+        <Link to="/dashboard">
+          <div className="bg-[#0e0e0e] p-5 rounded-full">{homeIcon}</div>
+        </Link>
+        <Link to="/finance">
+          <div className="bg-[#0e0e0e] p-5 rounded-full">{userIcon}</div>
+        </Link>
+        <Link to="/finance/history">
+          <div className="bg-[#0e0e0e] p-5 rounded-full">{historyIcon}</div>
+        </Link>
+      </div>
     </div>
   );
 }

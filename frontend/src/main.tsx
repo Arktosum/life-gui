@@ -20,6 +20,8 @@ import TodoPage from "./components/TodoPage.tsx";
 import ErrorPage from "./components/ErrorPage.tsx";
 import React from "react";
 import Landing from "./components/Landing.tsx";
+import FinancePayPage from "./components/FinancePayPage.tsx";
+import FinanceHistoryPage from "./components/FinanceHistoryPage.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,6 +31,8 @@ const router = createBrowserRouter(
       <Route element={<PrivateRoute />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/finance" element={<FinancePage />} />
+        <Route path="/finance/:id" element={<FinancePayPage />} />
+        <Route path="/finance/history" element={<FinanceHistoryPage />} />
         <Route path="/diary" element={<DiaryPage />} />
         <Route path="/friend" element={<FriendPage />} />
         <Route path="/todo" element={<TodoPage />} />

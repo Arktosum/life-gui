@@ -8,11 +8,12 @@ financeRouter.put("/user/:id", financeController.updateFinanceUser);
 financeRouter.delete("/user/:id", financeController.deleteFinanceUser);
 
 financeRouter.get("/user/", financeController.fetchAllFinanceUsers);
-financeRouter.get("/user/:regex", financeController.fetchFinanceUsersRegex);
+financeRouter.get("/user/:id", financeController.fetchFinanceUserById);
+financeRouter.get("/user/regex/:regex", financeController.fetchFinanceUsersRegex);
 
 // financeRouter.post("/", financeController.createTransaction);
 financeRouter.delete("/transaction/:id", financeController.deleteTransaction);
 financeRouter.get("/transaction", financeController.fetchAllTransactions);
-financeRouter.post("/transaction/:id", financeController.payFinanceUser);
+financeRouter.post("/transaction", financeController.payFinanceUser);
 
 module.exports = financeRouter;

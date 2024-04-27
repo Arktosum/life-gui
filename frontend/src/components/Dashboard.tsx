@@ -13,7 +13,12 @@ export default function Dashboard() {
   return (
     <div className="h-[100dvh] bg-black flex flex-col">
       <div className="top-nav h-[10%] flex justify-end">
-        <button className="px-5 py-2 border-2 border-red-600 text-red-600"onClick={handleLogout}>Logout</button>
+        <button
+          className="px-5 py-2 border-2 border-red-600 text-red-600"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
       </div>
       <div className="content  h-[10%] flex-1 text-white flex flex-col gap-5">
         <div className="bg-gray-800 p-5">
