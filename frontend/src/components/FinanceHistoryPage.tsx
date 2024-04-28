@@ -30,6 +30,7 @@ export default function FinanceHistoryPage() {
       });
     }
   }
+
   let BALANCE = 0;
 
   const transactionElements = transactions.map((item) => {
@@ -39,15 +40,15 @@ export default function FinanceHistoryPage() {
     return (
       <div
         key={item._id}
-        className="flex justify-evenly bg-[#1c1c1c] p-2 mx-5 rounded-xl gap-5"
+        className="grid grid-cols-4 mx-5 p-5 bg-[#171717] rounded-xl"
       >
-        <div className="col-span-2 flex flex-col justify-center gap-5">
+        <div className=" col-span-3 flex flex-col justify-center gap-5">
           <div className="font-bold">{user.transactee}</div>
           <div className="text-sm text-gray-600">
             {moment(item.updatedAt).format("MMMM Do YYYY, h:mm:ss a")}
           </div>
         </div>
-        <div className="col-span-2 flex flex-col items-end justify-center gap-5">
+        <div className=" flex flex-col justify-center gap-5 items-center">
           <div className={is_sending ? "text-red-600" : "text-green-600"}>
             <span>{is_sending ? "-" : "+"}</span>$ {Math.abs(item.amount)}
           </div>
