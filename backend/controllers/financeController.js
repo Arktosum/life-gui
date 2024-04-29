@@ -1,6 +1,5 @@
 const FinanceUser = require("../models/financeUserSchema");
 const Transaction = require("../models/transactionSchema");
-const ErrorHandler = require("./Errorhandler");
 
 const createFinanceUser = async (req, res) => {
   try {

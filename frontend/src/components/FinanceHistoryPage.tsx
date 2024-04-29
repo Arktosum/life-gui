@@ -68,7 +68,9 @@ export default function FinanceHistoryPage() {
   return (
     <div className="h-[100dvh] bg-black flex flex-col items-center justify-center">
       <div className="top-nav h-[10%] w-full flex p-2 gap-5 bg-[#171717]">
-        <img src={"/logo.svg"} alt="" className="" />
+        <Link to="/">
+          <img src={"/logo.svg"} alt="" className="w-20" />
+        </Link>
       </div>
       <div className="text-center text-xl p-5 font-bold text-white">
         Balance <span className="text-green-600">|</span>{" "}
@@ -87,7 +89,7 @@ export default function FinanceHistoryPage() {
           <div className="bg-[#0e0e0e] p-5 rounded-full">{userIcon}</div>
         </Link>
         <Link to="/finance/history">
-          <div className="bg-[#0e0e0e] p-5 rounded-full">{historyIcon}</div>
+          <div className="bg-[#414141] p-5 rounded-full">{historyIcon}</div>
         </Link>
       </div>
     </div>

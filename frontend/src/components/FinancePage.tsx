@@ -82,8 +82,10 @@ export default function FinancePage() {
 
   return (
     <div className="h-[100dvh] bg-black flex flex-col items-center justify-center">
-      <div className="top-nav h-[10%] flex justify-end p-2 gap-5 bg-[#171717]">
-        <img src={"/logo.svg"} alt="" className="" />
+      <div className="top-nav w-full h-[10%] flex justify-between p-2 gap-5 bg-[#171717]">
+        <Link to="/">
+          <img src={"/logo.svg"} alt="" className="w-20" />
+        </Link>
         <input
           value={searchUserName}
           type="text"
@@ -103,7 +105,7 @@ export default function FinancePage() {
           <div className="bg-[#0e0e0e] p-5 rounded-full">{homeIcon}</div>
         </Link>
         <Link to="/finance">
-          <div className="bg-[#0e0e0e] p-5 rounded-full">{userIcon}</div>
+          <div className="bg-[#414141] p-5 rounded-full">{userIcon}</div>
         </Link>
         <Link to="/finance/history">
           <div className="bg-[#0e0e0e] p-5 rounded-full">{historyIcon}</div>

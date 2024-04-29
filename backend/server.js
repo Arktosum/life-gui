@@ -10,12 +10,14 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const userRouter = require("./routes/userRoutes");
 const financeRouter = require("./routes/financeRoutes");
+const friendRouter = require("./routes/friendRoutes");
 
 app.use(cors());
 app.use(express.json());
 
 app.use("/api/users", userRouter);
 app.use("/api/finance", financeRouter);
+app.use("/api/friend", friendRouter);
 
 mongoose
   .connect(process.env.MONGODB_URI)

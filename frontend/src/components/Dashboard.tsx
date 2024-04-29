@@ -12,29 +12,32 @@ export default function Dashboard() {
   }
   return (
     <div className="h-[100dvh] bg-black flex flex-col">
-      <div className="top-nav h-[10%] flex justify-end">
+      <div className="top-nav h-[10%] flex justify-between p-2 gap-5 bg-[#171717]">
+        <img src={"/logo.svg"} alt="" className="" />
         <button
-          className="px-5 py-2 border-2 border-red-600 text-red-600"
+          className="px-5 py-2 border-2 border-red-600 text-red-600 rounded-xl"
           onClick={handleLogout}
         >
           Logout
         </button>
       </div>
       <div className="content  h-[10%] flex-1 text-white flex flex-col gap-5">
-        <div className="bg-gray-800 p-5">
-          <Link to="/finance">Go to Finaces</Link>
-        </div>
-        <div className="bg-gray-800 p-5">
-          <Link to="/diary">Go to Diary</Link>
-        </div>
-        <div className="bg-gray-800 p-5">
-          <Link to="/todo">Go to Todo</Link>
-        </div>
-        <div className="bg-gray-800 p-5">
-          <Link to="/friend">Go to Hall of Friends</Link>
-        </div>
+        <Link to="/finance">
+          <div className="bg-[#282828] p-5 rounded-xl font-bold">Finances</div>
+        </Link>
+        <Link to="/diary">
+          <div className="bg-[#282828] p-5 rounded-xl font-bold">Diary</div>
+        </Link>
+        <Link to="/todo">
+          <div className="bg-[#282828] p-5 rounded-xl font-bold">Todo</div>
+        </Link>
+        <Link to="/friend">
+          <div className="bg-[#282828] p-5 rounded-xl font-bold">
+            Hall of Friends
+          </div>
+        </Link>
       </div>
-      <div className="bottom-nav border-2 border-green-600 h-[10%]"></div>
+      {/* <div className="bottom-nav border-2 border-green-600 h-[10%]"></div> */}
     </div>
   );
 }
