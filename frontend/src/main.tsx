@@ -16,25 +16,34 @@ import FinancePage from "./components/FinancePage.tsx";
 import FriendPage from "./components/FriendPage.tsx";
 import Login from "./components/Login.tsx";
 import TodoPage from "./components/TodoPage.tsx";
-import ErrorPage from "./components/ErrorPage.tsx";
 import React from "react";
-import Landing from "./components/Landing.tsx";
 import FinancePayPage from "./components/FinancePayPage.tsx";
 import FinanceHistoryPage from "./components/FinanceHistoryPage.tsx";
+import ErrorPage from "./components/ErrorPage.tsx";
+import Root from "./components/Root.tsx";
+import PrivateRoute from "./components/PrivateRoute.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<Landing />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/finance" element={<FinancePage />} />
-      <Route path="/finance/:id" element={<FinancePayPage />} />
-      <Route path="/finance/history" element={<FinanceHistoryPage />} />
-      <Route path="/diary" element={<DiaryPage />} />
-      <Route path="/friend" element={<FriendPage />} />
-      <Route path="/todo" element={<TodoPage />} />
-      <Route path="*" element={<ErrorPage />} />
+      <Route path="/" element={<Root />}>
+        {/* Public routes */}
+        <Route path="login" element={<Login />} />
+
+        {/* Protected routes */}
+        <Route element={<PrivateRoute />}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="finance" element={<FinancePage />} />
+          <Route path="finance/:id" element={<FinancePayPage />} />
+          <Route path="finance/history" element={<FinanceHistoryPage />} />
+          <Route path="friend" element={<FriendPage />} />
+          <Route path="diary" element={<DiaryPage />} />
+          <Route path="todo" element={<TodoPage />} />
+        </Route>
+
+        {/* Invalid routes */}
+        <Route path="*" element={<ErrorPage />} />
+      </Route>
     </>
   )
 );
