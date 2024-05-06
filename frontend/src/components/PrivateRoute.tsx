@@ -14,9 +14,5 @@ import { isAuthorized } from "../features/userSlice";
 
 export default function PrivateRoute() {
   const authorized = isAuthorized();
-  return authorized ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/login" />
-  );
+  return authorized ? <Outlet /> : <Navigate to="/login" />;
 }
