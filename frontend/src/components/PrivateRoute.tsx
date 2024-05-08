@@ -1,17 +1,22 @@
-import {  useNavigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { isAuthorized } from "../features/userSlice";
-import { useEffect } from "react";
 
-export default function PrivateRoute({ children }: React.PropsWithChildren) {
-  const navigate = useNavigate();
-  useEffect(() => {
-    const auth = isAuthorized();
-    if (auth) navigate("/login");
-  }, [navigate]);
-  return (
-    <>
-      <div>PrivateRoute</div>
-      {children}
-    </>
+// export default function PrivateRoute({ children }: React.PropsWithChildren) {
+//   const authorized = isAuthorized();
+//   const navigate = useNavigate();
+//   useEffect(() => {
+//     if (!authorized) {
+//       navigate("/login", { replace: true });
+//     }
+//   }, [authorized, navigate]);
+//   return children;
+// }
+
+export default function PrivateRoute() {
+  const authorized = isAuthorized();
+  return authorized ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/login" />
   );
 }
