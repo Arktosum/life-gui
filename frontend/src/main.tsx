@@ -4,7 +4,6 @@ import "./App.css";
 import {
   createBrowserRouter,
   createRoutesFromElements,
-  Navigate,
   Route,
   RouterProvider,
 } from "react-router-dom";
@@ -24,69 +23,22 @@ import ErrorPage from "./components/ErrorPage.tsx";
 import { PrivateRoute } from "./components/PrivateRoute.tsx";
 import { Root } from "./components/Root.tsx";
 
+
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<Root />} />
+      <Route path="/" element={<Root/>} />
       {/* Public routes */}
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={<Login/>} />
       {/* Protected routes */}
-      <Route
-        path="/dashboard"
-        element={
-          <PrivateRoute>
-            <Dashboard />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/finance"
-        element={
-          <PrivateRoute>
-            <FinancePage />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/finance/:id"
-        element={
-          <PrivateRoute>
-            <FinancePayPage />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/finance/history"
-        element={
-          <PrivateRoute>
-            <FinanceHistoryPage />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/friend"
-        element={
-          <PrivateRoute>
-            <FriendPage />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/diary"
-        element={
-          <PrivateRoute>
-            <DiaryPage />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/todo"
-        element={
-          <PrivateRoute>
-            <TodoPage />
-          </PrivateRoute>
-        }
-      />
+      <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>} />
+      <Route path="/finance" element={<PrivateRoute><FinancePage/></PrivateRoute> } />
+      <Route path="/finance/:id" element={<PrivateRoute><FinancePayPage/></PrivateRoute> } />
+      <Route path="/finance/history" element={<PrivateRoute><FinanceHistoryPage/></PrivateRoute>} />
+      <Route path="/friend" element={<PrivateRoute><FriendPage/></PrivateRoute> } />
+      <Route path="/diary" element={<PrivateRoute><DiaryPage/></PrivateRoute> } />
+      <Route path="/todo" element={<PrivateRoute><TodoPage/></PrivateRoute> } />
       {/* Invalid routes */}
       <Route path="*" element={<ErrorPage />} />
     </>
