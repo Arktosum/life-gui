@@ -55,10 +55,10 @@ export default function FinancePage() {
           navigate(`/finance/${item._id}`);
         }}
         key={item._id}
-        className="grid grid-cols-2 w-full place-items-center gap-5 p-5 border-black border-b-green-600 border-2  bg-[#111111] hover:bg-[#262626] duration-200 ease-in-out"
+        className="grid grid-cols-2 w-full rounded-xl place-items-center gap-5 p-5 border-black border-b-green-600 border-2  bg-[#111111] hover:bg-[#262626] duration-200 ease-in-out"
       >
-        <div className="text-left">{item.transactee}</div>
-        <div>{item.transactions.length}</div>
+        <div className="text-left font-bold">{item.transactee}</div>
+        <div className="text-[#4e4e4e] text-sm">{item.transactions.length} Transactions</div>
       </div>
     );
   });
@@ -97,7 +97,7 @@ export default function FinancePage() {
         />
       </div>
 
-      <div className="content w-full h-[10%]  flex-1 text-white flex flex-col gap-5 overflow-y-auto">
+      <div className="content w-full h-[10%] p-5 flex-1 text-white flex flex-col gap-5 overflow-y-auto">
         {searchUserElements}
       </div>
       <div className="bottom-nav h-[10%] w-full bg-[#171717] text-white flex justify-evenly items-center">
