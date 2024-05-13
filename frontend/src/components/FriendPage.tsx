@@ -87,9 +87,7 @@ export default function FinancePage() {
   return (
     <div className="h-[100dvh] bg-black flex flex-col items-center justify-center">
       <div className="top-nav w-full h-[10%] flex justify-between p-2 gap-5 bg-[#171717]">
-        <Link to="/">
-          <img src={"/logo.svg"} alt="" className="w-20" />
-        </Link>
+        <img src={"/logo.svg"} alt="" className="" />
         <input
           value={searchUserName}
           type="text"

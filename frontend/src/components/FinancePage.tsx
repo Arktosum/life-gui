@@ -13,24 +13,47 @@ export default function FinancePage() {
   const [searchUserName, setsearchUserName] = useState("");
   const [searchedUsers, setsearchedUsers] = useState<FinanceUser[]>([]);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
   useEffect(() => {
-    if (searchUserName == "") {
-      dispatch(fetchRecentUsers()).then((response) => {
-        setsearchedUsers(response.payload as FinanceUser[]);
-      });
-    }
-  }, [dispatch, searchUserName]);
-  async function handleNewUserCreate() {
-    const response = await dispatch(
-      createFinanceUser(searchUserName.toUpperCase())
-    );
-    if (response.meta.requestStatus == "fulfilled") {
-      const user = response.payload as FinanceUser;
-      navigate(`/finance/${user._id}`);
-    }
-  }
+    if (searchUserName != "") return;
+    dispatch(fetchRecentUsers()).then((response) => {
+      setsearchedUsers(response.payload as FinanceUser[]);
+    });
+  }, [dispatch, searchUserName, setsearchedUsers]);
+  return (
+    <PageContainer>
+      <TopNav
+        searchUserName={searchUserName}
+        setsearchUserName={setsearchUserName}
+        setsearchedUsers={setsearchedUsers}
+      />
+      <Content
+        searchUserName={searchUserName}
+        setsearchedUsers={setsearchedUsers}
+        searchedUsers={searchedUsers}
+      />
+      <BottomNav />
+    </PageContainer>
+  );
+}
+
+function PageContainer({ children }: React.PropsWithChildren) {
+  return (
+    <div className="h-[100dvh] w-full bg-black flex flex-col items-center justify-center">
+      {children}
+    </div>
+  );
+}
+
+function TopNav({
+  searchUserName,
+  setsearchUserName,
+  setsearchedUsers,
+}: {
+  searchUserName: string;
+  setsearchUserName: React.Dispatch<React.SetStateAction<string>>;
+  setsearchedUsers: React.Dispatch<React.SetStateAction<FinanceUser[]>>;
+}) {
+  const dispatch = useAppDispatch();
 
   async function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
     const newSearchUsername = e.target.value;
@@ -47,28 +70,70 @@ export default function FinancePage() {
       setsearchedUsers(response.payload as FinanceUser[]);
     }
   }
+  return (
+    <div className="top-nav h-[10%] flex justify-between p-2 gap-5 bg-[#171717] mb-5">
+      <img src={"/logo.svg"} alt="" className="" />
+      <input
+        value={searchUserName}
+        type="text"
+        id="regex"
+        name="regex"
+        placeholder="Pay Anyone!"
+        onChange={handleInput}
+        className=" px-5 w-full  bg-[#222222] py-3 self-center rounded-3xl text-white text-sm"
+      />
+    </div>
+  );
+}
 
+function Content({
+  searchUserName,
+  searchedUsers,
+}: {
+  searchUserName: string;
+  setsearchedUsers: React.Dispatch<React.SetStateAction<FinanceUser[]>>;
+  searchedUsers: FinanceUser[];
+}) {
   const searchUserElements = searchedUsers.map((item) => {
-    return (
-      <div
-        onClick={() => {
-          navigate(`/finance/${item._id}`);
-        }}
-        key={item._id}
-        className="grid grid-cols-2 w-full rounded-xl place-items-center gap-5 p-5 border-black border-b-green-600 border-2  bg-[#111111] hover:bg-[#262626] duration-200 ease-in-out"
-      >
-        <div className="text-left font-bold">{item.transactee}</div>
-        <div className="text-[#4e4e4e] text-sm">{item.transactions.length} Transactions</div>
-      </div>
-    );
+    return <FinanceItem key={item._id} item={item} />;
   });
-
+  const addExtraUserElement = (
+    <FinanceNewItem
+      searchUserName={searchUserName}
+      searchedUsers={searchedUsers}
+    />
+  );
+  return (
+    <div className="content w-full h-[10%] p-5 flex-1 text-white flex flex-col gap-5 overflow-y-auto">
+      {searchUserElements}
+      {addExtraUserElement}
+    </div>
+  );
+}
+function FinanceNewItem({
+  searchUserName,
+  searchedUsers,
+}: {
+  searchUserName: string;
+  searchedUsers: FinanceUser[];
+}) {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  async function handleNewUserCreate() {
+    const response = await dispatch(
+      createFinanceUser(searchUserName.toUpperCase())
+    );
+    if (response.meta.requestStatus == "fulfilled") {
+      const user = response.payload as FinanceUser;
+      navigate(`/finance/${user._id}`);
+    }
+  }
   const duplicate = searchedUsers.filter(
     (item) => item.transactee == searchUserName
   );
 
   if (searchUserName != "" && duplicate.length == 0) {
-    searchUserElements.push(
+    return (
       <div
         key={searchUserName}
         onClick={handleNewUserCreate}
@@ -79,38 +144,38 @@ export default function FinancePage() {
       </div>
     );
   }
+  return <></>;
+}
+function FinanceItem({ item }: { item: FinanceUser }) {
+  const navigate = useNavigate();
 
   return (
-    <div className="h-[100dvh] bg-black flex flex-col items-center justify-center">
-      <div className="top-nav w-full h-[10%] flex justify-between p-2 gap-5 bg-[#171717]">
-        <Link to="/">
-          <img src={"/logo.svg"} alt="" className="w-20" />
-        </Link>
-        <input
-          value={searchUserName}
-          type="text"
-          id="regex"
-          name="regex"
-          placeholder="Pay Anyone!"
-          onChange={handleInput}
-          className=" px-5 w-full  bg-[#222222] py-3 self-center rounded-3xl text-white text-sm"
-        />
+    <div
+      onClick={() => {
+        navigate(`/finance/${item._id}`);
+      }}
+      key={item._id}
+      className="grid grid-cols-2 w-full rounded-xl place-items-center gap-5 p-5 border-black border-b-green-600 border-2  bg-[#111111] hover:bg-[#262626] duration-200 ease-in-out"
+    >
+      <div className="text-left font-bold">{item.transactee}</div>
+      <div className="text-[#4e4e4e] text-sm">
+        {item.transactions.length} Transactions
       </div>
-
-      <div className="content w-full h-[10%] p-5 flex-1 text-white flex flex-col gap-5 overflow-y-auto">
-        {searchUserElements}
-      </div>
-      <div className="bottom-nav h-[10%] w-full bg-[#171717] text-white flex justify-evenly items-center">
-        <Link to="/dashboard">
-          <div className="bg-[#0e0e0e] p-5 rounded-full">{homeIcon}</div>
-        </Link>
-        <Link to="/finance">
-          <div className="bg-[#414141] p-5 rounded-full">{userIcon}</div>
-        </Link>
-        <Link to="/finance/history">
-          <div className="bg-[#0e0e0e] p-5 rounded-full">{historyIcon}</div>
-        </Link>
-      </div>
+    </div>
+  );
+}
+function BottomNav() {
+  return (
+    <div className="bottom-nav h-[10%] w-full bg-[#171717] text-white flex justify-evenly items-center">
+      <Link to="/dashboard">
+        <div className="bg-[#0e0e0e] p-5 rounded-full">{homeIcon}</div>
+      </Link>
+      <Link to="/finance">
+        <div className="bg-[#414141] p-5 rounded-full">{userIcon}</div>
+      </Link>
+      <Link to="/finance/history">
+        <div className="bg-[#0e0e0e] p-5 rounded-full">{historyIcon}</div>
+      </Link>
     </div>
   );
 }
