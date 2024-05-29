@@ -19,6 +19,7 @@ export interface Transaction{
   category :TransactionCategory,
   status : "PAID" | "UNPAID",
   mode : "SEND" | "RECEIVE",
+  remarks? : string,
   updatedAt? : Date,
   createdAt? : Date,
 }

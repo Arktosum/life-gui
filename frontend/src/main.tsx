@@ -22,6 +22,7 @@ import FinanceHistoryPage from "./components/FinanceHistoryPage.tsx";
 import ErrorPage from "./components/ErrorPage.tsx";
 import { PrivateRoute } from "./components/PrivateRoute.tsx";
 import { Root } from "./components/Root.tsx";
+import FinanceAnalyticsPage from "./components/FinanceAnalyticsPage.tsx";
 
 
 
@@ -36,6 +37,7 @@ const router = createBrowserRouter(
       <Route path="/finance" element={<PrivateRoute><FinancePage/></PrivateRoute> } />
       <Route path="/finance/:id" element={<PrivateRoute><FinancePayPage/></PrivateRoute> } />
       <Route path="/finance/history" element={<PrivateRoute><FinanceHistoryPage/></PrivateRoute>} />
+      <Route path="/finance/analytics" element={<PrivateRoute><FinanceAnalyticsPage/></PrivateRoute>} />
       <Route path="/friend" element={<PrivateRoute><FriendPage/></PrivateRoute> } />
       <Route path="/diary" element={<PrivateRoute><DiaryPage/></PrivateRoute> } />
       <Route path="/todo" element={<PrivateRoute><TodoPage/></PrivateRoute> } />

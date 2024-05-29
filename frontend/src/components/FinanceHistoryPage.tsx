@@ -29,13 +29,13 @@ function BottomNav() {
   return (
     <div className="bottom-nav h-[10%] w-full bg-[#171717] text-white flex justify-evenly items-center">
       <Link to="/dashboard">
-        <div className="bg-[#0e0e0e] p-5 rounded-full">{homeIcon}</div>
+        <div className="bg-[#0e0e0e] p-4 rounded-full">{homeIcon}</div>
       </Link>
       <Link to="/finance">
-        <div className="bg-[#0e0e0e] p-5 rounded-full">{userIcon}</div>
+        <div className="bg-[#0e0e0e] p-4 rounded-full">{userIcon}</div>
       </Link>
       <Link to="/finance/history">
-        <div className="bg-[#414141] p-5 rounded-full">{historyIcon}</div>
+        <div className="bg-[#414141] p-4 rounded-full">{historyIcon}</div>
       </Link>
     </div>
   );
@@ -73,6 +73,7 @@ function Content() {
       >
         <div className=" col-span-3 flex flex-col justify-center gap-5">
           <div className="font-bold">{user.transactee}</div>
+          <div className="font-bold text-sm text-yellow-600">{item.remarks}</div>
           <div className="text-sm text-gray-600">
             {moment(item.updatedAt).format("MMMM Do YYYY, h:mm:ss a")}
           </div>

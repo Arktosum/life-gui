@@ -103,11 +103,23 @@ function Content({
       searchedUsers={searchedUsers}
     />
   );
+
+  const navigate = useNavigate();
   return (
-    <div className="content w-full h-[10%] p-5 flex-1 text-white flex flex-col gap-5 overflow-y-auto">
-      {searchUserElements}
-      {addExtraUserElement}
-    </div>
+    <>
+      <div
+        onClick={() => {
+          navigate("/finance/analytics");
+        }}
+        className="text-right px-5 py-2 font-bold text-white"
+      >
+        Go to analytics -&gt;
+      </div>
+      <div className="content w-full h-[10%] p-5 flex-1 text-white flex flex-col gap-5 overflow-y-auto">
+        {searchUserElements}
+        {addExtraUserElement}
+      </div>
+    </>
   );
 }
 function FinanceNewItem({
@@ -168,13 +180,13 @@ function BottomNav() {
   return (
     <div className="bottom-nav h-[10%] w-full bg-[#171717] text-white flex justify-evenly items-center">
       <Link to="/dashboard">
-        <div className="bg-[#0e0e0e] p-5 rounded-full">{homeIcon}</div>
+        <div className="bg-[#0e0e0e] p-4 rounded-full">{homeIcon}</div>
       </Link>
       <Link to="/finance">
-        <div className="bg-[#414141] p-5 rounded-full">{userIcon}</div>
+        <div className="bg-[#414141] p-4 rounded-full">{userIcon}</div>
       </Link>
       <Link to="/finance/history">
-        <div className="bg-[#0e0e0e] p-5 rounded-full">{historyIcon}</div>
+        <div className="bg-[#0e0e0e] p-4 rounded-full">{historyIcon}</div>
       </Link>
     </div>
   );

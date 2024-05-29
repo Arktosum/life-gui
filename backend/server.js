@@ -30,6 +30,12 @@ app.get("/", (req, res) => {
   res.send("<h1>Welcome to the backend!</h1>");
 });
 
+app.get("/test", (req, res) => {
+  console.log(req.headers);
+
+  // console.log(res);
+  res.send(200)
+});
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
