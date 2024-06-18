@@ -11,7 +11,6 @@ export default function Dashboard() {
     </PageContainer>
   );
 }
-
 function PageContainer({ children }: React.PropsWithChildren) {
   return (
     <div className="h-[100dvh] w-full bg-black flex flex-col items-center justify-center">

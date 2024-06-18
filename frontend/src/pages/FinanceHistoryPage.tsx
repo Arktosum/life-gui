@@ -48,6 +48,7 @@ function Content() {
       setTransactions(response.payload as Transaction[]);
     });
   }, [dispatch]);
+  
   async function handleDeleteTransaction(item_id: string | undefined) {
     if (!item_id) return;
     const choice = prompt("Are you sure you want to delete? y/n");
@@ -61,7 +62,6 @@ function Content() {
   }
 
   let BALANCE = 0;
-  const theRed = BALANCE < 0;
   const transactionElements = transactions.map((item) => {
     const user = item.transactee as unknown as FinanceUser;
     const is_sending = item.mode == "SEND";
@@ -73,7 +73,9 @@ function Content() {
       >
         <div className=" col-span-3 flex flex-col justify-center gap-5">
           <div className="font-bold">{user.transactee}</div>
-          <div className="font-bold text-sm text-yellow-600">{item.remarks}</div>
+          <div className="font-bold text-sm text-yellow-600">
+            {item.remarks}
+          </div>
           <div className="text-sm text-gray-600">
             {moment(item.updatedAt).format("MMMM Do YYYY, h:mm:ss a")}
           </div>
@@ -94,10 +96,12 @@ function Content() {
       </div>
     );
   });
+  const theRed = BALANCE < 0;
+
   return (
     <>
       <div className="text-center text-xl p-5 font-bold text-white">
-        Balance <span className="text-green-600">|</span>{" "}
+        Balance <span className="text-green-600">|</span>
         <span className={theRed ? "text-red-600" : "text-green-300"}>
           {theRed ? "-" : "+"} ${Math.abs(BALANCE)}
         </span>

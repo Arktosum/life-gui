@@ -10,19 +10,19 @@ import {
 import { store } from "./app/store";
 import { Provider } from "react-redux";
 
-import Dashboard from "./components/Dashboard.tsx";
-import DiaryPage from "./components/DiaryPage.tsx";
-import FinancePage from "./components/FinancePage.tsx";
-import FriendPage from "./components/FriendPage.tsx";
-import Login from "./components/Login.tsx";
-import TodoPage from "./components/TodoPage.tsx";
+import Dashboard from "./pages/Dashboard.tsx";
+import DiaryPage from "./pages/DiaryPage.tsx";
+import FinancePage from "./pages/FinancePage.tsx";
+import FriendPage from "./pages/FriendPage.tsx";
+import Login from "./pages/Login.tsx";
+import TodoPage from "./pages/TodoPage.tsx";
 import React from "react";
-import FinancePayPage from "./components/FinancePayPage.tsx";
-import FinanceHistoryPage from "./components/FinanceHistoryPage.tsx";
-import ErrorPage from "./components/ErrorPage.tsx";
-import { PrivateRoute } from "./components/PrivateRoute.tsx";
-import { Root } from "./components/Root.tsx";
-import FinanceAnalyticsPage from "./components/FinanceAnalyticsPage.tsx";
+import FinancePayPage from "./pages/FinancePayPage.tsx";
+import FinanceHistoryPage from "./pages/FinanceHistoryPage.tsx";
+import ErrorPage from "./pages/ErrorPage.tsx";
+import { PrivateRoute } from "./pages/PrivateRoute.tsx";
+import { Root } from "./pages/Root.tsx";
+import FinanceAnalyticsPage from "./pages/FinanceAnalyticsPage.tsx";
 
 
 

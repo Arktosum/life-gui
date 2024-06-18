@@ -3,9 +3,7 @@ import { useAppDispatch } from "../app/hooks";
 import { Link } from "react-router-dom";
 import { homeIcon, userIcon, historyIcon } from "../app/assets";
 import { fetchAllTransactions, Transaction } from "../features/financeSlice";
-
 import moment from "moment";
-
 
 function PageContainer({ children }: React.PropsWithChildren) {
   return (
@@ -22,6 +20,7 @@ function TopNav() {
     </div>
   );
 }
+
 function BottomNav() {
   return (
     <div className="bottom-nav h-[10%] w-full bg-[#171717] text-white flex justify-evenly items-center">
@@ -37,8 +36,6 @@ function BottomNav() {
     </div>
   );
 }
-
-
 
 function Content() {
   const dispatch = useAppDispatch();
@@ -96,19 +93,10 @@ function Content() {
       weekly[weekly_date][3] + total,
     ];
   }
-  let selected = daily;
+  const selectMap = { DAILY: daily, MONTHLY: monthly, WEEKLY: weekly };
+  const selected = selectMap[displayMode];
   const displayElements = [];
-  switch (displayMode) {
-    case "DAILY":
-      selected = daily;
-      break;
-    case "MONTHLY":
-      selected = monthly;
-      break;
-    case "WEEKLY":
-      selected = weekly;
-      break;
-  }
+
   for (const date in selected) {
     displayElements.push(
       <div key={date} className="flex gap-5 text-white text-sm">
@@ -124,11 +112,10 @@ function Content() {
       </div>
     );
   }
-
   return (
     <>
       <div className="text-white flex-1 w-full h-full overflow-y-auto">
-        Analytics{" "}
+        Analytics
         <select
           className="text-black"
           name="displayMode"
@@ -146,6 +133,7 @@ function Content() {
     </>
   );
 }
+
 export default function FinanceAnalyticsPage() {
   return (
     <PageContainer>
