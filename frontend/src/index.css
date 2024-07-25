@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.borderize{
+    border : 1px solid green;
+}
+
+:root {
+    --primary-color: #15ff00;    
+    --secondary-color: #1b1b1b;  
+    --tertiary-color: #17a2b8;   
+
+    --neutral-color: #f8f9fa;    
+    --success-color: #28a745;
+    --failure-color: #dc3545; 
+
+    --warning-color: #ffc107;
+    --info-color: #17a2b8; 
+
+    --light-color: #f8f9fa;      
+    --dark-color: #171717;      
+
+    --text-color: #ffffff;      
+}

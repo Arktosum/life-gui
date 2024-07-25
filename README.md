@@ -41,3 +41,13 @@ This project is licensed under the [MIT License](LICENSE).
 For any inquiries or feedback, please contact [siddhujaykay2@gmail.com](siddhujaykay2@gmail.com).
 
 ---
+
+npm init -y
+npm install express dotenv mongoose cors
+npm install -D nodemon ts-node typescript @types/express @types/cors
+tsc --init
+mkdir src
+cd src
+echo > server.ts
+cd ..
+
