@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
-import financeReducer from '../reducers/financeReducer'
+import counterReducer from './reducers/counter'
 
 export const store = configureStore({
     reducer: {
-        finances: financeReducer,
+        counter: counterReducer,
     },
 })
 
