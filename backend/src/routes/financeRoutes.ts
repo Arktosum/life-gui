@@ -6,15 +6,13 @@ import asyncHandler from '../middlewares/asyncHandler';
 const router = express.Router();
 
 router.get('/transaction', asyncHandler(fetchAllTransactions));
-router.post('/transaction/', asyncHandler(createTransaction));
+router.post('/transaction', asyncHandler(createTransaction));
 
 
 
 router.get('/:regex', asyncHandler(fetchFinanceUsersRegex));
 router.post('/user', asyncHandler(createFinanceUser));
 router.get('/user/:id', asyncHandler(fetchFinanceUserById));
-
-
 
 
 

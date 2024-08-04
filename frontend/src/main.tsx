@@ -4,13 +4,18 @@ import "./index.css";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import ErrorPage from "./pages/ErrorPage.tsx";
+import NotFound from "./pages/NotFound";
+import Finance from "./pages/Finance";
+import axios from "axios";
+
+// axios.defaults.baseURL = `https://life-gui.onrender.com/api`;
+axios.defaults.baseURL = `http://localhost:5000/api`;
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div className="text-red-600">Hello world!</div>,
-    errorElement: <ErrorPage />,
+    element: <Finance />,
+    errorElement: <NotFound />,
   },
 ]);
 
