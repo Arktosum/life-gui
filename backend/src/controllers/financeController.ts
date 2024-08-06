@@ -24,8 +24,8 @@ export async function fetchFinanceUsersRegex(req: Request, res: Response) {
 
 export async function fetchFinanceUserById(req: Request, res: Response) {
     const id = req.params.id;
-    const transactions = await FinanceUser.findById(id);
-    res.status(200).json(transactions);
+    const user = await FinanceUser.findById(id);
+    res.status(200).json(user);
 };
 
 
@@ -48,4 +48,28 @@ export async function createTransaction(req: Request, res: Response) {
     res.status(201).json(transaction);
 };
 
+export async function deleteTransaction(req: Request, res: Response) {
+    const item = await Transaction.findByIdAndDelete(req.params.id);
+    if (!item) {
+        res.status(404).json({ message: 'item not found' });
+        return;
+    }
+
+    const financeUser = await FinanceUser.findById(item.transactee)
+
+    if (!financeUser) {
+        res.status(400).json({ message: "Cannot find user!" });
+    }
+
+    financeUser?.transactions.filter((id) => id != item._id);
+    await financeUser?.save();
+    res.status(200).json({ message: 'item deleted successfully' });
+};
+
+
+export async function fetchTransactionById(req: Request, res: Response) {
+    const id = req.params.id;
+    const transaction = await Transaction.findById(id).populate("transactee");
+    res.status(200).json(transaction);
+};
 
