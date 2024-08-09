@@ -25,7 +25,6 @@ app.use('/api/finance', financeRoutes);
 // Make sure to add this after every other middlewares!!! , error handler must be at the end of all the functions.
 app.use(errorHandler);
 
-
 app.get('/', (req, res) => {
     res.send('<h1> Hello from the backend! </h1>');
 });

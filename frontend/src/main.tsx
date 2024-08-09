@@ -11,9 +11,10 @@ import "./common.css";
 import FinancePayment from "./pages/FinancePayment";
 import FinanceInfo from "./pages/FinanceInfo";
 import Dashboard from "./pages/Dashboard";
+import FinanceAnalytics from "./pages/FinanceAnalytics";
 
-axios.defaults.baseURL = `https://life-gui.onrender.com/api`;
-// axios.defaults.baseURL = `http://localhost:5000/api`;
+// axios.defaults.baseURL = `https://life-gui.onrender.com/api`;
+axios.defaults.baseURL = `http://localhost:5000/api`;
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,11 @@ const router = createBrowserRouter([
   {
     path: "/finance/info/:transaction_id",
     element: <FinanceInfo />,
+    errorElement: <NotFound />,
+  },
+  {
+    path: "/finance/analytics",
+    element: <FinanceAnalytics />,
     errorElement: <NotFound />,
   },
 ]);

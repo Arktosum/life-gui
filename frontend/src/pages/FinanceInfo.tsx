@@ -42,13 +42,13 @@ export default function FinanceInfo() {
       <div>{transaction?.remarks}</div>
       <div>{transaction?.status}</div>
       <Link to="/finance">
-        <button className="text-blue-600 border-2 border-blue-600 px-5 py-2">
+        <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
           Go back
         </button>
       </Link>
       <button
         onClick={handleDelete}
-        className="text-red-600 border-2 border-red-600 px-5 py-2"
+        className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
       >
         Delete transaction!
       </button>

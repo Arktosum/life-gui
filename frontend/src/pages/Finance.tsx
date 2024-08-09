@@ -8,7 +8,7 @@ import {
   Transaction,
 } from "../redux/reducers/financeReducer";
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function PageContainer({ children }: React.PropsWithChildren) {
   return (
@@ -51,7 +51,10 @@ export default function Finance() {
       setFinanceUserRegex("");
     });
   }
+  let balance = 0;
   const transactionElements = transactions.map((item) => {
+    const isSending = item.mode == "SEND";
+    balance += item.amount * (isSending ? -1 : 1);
     return <TransactionItem key={item._id} item={item} />;
   });
   const financeUserElements = financeUsers.map((item) => {
@@ -64,17 +67,43 @@ export default function Finance() {
       </div>
     );
   }
+
   return (
     <PageContainer>
-      <header className="h-[10%] borderize">
-        <input type="text" value={financeUserRegex} onChange={handleChange} />
+      <header className="h-[10%] flex flex-col">
+        <input
+          type="text"
+          className="m-5 bg-[#1f1f1f] justify-center items-center rounded-xl border-2 border-green-600 text-white px-5 py-2"
+          value={financeUserRegex}
+          onChange={handleChange}
+        />
       </header>
-      <main className="flex-1 borderize overflow-scroll">
+      <main className="flex-1 overflow-scroll">
+        <div className="text-xl text-white self-center">
+          Balance :{" "}
+          <span
+            className={`${balance < 0 ? "text-red-500" : "text-green-600"}`}
+          >
+            ₹ {balance}
+          </span>
+        </div>
         <div className="flex flex-col gap-5">
           {financeUserRegex == "" ? transactionElements : financeUserElements}
         </div>
       </main>
-      <footer className="h-[10%] borderize"></footer>
+      <footer className="h-[10%] grid grid-cols-3 place-items-center">
+        <Link to="/finance/analytics">
+          <div className="w-10 h-10 rounded-full bg-gray-600 grid place-items-center">
+            A
+          </div>
+        </Link>
+        <div className="w-10 h-10 rounded-full bg-gray-600 grid place-items-center">
+          A
+        </div>
+        <div className="w-10 h-10 rounded-full bg-gray-600 grid place-items-center">
+          A
+        </div>
+      </footer>
     </PageContainer>
   );
 }
@@ -82,18 +111,23 @@ export default function Finance() {
 function TransactionItem({ item }: { item: Transaction }) {
   const transactee = item.transactee as FinanceUser;
   const navigate = useNavigate();
+  const isSending = item.mode == "SEND";
   return (
     <div
       onClick={() => {
         navigate(`/finance/info/${item._id}`);
       }}
-      className="bg-[#141414] p-5 m-2 rounded-xl"
+      className={`bg-[#141414] p-5 m-2 rounded-xl border-b-2 ${
+        isSending ? "border-b-red-600" : "border-b-green-600"
+      } `}
     >
       <div className="flex justify-between text-nowrap">
         <div className="text-white font-bold">
           {transactee.transactee as string}
         </div>
-        <div className="text-white">$ {item.amount}</div>
+        <div className={`${isSending ? "text-red-500" : "text-green-600"}`}>
+          ₹ {item.amount}
+        </div>
       </div>
       <div>
         <div className="text-yellow-500">{item.remarks}</div>

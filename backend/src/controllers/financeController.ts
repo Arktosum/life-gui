@@ -66,7 +66,6 @@ export async function deleteTransaction(req: Request, res: Response) {
     res.status(200).json({ message: 'item deleted successfully' });
 };
 
-
 export async function fetchTransactionById(req: Request, res: Response) {
     const id = req.params.id;
     const transaction = await Transaction.findById(id).populate("transactee");
