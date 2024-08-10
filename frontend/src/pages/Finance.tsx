@@ -78,7 +78,7 @@ export default function Finance() {
           onChange={handleChange}
         />
       </header>
-      <main className="flex-1 overflow-scroll">
+      <main className="flex-1 overflow-y-scroll">
         <div className="text-xl text-white self-center">
           Balance :{" "}
           <span
@@ -97,9 +97,11 @@ export default function Finance() {
             A
           </div>
         </Link>
-        <div className="w-10 h-10 rounded-full bg-gray-600 grid place-items-center">
-          A
-        </div>
+        <Link to="/">
+          <div className="w-10 h-10 rounded-full bg-gray-600 grid place-items-center">
+            A
+          </div>
+        </Link>
         <div className="w-10 h-10 rounded-full bg-gray-600 grid place-items-center">
           A
         </div>
@@ -126,7 +128,7 @@ function TransactionItem({ item }: { item: Transaction }) {
           {transactee.transactee as string}
         </div>
         <div className={`${isSending ? "text-red-500" : "text-green-600"}`}>
-          ₹ {item.amount}
+          {isSending ? "-" : "+"} ₹ {item.amount}
         </div>
       </div>
       <div>

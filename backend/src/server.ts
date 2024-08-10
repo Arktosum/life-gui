@@ -4,6 +4,7 @@ import connectDB from './database';
 import cors from 'cors'
 import errorHandler from './middlewares/errorHandler';
 import financeRoutes from './routes/financeRoutes';
+import friendRoutes from './routes/friendRoutes';
 
 dotenv.config();
 const app = express();
@@ -13,12 +14,13 @@ connectDB();
 const PORT = process.env.PORT || 3000;
 
 // PRE MIDDLE WARES
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 app.use(cors());
 
 
 // ROUTES
 app.use('/api/finance', financeRoutes);
+app.use('/api/friend', friendRoutes);
 
 
 // POST MIDDLE WARE
