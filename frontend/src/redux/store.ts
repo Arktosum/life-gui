@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import financeReducer from './reducers/financeReducer'
 import friendReducer from './reducers/friendReducer'
+import authReducer from './reducers/authReducer'
 
 export const store = configureStore({
     reducer: {
         finance: financeReducer,
         friend: friendReducer,
+        auth: authReducer
     },
 })
 

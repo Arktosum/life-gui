@@ -13,6 +13,8 @@ import FinanceInfo from "./pages/FinanceInfo";
 import Dashboard from "./pages/Dashboard";
 import FinanceAnalytics from "./pages/FinanceAnalytics";
 import FriendPage from "./pages/FriendPage";
+import Login from "./pages/Login";
+import PrivateRoute from "./pages/PrivateRoute";
 
 axios.defaults.baseURL = `https://life-gui.onrender.com/api`;
 // axios.defaults.baseURL = `http://localhost:5000/api`;
@@ -20,32 +22,66 @@ axios.defaults.baseURL = `https://life-gui.onrender.com/api`;
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Dashboard />,
+    element: <Login />,
+    errorElement: <NotFound />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+    errorElement: <NotFound />,
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <Dashboard />
+      </PrivateRoute>
+    ),
     errorElement: <NotFound />,
   },
   {
     path: "/finance",
-    element: <Finance />,
+    element: (
+      <PrivateRoute>
+        <Finance />
+      </PrivateRoute>
+    ),
     errorElement: <NotFound />,
   },
   {
     path: "/finance/payment/:finance_user_id",
-    element: <FinancePayment />,
+    element: (
+      <PrivateRoute>
+        <FinancePayment />
+      </PrivateRoute>
+    ),
     errorElement: <NotFound />,
   },
   {
     path: "/finance/info/:transaction_id",
-    element: <FinanceInfo />,
+    element: (
+      <PrivateRoute>
+        <FinanceInfo />
+      </PrivateRoute>
+    ),
     errorElement: <NotFound />,
   },
   {
     path: "/finance/analytics",
-    element: <FinanceAnalytics />,
+    element: (
+      <PrivateRoute>
+        <FinanceAnalytics />
+      </PrivateRoute>
+    ),
     errorElement: <NotFound />,
   },
   {
     path: "/friend",
-    element: <FriendPage />,
+    element: (
+      <PrivateRoute>
+        <FriendPage />
+      </PrivateRoute>
+    ),
     errorElement: <NotFound />,
   },
 ]);

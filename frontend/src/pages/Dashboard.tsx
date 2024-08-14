@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { useAppDispatch } from "../redux/hooks";
+import { logoutUser } from "../redux/reducers/authReducer";
 
 function PageContainer({ children }: React.PropsWithChildren) {
   return (
@@ -9,6 +11,10 @@ function PageContainer({ children }: React.PropsWithChildren) {
 }
 
 export default function Dashboard() {
+  const dispatch = useAppDispatch();
+  function handleLogout() {
+    dispatch(logoutUser());
+  }
   return (
     <PageContainer>
       <div className="flex items-center gap-5 m-5 justify-center">
@@ -34,6 +40,13 @@ export default function Dashboard() {
         to="/finance"
       >
         Finance
+      </Link>
+      <Link
+        onClick={handleLogout}
+        className="text-red-600 bg-[#1c1c1c] p-5 rounded-xl m-5"
+        to="/"
+      >
+        Logout
       </Link>
     </PageContainer>
   );

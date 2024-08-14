@@ -5,6 +5,7 @@ import cors from 'cors'
 import errorHandler from './middlewares/errorHandler';
 import financeRoutes from './routes/financeRoutes';
 import friendRoutes from './routes/friendRoutes';
+import authRoutes from './routes/authRoutes';
 
 dotenv.config();
 const app = express();
@@ -21,6 +22,7 @@ app.use(cors());
 // ROUTES
 app.use('/api/finance', financeRoutes);
 app.use('/api/friend', friendRoutes);
+app.use('/api/auth', authRoutes);
 
 
 // POST MIDDLE WARE

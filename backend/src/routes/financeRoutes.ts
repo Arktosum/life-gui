@@ -1,6 +1,7 @@
 import express from 'express';
-import { createFinanceUser, fetchTransactionById, deleteTransactionById,updateTransactionById, createTransaction, fetchAllTransactions, fetchFinanceUserById, fetchFinanceUsersRegex } from '../controllers/financeController';
+import { createFinanceUser, fetchTransactionById, deleteTransactionById, updateTransactionById, createTransaction, fetchAllTransactions, fetchFinanceUserById, fetchFinanceUsersRegex } from '../controllers/financeController';
 import asyncHandler from '../middlewares/asyncHandler';
+import authenticateJWT from '../middlewares/authHandler';
 
 
 const router = express.Router();
