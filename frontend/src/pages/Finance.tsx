@@ -6,9 +6,11 @@ import {
   fetchFinanceUsersRegex,
   FinanceUser,
   Transaction,
+  updateTransactionById,
 } from "../redux/reducers/financeReducer";
 import moment from "moment";
 import { Link, useNavigate } from "react-router-dom";
+import { setState } from "../types";
 
 function PageContainer({ children }: React.PropsWithChildren) {
   return (
@@ -17,6 +19,40 @@ function PageContainer({ children }: React.PropsWithChildren) {
     </div>
   );
 }
+
+const UNPAID_SVG = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="yellow"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="size-6"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+    />
+  </svg>
+);
+
+const PAID_SVG = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="green"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="size-6"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"
+    />
+  </svg>
+);
 
 export default function Finance() {
   const dispatch = useAppDispatch();
@@ -52,10 +88,20 @@ export default function Finance() {
     });
   }
   let balance = 0;
+  let due = 0;
   const transactionElements = transactions.map((item) => {
     const isSending = item.mode == "SEND";
-    balance += item.amount * (isSending ? -1 : 1);
-    return <TransactionItem key={item._id} item={item} />;
+    balance +=
+      item.amount * (isSending ? -1 : 1) * (item.status == "PAID" ? 1 : 0);
+    due +=
+      item.amount * (isSending ? -1 : 1) * (item.status == "UNPAID" ? 1 : 0);
+    return (
+      <TransactionItem
+        setTransactions={setTransactions}
+        key={item._id}
+        item={item}
+      />
+    );
   });
   const financeUserElements = financeUsers.map((item) => {
     return <FinanceUserItem key={item._id} item={item} />;
@@ -80,12 +126,20 @@ export default function Finance() {
       </header>
       <main className="flex-1 overflow-y-scroll">
         <div className="text-xl text-white self-center">
-          Balance :{" "}
-          <span
-            className={`${balance < 0 ? "text-red-500" : "text-green-600"}`}
-          >
-            ₹ {balance}
-          </span>
+          <div className="flex gap-5">
+            <div> Balance :</div>
+            <span
+              className={`${balance < 0 ? "text-red-500" : "text-green-600"}`}
+            >
+              ₹ {balance}
+            </span>
+          </div>
+          <div className="flex gap-5">
+            <div> Due :</div>
+            <span className={`${due < 0 ? "text-red-500" : "text-green-600"}`}>
+              ₹ {due}
+            </span>
+          </div>
         </div>
         <div className="flex flex-col gap-5">
           {financeUserRegex == "" ? transactionElements : financeUserElements}
@@ -110,10 +164,32 @@ export default function Finance() {
   );
 }
 
-function TransactionItem({ item }: { item: Transaction }) {
+function TransactionItem({
+  item,
+  setTransactions,
+}: {
+  item: Transaction;
+  setTransactions: setState<Transaction[]>;
+}) {
   const transactee = item.transactee as FinanceUser;
   const navigate = useNavigate();
   const isSending = item.mode == "SEND";
+  const dispatch = useAppDispatch();
+  function handleStatusChange(e: React.MouseEvent<HTMLDivElement>) {
+    e.stopPropagation();
+    const data = {
+      ...item,
+      status: item.status == "PAID" ? "UNPAID" : "PAID",
+    } as Transaction;
+    dispatch(updateTransactionById(data)).then((action) => {
+      const result = action.payload as Transaction;
+      setTransactions((prev) => {
+        return prev.map((prev_item) => {
+          return prev_item._id == item._id ? result : prev_item;
+        });
+      });
+    });
+  }
   return (
     <div
       onClick={() => {
@@ -131,12 +207,15 @@ function TransactionItem({ item }: { item: Transaction }) {
           {isSending ? "-" : "+"} ₹ {item.amount}
         </div>
       </div>
-      <div>
+      <div className="flex justify-between">
         <div className="text-yellow-500">{item.remarks}</div>
+        <div onClick={handleStatusChange}>
+          {item.status == "UNPAID" ? UNPAID_SVG : PAID_SVG}
+        </div>
       </div>
       <div>
         <div className="text-sm text-gray-600">
-          {moment(item.updatedAt).toString()}
+          {moment(item.createdAt).toString()}
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
-  deleteTransaction,
+  deleteTransactionById,
   fetchTransactionById,
   FinanceUser,
   Transaction,
@@ -18,7 +18,7 @@ export default function FinanceInfo() {
 
   function handleDelete() {
     if (_id == null) return;
-    dispatch(deleteTransaction(_id)).then(() => {
+    dispatch(deleteTransactionById(_id)).then(() => {
       navigate("/finance");
     });
   }

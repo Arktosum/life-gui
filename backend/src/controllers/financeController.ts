@@ -9,14 +9,14 @@ export async function createFinanceUser(req: Request, res: Response) {
 };
 
 export async function fetchAllTransactions(req: Request, res: Response) {
-    const transactions = await Transaction.find().populate("transactee").sort({ updatedAt: 'desc' });
+    const transactions = await Transaction.find().populate("transactee").sort({ createdAt: 'desc' });
     res.status(200).json(transactions);
 };
 
 
 export async function fetchFinanceUsersRegex(req: Request, res: Response) {
     const regex = req.params.regex
-    const financeUsers = await FinanceUser.find({ transactee: { $regex: regex, $options: 'i' } }).sort({ updatedAt: 'desc' });
+    const financeUsers = await FinanceUser.find({ transactee: { $regex: regex, $options: 'i' } }).sort({ createdAt: 'desc' });
     res.status(200).json(financeUsers);
 };
 
@@ -48,7 +48,7 @@ export async function createTransaction(req: Request, res: Response) {
     res.status(201).json(transaction);
 };
 
-export async function deleteTransaction(req: Request, res: Response) {
+export async function deleteTransactionById(req: Request, res: Response) {
     const item = await Transaction.findByIdAndDelete(req.params.id);
     if (!item) {
         res.status(404).json({ message: 'item not found' });
@@ -72,3 +72,13 @@ export async function fetchTransactionById(req: Request, res: Response) {
     res.status(200).json(transaction);
 };
 
+
+
+export async function updateTransactionById(req: Request, res: Response) {
+    const item = await Transaction.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true }).populate("transactee");;
+    if (!item) {
+        res.status(404).json({ message: 'item not found' });
+        return;
+    }
+    res.status(200).json(item);
+};

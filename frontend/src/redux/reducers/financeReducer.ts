@@ -92,8 +92,8 @@ export const createTransaction = createAsyncThunk<Transaction, Transaction>(
         }
     },
 )
-export const deleteTransaction = createAsyncThunk<Transaction, string>(
-    'finance/deleteTransaction',
+export const deleteTransactionById = createAsyncThunk<Transaction, string>(
+    'finance/deleteTransactionById',
     async (id, thunkApi) => {
         try {
             const response = await axios.delete(`/finance/transaction/${id}`)
@@ -110,6 +110,19 @@ export const fetchTransactionById = createAsyncThunk<Transaction, string>(
     async (id, thunkApi) => {
         try {
             const response = await axios.get(`/finance/transaction/${id}`)
+            return response.data
+        }
+        catch (error) {
+            return thunkApi.rejectWithValue(error)
+        }
+    },
+)
+
+export const updateTransactionById = createAsyncThunk<Transaction, Transaction>(
+    'finance/updateTransactionById',
+    async (item, thunkApi) => {
+        try {
+            const response = await axios.post(`/finance/transaction/${item._id}`, item)
             return response.data
         }
         catch (error) {
