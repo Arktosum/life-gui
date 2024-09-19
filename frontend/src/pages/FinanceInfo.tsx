@@ -33,14 +33,15 @@ export default function FinanceInfo() {
   const financeUser = transaction?.transactee as FinanceUser;
   return (
     <div>
-      <div>{financeUser?.transactee}</div>
-      <div>{transaction?.amount}</div>
-      <div>{transaction?.category}</div>
-      <div>{transaction?.mode}</div>
-      <div>{moment(transaction?.createdAt).toString()}</div>
-      <div>{moment(transaction?.updatedAt).toString()}</div>
-      <div>{transaction?.remarks}</div>
-      <div>{transaction?.status}</div>
+      <div>Transactee: {financeUser?.transactee}</div>
+      <div>Amount: {transaction?.amount}</div>
+      <div>Category: {transaction?.category}</div>
+      <div>Mode: {transaction?.mode}</div>
+      <div>Created At: {moment(transaction?.createdAt).toString()}</div>
+      <div>Updated At: {moment(transaction?.updatedAt).toString()}</div>
+      <div>Completed At : {moment(transaction?.completedAt).toString()}</div>
+      <div>Remarks : {transaction?.remarks}</div>
+      <div>Status: {transaction?.status}</div>
       <Link to="/finance">
         <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
           Go back

@@ -15,7 +15,8 @@ import FinanceAnalytics from "./pages/FinanceAnalytics";
 import FriendPage from "./pages/FriendPage";
 import Login from "./pages/Login";
 import PrivateRoute from "./pages/PrivateRoute";
-
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 axios.defaults.baseURL = `https://life-gui.onrender.com/api`;
 // axios.defaults.baseURL = `http://localhost:5000/api`;
 
@@ -90,6 +91,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
       <RouterProvider router={router} />
+      <ToastContainer />
     </Provider>
   </React.StrictMode>
 );

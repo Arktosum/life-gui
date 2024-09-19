@@ -23,6 +23,7 @@ const INITIAL_STATUS: Transaction = {
   status: "UNPAID",
   partial: 0,
   remarks: "",
+  completedAt: undefined,
 };
 
 export default function FinancePayment() {
@@ -61,9 +62,7 @@ export default function FinancePayment() {
   }
   return (
     <PageContainer>
-      <div className="text-white">
-        FinancePayment : {financeUser?.transactee}
-      </div>
+      <div className="text-white">Transactee : {financeUser?.transactee}</div>
       <input type="number" name="amount" onChange={handleChange} />
       <select name="category" onChange={handleChange}>
         <option value="FOOD">FOOD</option>
@@ -76,8 +75,19 @@ export default function FinancePayment() {
         <option value="SEND">SEND</option>
         <option value="RECEIVE">RECEIVE</option>
       </select>
+      <input
+        type="datetime-local"
+        className="text-black"
+        name="completedAt"
+        onChange={handleChange}
+      />
       <input type="text" name="remarks" onChange={handleChange} />
-      <button onClick={handleSubmit} className="text-green-600 border-2 border-green-600 px-5 py-2">Send!</button>
+      <button
+        onClick={handleSubmit}
+        className="text-green-600 border-2 border-green-600 px-5 py-2"
+      >
+        Send!
+      </button>
     </PageContainer>
   );
 }

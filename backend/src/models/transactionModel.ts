@@ -7,7 +7,8 @@ export interface ITransaction extends Document {
     mode: "SEND" | "RECEIVE",
     status: "PAID" | "UNPAID" | "PARTIAL",
     partial: number,
-    remarks: string
+    remarks: string,
+    completedAt: Date,
 }
 
 const TransactionSchema: Schema = new Schema({
@@ -34,7 +35,8 @@ const TransactionSchema: Schema = new Schema({
         default: "UNPAID",
     },
     partial: Number,
-    remarks: String
+    remarks: String,
+    completedAt: Date
 }, {
     timestamps: true
 });

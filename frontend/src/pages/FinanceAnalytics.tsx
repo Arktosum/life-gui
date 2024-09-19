@@ -54,9 +54,9 @@ export default function FinanceAnalytics() {
     }
   > = {};
   for (const item of transactions) {
-    const daily_datetime = moment(item.createdAt).format("YYYY-MM-DD");
-    const weekly_datetime = moment(item.createdAt).week();
-    const monthly_datetime = moment(item.createdAt).format("YYYY-MM");
+    const daily_datetime = moment(item.completedAt).format("YYYY-MM-DD");
+    const weekly_datetime = moment(item.completedAt).week();
+    const monthly_datetime = moment(item.completedAt).format("YYYY-MM");
 
     const sentAmount = item.amount * (item.mode == "SEND" ? 1 : 0);
     const receivedAmount = item.amount * (item.mode == "RECEIVE" ? 1 : 0);

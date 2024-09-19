@@ -215,7 +215,7 @@ function TransactionItem({
       </div>
       <div>
         <div className="text-sm text-gray-600">
-          {moment(item.createdAt).toString()}
+          {moment(item.completedAt).toString()}
         </div>
       </div>
     </div>

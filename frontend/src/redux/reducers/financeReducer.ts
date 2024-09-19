@@ -12,7 +12,7 @@ export interface FinanceUser {
     transactee: string,
     transactions: Transaction[],
     createdAt?: Date,
-    updatedAt?: Date
+    updatedAt?: Date,
 }
 
 export interface Transaction {
@@ -24,6 +24,7 @@ export interface Transaction {
     status: "PAID" | "UNPAID" | "PARTIAL",
     partial: number,
     remarks: string,
+    completedAt?: Date,
     createdAt?: Date,
     updatedAt?: Date
 }
