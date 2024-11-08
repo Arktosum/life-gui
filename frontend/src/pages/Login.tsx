@@ -25,12 +25,7 @@ export default function Login() {
 
   return (
     <PageContainer>
-      <div className="flex items-center gap-5 m-5 justify-center">
-        <img src="brand-logo-full.svg" alt="" className="w-[50%]" />
-      </div>
-      <div className="grid place-content-center min-h-[50vh]">
-        <LoginContent />
-      </div>
+      <LoginContent />
     </PageContainer>
   );
 }
@@ -42,7 +37,9 @@ function LoginContent() {
     email: "",
     password: "",
   });
-  function handleSubmit() {
+
+  function handleSubmit(e) {
+    e.preventDefault();
     dispatch(loginUser(form)).then((action) => {
       if (action.meta.requestStatus == "fulfilled") {
         showToast("Logged in successfully!", "SUCCESS");
@@ -59,47 +56,37 @@ function LoginContent() {
       }
     });
   }
+
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
   }
+
   return (
     <>
-      <div className="text-white text-3xl font-bold text-center w-full">
-        Login
-      </div>
-      <div className="text-white grid grid-cols-1 place-items-center gap-5">
-        <div>
-          <div>Email</div>
-          <input
-            type="email"
-            name="email"
-            className="text-white bg-gray-600 px-5 py-2"
-            value={form.email}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <div>Password</div>
-          <input
-            type="password"
-            name="password"
-            className="text-white bg-gray-600 px-5 py-2"
-            value={form.password}
-            onChange={handleChange}
-          />
-        </div>
-        <button
-          className="px-5 py-2 text-white bg-green-600"
-          onClick={handleSubmit}
-        >
-          LOGIN
-        </button>
-        <div className="text-white">
-          Do not have an account? <span className="text-red-500">Too bad!</span>
-        </div>
+      <div className="w-full h-full flex flex-col justify-center items-center">
+        <img src="./brand-logo-full.svg" className="w-[50%]"></img>
+        <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center gap-5 my-10">
+          <div className="text-white">
+            <BottomInput type="email" label="Email" name="email" handleChange={handleChange} />
+          </div>
+          <div className="text-white">
+            <BottomInput type="password" label="Password" name="password" handleChange={handleChange}/>
+          </div>
+          <button className="text-black rounded-xl px-20 py-2 bg-[#4DA500] my-10">LOGIN</button>
+          <div className="text-white borderize">
+            Don't have an account? <strong className="text-red-600">Too bad!</strong>
+          </div>
+        </form>
       </div>
     </>
   );
+}
+
+function BottomInput({label,name,handleChange,type}){
+  return <>
+    <label htmlFor="" className="text-[0.7rem] text-[#898686]">{label}</label>
+    <input type={type} name={name} className="bg-inherit outline-none border-black block border-b-green-600 border-2" onChange={handleChange}/>
+  </>
 }

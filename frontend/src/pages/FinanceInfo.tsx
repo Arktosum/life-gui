@@ -5,6 +5,7 @@ import {
   FinanceUser,
   Transaction,
 } from "../redux/reducers/financeReducer";
+
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "../redux/hooks";
 import moment from "moment";
@@ -22,6 +23,7 @@ export default function FinanceInfo() {
       navigate("/finance");
     });
   }
+
   useEffect(() => {
     if (_id == null) return;
     dispatch(fetchTransactionById(_id)).then((action) => {
@@ -30,7 +32,9 @@ export default function FinanceInfo() {
       }
     });
   }, [_id, dispatch]);
+
   const financeUser = transaction?.transactee as FinanceUser;
+  
   return (
     <div>
       <div>Transactee: {financeUser?.transactee}</div>

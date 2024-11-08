@@ -14,6 +14,7 @@ function PageContainer({ children }: React.PropsWithChildren) {
     </div>
   );
 }
+
 export default function FinanceAnalytics() {
   const dispatch = useAppDispatch();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
