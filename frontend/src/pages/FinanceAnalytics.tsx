@@ -141,7 +141,7 @@ export default function FinanceAnalytics() {
       >
         MONTHLY
       </div>
-      <Link to="/finance">
+      <Link to="/finance/dashboard">
         <div className="text-black font-bold bg-blue-600 px-5 py-2 text-center">
           GO BACK
         </div>

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../redux/hooks";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { loginUser, setAuthUser } from "../redux/reducers/authReducer";
 import { showToast } from "../utils";
 
@@ -38,7 +38,7 @@ function LoginContent() {
     password: "",
   });
 
-  function handleSubmit(e) {
+  function handleSubmit(e: FormEvent) {
     e.preventDefault();
     dispatch(loginUser(form)).then((action) => {
       if (action.meta.requestStatus == "fulfilled") {
@@ -66,17 +66,33 @@ function LoginContent() {
   return (
     <>
       <div className="w-full h-full flex flex-col justify-center items-center">
-        <img src="./brand-logo-full.svg" className="w-[50%]"></img>
-        <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center gap-5 my-10">
+        <img src="/brand-logo-full.svg" className="w-[50%]"></img>
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col justify-center items-center gap-5 my-10"
+        >
           <div className="text-white">
-            <BottomInput type="email" label="Email" name="email" handleChange={handleChange} />
+            <BottomInput
+              type="email"
+              label="Email"
+              name="email"
+              handleChange={handleChange}
+            />
           </div>
           <div className="text-white">
-            <BottomInput type="password" label="Password" name="password" handleChange={handleChange}/>
+            <BottomInput
+              type="password"
+              label="Password"
+              name="password"
+              handleChange={handleChange}
+            />
           </div>
-          <button className="text-black rounded-xl px-20 py-2 bg-[#4DA500] my-10">LOGIN</button>
-          <div className="text-white borderize">
-            Don't have an account? <strong className="text-red-600">Too bad!</strong>
+          <button className="text-black rounded-xl px-20 py-2 bg-[#4DA500] my-10">
+            LOGIN
+          </button>
+          <div className="text-white">
+            Don't have an account?
+            <strong className="text-red-600">Too bad!</strong>
           </div>
         </form>
       </div>
@@ -84,9 +100,25 @@ function LoginContent() {
   );
 }
 
-function BottomInput({label,name,handleChange,type}){
-  return <>
-    <label htmlFor="" className="text-[0.7rem] text-[#898686]">{label}</label>
-    <input type={type} name={name} className="bg-inherit outline-none border-black block border-b-green-600 border-2" onChange={handleChange}/>
-  </>
+interface BottomInputProps {
+  label: string;
+  name: string;
+  type: string;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+function BottomInput({ label, name, handleChange, type }: BottomInputProps) {
+  return (
+    <>
+      <label htmlFor="" className="text-[0.7rem] text-[#898686]">
+        {label}
+      </label>
+      <input
+        type={type}
+        name={name}
+        className="bg-inherit outline-none border-black block border-b-green-600 border-2"
+        onChange={handleChange}
+      />
+    </>
+  );
 }

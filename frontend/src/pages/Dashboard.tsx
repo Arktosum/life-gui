@@ -18,11 +18,11 @@ export default function Dashboard() {
   return (
     <PageContainer>
       <div className="flex items-center gap-5 m-5 justify-center">
-        <img src="brand-logo-full.svg" alt="" className="w-[50%]" />
+        <img src="/brand-logo-full.svg" alt="" className="w-[50%]" />
       </div>
       <Link
         className="text-white bg-[#1c1c1c] p-5 rounded-xl m-5"
-        to="/finance"
+        to="/finance/dashboard"
       >
         Finance
       </Link>

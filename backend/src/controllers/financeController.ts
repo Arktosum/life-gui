@@ -14,6 +14,42 @@ export async function fetchAllTransactions(req: Request, res: Response) {
 };
 
 
+
+// Balance = amount * IS_SEND(-1,1) * IS_COMPLETE(1,0)
+// DUE = amount * IS_SEND(-1,1) * IS_COMPLETE(0,1)
+
+export async function fetchFinanceBalance(req: Request, res: Response) {
+    const result = await Transaction.aggregate([
+        {
+            $project: {
+                balance: {
+                    $multiply: [
+                        "$amount",
+                        { $cond: [{ $eq: ["$mode", "SEND"] }, -1, 1] }, // If mode is SEND, multiply by -1
+                        { $cond: [{ $eq: ["$status", "PAID"] }, 1, 0] } // If status is COMPLETED, keep value; otherwise, zero it out
+                    ]
+                },
+                due: {
+                    $multiply: [
+                        "$amount",
+                        { $cond: [{ $eq: ["$mode", "SEND"] }, -1, 1] }, // If mode is SEND, multiply by -1
+                        { $cond: [{ $eq: ["$status", "PAID"] }, 0, 1] } // If status is COMPLETED, zero it out; otherwise, keep value
+                    ]
+                }
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                balance: { $sum: "$balance" }, // Sum all computed results
+                due: { $sum: "$due" } // Sum all computed results
+            }
+        }
+    ]);
+    res.send({ balance: result[0]?.balance || 0, due : result[0]?.due || 0 })
+}
+
+
 export async function fetchFinanceUsersRegex(req: Request, res: Response) {
     const regex = req.params.regex
     const financeUsers = await FinanceUser.find({ transactee: { $regex: regex, $options: 'i' } }).sort({ createdAt: 'desc' });

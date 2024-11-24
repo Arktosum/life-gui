@@ -1,5 +1,5 @@
 import express from 'express';
-import { createFinanceUser, fetchTransactionById, deleteTransactionById, updateTransactionById, createTransaction, fetchAllTransactions, fetchFinanceUserById, fetchFinanceUsersRegex } from '../controllers/financeController';
+import { createFinanceUser, fetchTransactionById, deleteTransactionById, updateTransactionById, createTransaction, fetchAllTransactions, fetchFinanceUserById, fetchFinanceUsersRegex, fetchFinanceBalance } from '../controllers/financeController';
 import asyncHandler from '../middlewares/asyncHandler';
 import authenticateJWT from '../middlewares/authHandler';
 
@@ -11,7 +11,7 @@ router.get('/transaction/:id', asyncHandler(fetchTransactionById));
 router.post('/transaction', asyncHandler(createTransaction));
 router.delete('/transaction/:id', asyncHandler(deleteTransactionById));
 router.post('/transaction/:id', asyncHandler(updateTransactionById));
-
+router.get('/balance', asyncHandler(fetchFinanceBalance));
 
 
 router.get('/user/:regex', asyncHandler(fetchFinanceUsersRegex));

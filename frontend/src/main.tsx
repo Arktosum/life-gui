@@ -5,20 +5,23 @@ import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import NotFound from "./pages/NotFound";
-import Finance from "./pages/Finance";
 import axios from "axios";
 import "./common.css";
-import FinancePayment from "./pages/FinancePayment";
-import FinanceInfo from "./pages/FinanceInfo";
 import Dashboard from "./pages/Dashboard";
 import FinanceAnalytics from "./pages/FinanceAnalytics";
 import FriendPage from "./pages/FriendPage";
 import Login from "./pages/Login";
 import PrivateRoute from "./pages/PrivateRoute";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
+import FinanceDashboard from "./pages/FinanceDashboard";
+import FinanceHistory from "./pages/FinanceHistory";
+import FinanceCheckoutUpdate from "./pages/FinanceCheckoutUpdate";
+import FinanceCheckout from "./pages/FinanceCheckout";
+
 axios.defaults.baseURL = `https://life-gui.onrender.com/api`;
 // axios.defaults.baseURL = `http://localhost:5000/api`;
+// axios.defaults.baseURL = `http://192.168.0.132:5000/api`;
 
 const router = createBrowserRouter([
   {
@@ -41,31 +44,36 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
   },
   {
-    path: "/finance",
+    path: "/finance/dashboard",
     element: (
       <PrivateRoute>
-        <Finance />
+        <FinanceDashboard />
       </PrivateRoute>
     ),
-    errorElement: <NotFound />,
   },
   {
-    path: "/finance/payment/:finance_user_id",
+    path: "/finance/history",
     element: (
       <PrivateRoute>
-        <FinancePayment />
+        <FinanceHistory />
       </PrivateRoute>
     ),
-    errorElement: <NotFound />,
   },
   {
-    path: "/finance/info/:transaction_id",
+    path: "/finance/checkout_update/:transaction_id",
     element: (
       <PrivateRoute>
-        <FinanceInfo />
+        <FinanceCheckoutUpdate />
       </PrivateRoute>
     ),
-    errorElement: <NotFound />,
+  },
+  {
+    path: "/finance/checkout/:finance_user_id",
+    element: (
+      <PrivateRoute>
+        <FinanceCheckout />
+      </PrivateRoute>
+    ),
   },
   {
     path: "/finance/analytics",
@@ -74,7 +82,6 @@ const router = createBrowserRouter([
         <FinanceAnalytics />
       </PrivateRoute>
     ),
-    errorElement: <NotFound />,
   },
   {
     path: "/friend",
@@ -83,7 +90,6 @@ const router = createBrowserRouter([
         <FriendPage />
       </PrivateRoute>
     ),
-    errorElement: <NotFound />,
   },
 ]);
 

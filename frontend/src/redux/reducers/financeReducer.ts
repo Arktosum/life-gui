@@ -132,7 +132,18 @@ export const updateTransactionById = createAsyncThunk<Transaction, Transaction>(
     },
 )
 
-
+export const fetchFinanceBalance = createAsyncThunk<{ balance: number, due: number }, void>(
+    'finance/fetchFinanceBalance',
+    async (_, thunkApi) => {
+        try {
+            const response = await axios.get(`/finance/balance`)
+            return response.data
+        }
+        catch (error) {
+            return thunkApi.rejectWithValue(error)
+        }
+    },
+)
 
 
 
