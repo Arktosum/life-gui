@@ -138,7 +138,7 @@ function TransactionItem({ transaction, setTransactions }: TransactionItem) {
       <div className="flex w-full justify-between">
         <div className="text-xl">{transactee_name}</div>
         <div className={is_send ? "text-red-600" : "text-green-600"}>
-          {is_send ? "-" : "+"} ${transaction.amount}
+          {is_send ? "-" : "+"} ₹ {transaction.amount}
         </div>
       </div>
       <div className="flex w-full justify-between">

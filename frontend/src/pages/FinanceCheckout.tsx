@@ -84,12 +84,17 @@ export default function FinanceCheckout() {
             {financeUser?.transactee}
           </div>
         </div>
-        <div className="self-center my-20">
+        <div
+          className={`self-center my-20 flex  ${
+            IS_SENDING ? "text-red-600" : "text-green-600"
+          } `}
+        >
+          <span className="text-3xl">{IS_SENDING ? "-" : "+"}₹</span>
           <input
             type="number"
             name="amount"
             placeholder="0"
-            className="bg-inherit text-white text-center text-3xl font-bold"
+            className={`bg-inherit  text-center text-3xl font-bold`}
             onChange={handleChange}
           />
         </div>

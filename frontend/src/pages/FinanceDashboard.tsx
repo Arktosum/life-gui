@@ -105,7 +105,8 @@ function BalanceDisplay() {
             balance_okay ? "text-green-600" : "text-red-600"
           }`}
         >
-          $ {balance.balance.toLocaleString()}
+          {balance_okay ? "+" : "-"} ₹{" "}
+          {Math.abs(balance.balance).toLocaleString()}
         </div>
       </div>
       <div>
@@ -115,7 +116,7 @@ function BalanceDisplay() {
             due_okay ? "text-green-600" : "text-red-600"
           }`}
         >
-          $ {balance.due.toLocaleString()}
+          {due_okay ? "+" : "-"} ₹ {Math.abs(balance.due).toLocaleString()}
         </div>
       </div>
     </div>

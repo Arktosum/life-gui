@@ -99,7 +99,12 @@ export default function FinanceCheckoutUpdate() {
             {(transaction.transactee as FinanceUser).transactee}
           </div>
         </div>
-        <div className="self-center my-20">
+        <div
+          className={`self-center my-20 flex ${
+            IS_SENDING ? "text-red-600" : "text-green-600"
+          } `}
+        >
+          <span className="text-3xl">{IS_SENDING ? "-" : "+"}₹</span>
           <input
             type="number"
             name="amount"
