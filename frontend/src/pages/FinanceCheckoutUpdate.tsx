@@ -100,17 +100,18 @@ export default function FinanceCheckoutUpdate() {
           </div>
         </div>
         <div
-          className={`self-center my-20 flex ${
+          className={`my-20 grid grid-cols-5 ${
             IS_SENDING ? "text-red-600" : "text-green-600"
           } `}
         >
-          <span className="text-3xl">{IS_SENDING ? "-" : "+"}₹</span>
+          <span className="text-3xl col-span-1">
+            {IS_SENDING ? "-" : "+"} ₹
+          </span>
           <input
             type="number"
             name="amount"
             placeholder="0"
-            value={transaction.amount}
-            className="bg-inherit text-white text-center text-3xl font-bold"
+            className={`bg-inherit text-center text-3xl font-bold col-span-4`}
             onChange={handleChange}
           />
         </div>
