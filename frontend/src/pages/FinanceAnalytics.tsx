@@ -58,9 +58,11 @@ export default function FinanceAnalytics() {
     const daily_datetime = moment(item.completedAt).format("YYYY-MM-DD");
     const weekly_datetime = moment(item.completedAt).week();
     const monthly_datetime = moment(item.completedAt).format("YYYY-MM");
-
-    const sentAmount = item.amount * (item.mode == "SEND" ? 1 : 0);
-    const receivedAmount = item.amount * (item.mode == "RECEIVE" ? 1 : 0);
+    const IS_COMPLETE = item.status == "PAID";
+    const IS_SEND = item.mode == "SEND";
+    const sentAmount = item.amount * (IS_COMPLETE ? 1 : 0) * (IS_SEND ? 1 : 0);
+    const receivedAmount =
+      item.amount * (IS_COMPLETE ? 1 : 0) * (IS_SEND ? 0 : 1);
 
     const totalAmount = receivedAmount - sentAmount;
     daily[daily_datetime] = {
