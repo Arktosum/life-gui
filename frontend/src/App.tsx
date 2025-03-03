@@ -13,7 +13,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route index element={<Landing />} />
+        <Route index element={<FinanceDashboard />} />
         <Route element={<AuthLayout />}>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
