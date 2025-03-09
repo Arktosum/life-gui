@@ -5,6 +5,13 @@ import App from "./App.tsx";
 import { Provider } from "react-redux";
 import store from "./app/store.ts";
 
+import axios from "axios";
+
+// const baseURL = "http://localhost:4000";
+const baseURL = "https://life-gui.onrender.com";
+
+axios.defaults.baseURL = baseURL;
+
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
     <Provider store={store}>

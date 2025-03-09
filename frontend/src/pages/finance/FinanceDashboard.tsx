@@ -1,15 +1,46 @@
+import { useEffect, useState } from "react";
+import { setState } from "../../app/types";
+import { useAppDispatch } from "../../app/hooks";
+import {
+  createTransactionUser,
+  searchTransactionUsers,
+  TransactionUser,
+} from "../../features/transactionUserSlice";
+// import { RootState } from "../../app/store";
+// import { useAppSelector } from "../../app/hooks";
+
 export default function FinanceDashboard() {
+  const [searchUser, setSearchUser] = useState("");
+  const [regexUsers, setRegexUsers] = useState<TransactionUser[]>([]);
+  // const { loading, error } = useAppSelector(
+  //   (state: RootState) => state.transactionUsers
+  // );
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(searchTransactionUsers({ username: searchUser })).then(
+      (action) => {
+        setRegexUsers(action.payload as TransactionUser[]);
+      }
+    );
+  }, [dispatch, searchUser]);
   return (
     <>
       <div className="min-h-[100dvh] bg-black overflow-hidden">
-        <div className="flex items-center justify-between p-2">
-          <img src="brand.svg" alt="" />
-          <div className="bg-white w-10 h-10 rounded-full"></div>
-        </div>
+        <Header />
         <div className="m-2 flex flex-col gap-2">
-          <SearchBar />
-          <BalanceDisplayGroup />
-          <RecentTransactionsGroup />
+          <SearchBar setSearchUser={setSearchUser} />
+          {searchUser ? (
+            <SearchUserContent
+              regexUsers={regexUsers}
+              searchUser={searchUser}
+            />
+          ) : (
+            <>
+              <BalanceDisplayGroup />
+              <RecentTransactionsGroup />
+            </>
+          )}
           <BottomNav />
         </div>
       </div>
@@ -17,19 +48,67 @@ export default function FinanceDashboard() {
   );
 }
 
-function BottomNav() {
+function SearchUserContent({
+  searchUser,
+  regexUsers,
+}: {
+  searchUser: string;
+  regexUsers: TransactionUser[];
+}) {
+  const dispatch = useAppDispatch();
+  const userElements = regexUsers.map((item) => {
+    return (
+      <div className="flex items-center gap-2 bg-[#1C1C1C] p-3 rounded-xl">
+        <div className="w-10 h-10 bg-white rounded-full"></div>
+        <div className="text-white">{item.username}</div>
+      </div>
+    );
+  });
+
+  if (regexUsers.length == 0) {
+    userElements.push(
+      <div
+        onClick={() => {
+          dispatch(createTransactionUser({ username: searchUser })).then(
+            (action) => {
+              console.log(action.payload);
+            }
+          );
+        }}
+        className="flex items-center gap-2 bg-[#1C1C1C] p-3 rounded-xl"
+      >
+        <div className="w-10 h-10 bg-white rounded-full"></div>
+        <div className="text-white">ADD : {searchUser}</div>
+      </div>
+    );
+  }
+  return <div className="flex-1 flex flex-col gap-2">{userElements}</div>;
+}
+export function Header() {
   return (
-    <div className="bg-[#1C1C1C] flex justify-center items-center rounded-xl flex-1">
+    <div className="flex items-center justify-between p-2">
+      <img src="brand.svg" alt="" />
+      <div className="bg-white w-10 h-10 rounded-full"></div>
+    </div>
+  );
+}
+
+export function BottomNav() {
+  return (
+    <div className="bg-[#1C1C1C] flex justify-center items-center rounded-xl">
       <img src="homeIcon.svg" alt="" className="p-5" />
     </div>
   );
 }
 
-function SearchBar() {
+function SearchBar({ setSearchUser }: { setSearchUser: setState<string> }) {
   return (
     <div className="rounded-xl px-5 py-2 bg-[#1C1C1C] gap-2 flex items-center flex-1">
       <img src="searchIcon.svg" className="w-5 h-5"></img>
       <input
+        onChange={(e) => {
+          setSearchUser(e.target.value);
+        }}
         type="text"
         className="w-full p-2 text-white outline-none"
         placeholder="Pay Anyone..."
