@@ -9,7 +9,7 @@ export interface Transaction {
     amount: number;
     remarks: string,
     mode: "SEND" | "RECEIVE";
-    isCompleted: boolean;
+    status: "PAID" | "UNPAID";
     completedAt?: Date;
     category: TransactionCategory
     createdAt?: string;
@@ -32,12 +32,11 @@ export const createTransaction = createAsyncThunk<
     Transaction, // Parameter type
     { rejectValue: string }
 >(
-    'transactionUsers/createTransaction',
+    'financeUser/createTransaction',
     async (transaction, thunkAPI) => {
         try {
             const response = await axios.post('/api/transaction', transaction);
-
-            return response.data; // Assumes API returns the created TransactionUser object
+            return response.data; // Assumes API returns the created FinanceUser object
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 return thunkAPI.rejectWithValue(
@@ -57,13 +56,13 @@ export const fetchTransactionById = createAsyncThunk<
     { _id: string }, // Parameter type
     { rejectValue: string }
 >(
-    'transactionUsers/fetchTransactionUserById',
+    'financeUser/fetchFinanceUserById',
     async ({ _id }, thunkAPI) => {
         try {
             const response = await axios.get('/api/transaction/searchById', {
                 params: { _id },
             });
-            return response.data; // Assumes API returns an array of TransactionUser objects
+            return response.data; // Assumes API returns an array of FinanceUser objects
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 return thunkAPI.rejectWithValue(
@@ -78,14 +77,37 @@ export const fetchTransactionById = createAsyncThunk<
 
 
 
-const transactionUserSlice = createSlice({
-    name: 'transactionUsers',
+export const fetchAllTransactions = createAsyncThunk<
+    Transaction[], // Return type on success
+    undefined, // Parameter type
+    { rejectValue: string }
+>(
+    'financeUser/fetchAllTransactions',
+    async (_, thunkAPI) => {
+        try {
+            const response = await axios.get('/api/transaction');
+            return response.data; // Assumes API returns an array of FinanceUser objects
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return thunkAPI.rejectWithValue(
+                    error.response?.data?.message || error.message
+                );
+            } else {
+                return thunkAPI.rejectWithValue("An unknown error occurred.");
+            }
+        }
+    }
+);
+
+
+const financeUserlice = createSlice({
+    name: 'financeUser',
     initialState,
     reducers: {
         // Optionally add synchronous reducers here
     },
     extraReducers: (builder) => {
-        // Handle createTransactionUser lifecycle
+        // Handle createFinanceUser lifecycle
         builder.addCase(createTransaction.pending, (state) => {
             state.loading = true;
             state.error = null;
@@ -97,6 +119,6 @@ const transactionUserSlice = createSlice({
     },
 });
 
-export default transactionUserSlice.reducer;
+export default financeUserlice.reducer;
 
 

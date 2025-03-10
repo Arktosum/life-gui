@@ -5,17 +5,24 @@ export interface ITransaction extends Document {
   amount: number;
   remarks: string;
   mode: "SEND" | "RECEIVE";
-  isCompleted: boolean;
+  status: "PAID" | "UNPAID";
   completedAt?: Date;
   category: "EDUCATION" | "FOOD" | "HOUSING" | "TRANSPORTATION" | "GROOMING" | "OTHER" | "LENDING";
 }
 
 const TransactionSchema = new Schema<ITransaction>(
   {
-    transactee: { type: Schema.Types.ObjectId, ref: "TransactionUser", required: true },
+    transactee: { type: Schema.Types.ObjectId, ref: "FinanceUser", required: true },
     amount: { type: Number, required: true },
     mode: { type: String, enum: ["SEND", "RECEIVE"], required: true },
-    isCompleted: { type: Boolean, default: false },
+    status: {
+      type: String,
+      enum: ["PAID", "UNPAID"],
+      required: true,
+    },
+    remarks: {
+      type: String
+    },
     completedAt: { type: Date },
     category: {
       type: String,

@@ -7,12 +7,18 @@ import {
   FinanceUser,
 } from "../../features/financeUserSlice";
 import { useNavigate } from "react-router";
+import {
+  fetchAllTransactions,
+  Transaction,
+} from "../../features/transactionSlice";
+import moment from "moment";
 // import { RootState } from "../../app/store";
 // import { useAppSelector } from "../../app/hooks";
 
 export default function FinanceDashboard() {
   const [searchUser, setSearchUser] = useState("");
   const [regexUsers, setRegexUsers] = useState<FinanceUser[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   // const { loading, error } = useAppSelector(
   //   (state: RootState) => state.FinanceUsers
   // );
@@ -22,7 +28,28 @@ export default function FinanceDashboard() {
     dispatch(searchFinanceUsers({ username: searchUser })).then((action) => {
       setRegexUsers(action.payload as FinanceUser[]);
     });
+    dispatch(fetchAllTransactions()).then((action) => {
+      setTransactions(action.payload as Transaction[]);
+    });
   }, [dispatch, searchUser]);
+
+  let income = 0;
+  let expense = 0;
+
+  for (const transaction of transactions) {
+    const isPaid = transaction.status == "PAID";
+    const isSend = transaction.mode == "SEND";
+    const isInCurrentMonth = moment(transaction.completedAt).isSame(
+      moment(),
+      "month"
+    );
+    if (!isInCurrentMonth) continue;
+    if (isSend) {
+      expense += transaction.amount * (isPaid ? 1 : 0);
+    } else {
+      income += transaction.amount * (isPaid ? 1 : 0);
+    }
+  }
   return (
     <>
       <div className="min-h-[100dvh] bg-black overflow-hidden">
@@ -36,7 +63,7 @@ export default function FinanceDashboard() {
             />
           ) : (
             <>
-              <BalanceDisplayGroup />
+              <BalanceDisplayGroup income={income} expense={expense} />
               <RecentFinancesGroup />
             </>
           )}
@@ -59,6 +86,7 @@ function SearchUserContent({
   const userElements = regexUsers.map((item) => {
     return (
       <div
+        key={item._id}
         onClick={() => {
           navigate(`/finance/payment/${item._id}`);
         }}
@@ -123,12 +151,21 @@ function SearchBar({ setSearchUser }: { setSearchUser: setState<string> }) {
   );
 }
 
-function BalanceDisplayGroup() {
+function BalanceDisplayGroup({
+  income,
+  expense,
+}: {
+  income: number;
+  expense: number;
+}) {
+  const balance = income - expense;
   return (
     <div className="flex flex-col gap-2 bg-[#1C1C1C] flex-1">
       <div className="bg-gradient-to-br from-[#00ffd9] via-[#0240fa] to-[#fd0000] p-6 rounded-xl">
         <div className="text-white text-sm">Current Balance</div>
-        <div className="font-bold text-white text-3xl">$ 5000.00</div>
+        <div className="font-bold text-white text-3xl">
+          {balance < 0 ? "-" : "+"}₹ {Math.abs(balance)}
+        </div>
       </div>
       <div className=" flex gap-2 justify-evenly">
         <div className="income bg-gradient-to-tr from-[#1d2118]  to-[#00ff00] flex-1 p-5 rounded-xl">
@@ -136,14 +173,14 @@ function BalanceDisplayGroup() {
             <div className="text-white text-sm">Income</div>
             <div className="w-5 h-5 bg-white rounded-full"></div>
           </div>
-          <div className="font-bold text-white text-2xl">$ 5000.00</div>
+          <div className="font-bold text-white text-2xl">₹ {income}</div>
         </div>
         <div className="expense bg-gradient-to-tr from-[#1d2118]  to-[#ff0000] flex-1 p-5 rounded-xl">
           <div className="flex justify-between">
             <div className="text-white text-sm">Expense</div>
             <div className="w-5 h-5 bg-white rounded-full"></div>
           </div>
-          <div className="font-bold text-white text-2xl">$ 5000.00</div>
+          <div className="font-bold text-white text-2xl">₹ {expense}</div>
         </div>
       </div>
     </div>
@@ -151,6 +188,8 @@ function BalanceDisplayGroup() {
 }
 
 function RecentFinancesGroup() {
+  const navigate = useNavigate();
+
   const recent_users = [1, 2, 3, 4, 5, 6, 7, 8];
 
   const gridElements = recent_users.map((item) => {
@@ -163,7 +202,17 @@ function RecentFinancesGroup() {
   });
   return (
     <div className="bg-[#1C1C1C] flex flex-col gap-5 p-5 rounded-xl">
-      <div className="text-white">Recent Finances</div>
+      <div className="flex justify-between">
+        <div className="text-white">Recent Finances</div>
+        <div
+          onClick={() => {
+            navigate("/finance/history");
+          }}
+          className="text-white font-bold"
+        >
+          View History
+        </div>
+      </div>
       <div className="grid grid-cols-4 gap-5">{gridElements}</div>
     </div>
   );

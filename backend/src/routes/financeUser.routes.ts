@@ -3,9 +3,9 @@ import * as financeUserController from "../controllers/financeUser.controller";
 
 const router = express.Router();
 
-router.post("/", financeUserController.createTransactionUser);
-router.get("/search", financeUserController.searchTransactionUsers);
-router.get("/searchById", financeUserController.searchTransactionUserById);
+router.post("/", financeUserController.createFinanceUser);
+router.get("/search", financeUserController.searchFinanceUsers);
+router.get("/searchById", financeUserController.searchFinanceUserById);
 
 
 export default router;

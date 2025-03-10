@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import counterReducer from '../features/counterSlice'
-import transactionUserReducer from '../features/financeUserSlice'
+import financeUserReducer from '../features/financeUserSlice'
+import transactionReducer from '../features/transactionSlice'
 
 const store = configureStore({
     reducer: {
         counter: counterReducer,
-        transactionUsers: transactionUserReducer,
+        financeUser: financeUserReducer,
+        transaction: transactionReducer,
     },
 })
 

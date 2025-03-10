@@ -32,13 +32,13 @@ export default function FinancePayment() {
     amount: 0,
     remarks: "",
     category: "OTHER",
-    isCompleted: false,
+    status: "UNPAID",
     completedAt: moment().toDate(),
     mode: "SEND",
   });
 
   const isSending = formData.mode == "SEND";
-
+  const isPaid = formData.status == "PAID";
   function handleSubmit() {
     dispatch(createTransaction(formData)).then(() => {
       navigate("/finance");
@@ -66,7 +66,7 @@ export default function FinancePayment() {
       </div>
       <div className="flex gap-5 items-center justify-center">
         <div className="text-white">
-          {isSending ? "Me" : paymentUser?.username}
+          {isSending ? "Self" : paymentUser?.username}
         </div>
         <div
           className="text-white"
@@ -79,14 +79,14 @@ export default function FinancePayment() {
           To
         </div>
         <div className="text-white">
-          {isSending ? paymentUser?.username : "Me"}
+          {isSending ? paymentUser?.username : "Self"}
         </div>
       </div>
 
       <textarea
         onChange={(e) => {
-          setFormData((data) => {
-            return { ...data, remarks: e.target.value };
+          setFormData((prev) => {
+            return { ...prev, remarks: e.target.value };
           });
         }}
         className="self-center  text-white bg-[#1C1C1C] rounded-xl p-5"
@@ -117,17 +117,17 @@ export default function FinancePayment() {
         <div
           onClick={() => {
             setFormData((data) => {
-              return { ...data, isCompleted: !data.isCompleted };
+              return { ...data, status: isPaid ? "UNPAID" : "PAID" };
             });
           }}
           className={`p-5 ${
-            formData.isCompleted ? "bg-green-600" : "bg-[#1C1C1C]"
+            isPaid ? "bg-green-600" : "bg-[#1C1C1C]"
           } rounded-xl`}
         ></div>
         <div className="text-white">Mark As Completed</div>
       </div>
 
-      {formData.isCompleted && (
+      {isPaid && (
         <div className="self-center">
           <input
             onChange={(e) => {

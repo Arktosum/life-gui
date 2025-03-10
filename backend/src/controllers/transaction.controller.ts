@@ -14,7 +14,7 @@ export const findTransactionById = asyncHandler(async (req: Request, res: Respon
     res.json(transaction);
 });
 
-export const getAllTransactions = asyncHandler(async (req: Request, res: Response) => {
+export const fetchAllTransactions = asyncHandler(async (req: Request, res: Response) => {
     const transactions = await transactionService.getAllTransactions();
     res.json(transactions);
 });
