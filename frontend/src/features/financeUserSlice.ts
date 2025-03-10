@@ -1,35 +1,35 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export interface TransactionUser {
+export interface FinanceUser {
     _id: string;
     username: string;
     createdAt?: string;
     updatedAt?: string;
 }
 
-interface TransactionUserState {
+interface FinanceUserState {
     loading: boolean;
     error: string | null;
 }
 
-const initialState: TransactionUserState = {
+const initialState: FinanceUserState = {
     loading: false,
     error: null,
 };
 
-// Async thunk for creating a new Transaction user
-export const createTransactionUser = createAsyncThunk<
-    TransactionUser, // Return type on success
+// Async thunk for creating a new Finance user
+export const createFinanceUser = createAsyncThunk<
+    FinanceUser, // Return type on success
     { username: string }, // Parameter type
     { rejectValue: string }
 >(
-    'transactionUsers/createTransactionUser',
+    'FinanceUsers/createFinanceUser',
     async ({ username }, thunkAPI) => {
         try {
-            const response = await axios.post('/api/transactionUser', { username });
+            const response = await axios.post('/api/FinanceUser', { username });
 
-            return response.data; // Assumes API returns the created TransactionUser object
+            return response.data; // Assumes API returns the created FinanceUser object
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 return thunkAPI.rejectWithValue(
@@ -42,19 +42,19 @@ export const createTransactionUser = createAsyncThunk<
     }
 );
 
-// Async thunk for searching Transaction users by name
-export const searchTransactionUsers = createAsyncThunk<
-    TransactionUser[], // Return type on success
+// Async thunk for searching Finance users by name
+export const searchFinanceUsers = createAsyncThunk<
+    FinanceUser[], // Return type on success
     { username: string }, // Parameter type
     { rejectValue: string }
 >(
-    'transactionUsers/searchTransactionUsers',
+    'FinanceUsers/searchFinanceUsers',
     async ({ username }, thunkAPI) => {
         try {
-            const response = await axios.get('/api/transactionUser/search', {
+            const response = await axios.get('/api/financeUser/search', {
                 params: { username },
             });
-            return response.data; // Assumes API returns an array of TransactionUser objects
+            return response.data; // Assumes API returns an array of FinanceUser objects
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 return thunkAPI.rejectWithValue(
@@ -68,19 +68,19 @@ export const searchTransactionUsers = createAsyncThunk<
 );
 
 
-// Async thunk for searching Transaction users by name
-export const fetchTransactionUserById = createAsyncThunk<
-    TransactionUser, // Return type on success
+// Async thunk for searching Finance users by name
+export const fetchFinanceUserById = createAsyncThunk<
+    FinanceUser, // Return type on success
     { _id: string }, // Parameter type
     { rejectValue: string }
 >(
-    'transactionUsers/fetchTransactionUserById',
+    'FinanceUsers/fetchFinanceUserById',
     async ({ _id }, thunkAPI) => {
         try {
-            const response = await axios.get('/api/transactionUser/searchById', {
+            const response = await axios.get('/api/financeUser/searchById', {
                 params: { _id },
             });
-            return response.data; // Assumes API returns an array of TransactionUser objects
+            return response.data; // Assumes API returns an array of FinanceUser objects
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 return thunkAPI.rejectWithValue(
@@ -95,32 +95,32 @@ export const fetchTransactionUserById = createAsyncThunk<
 
 
 
-const transactionUserSlice = createSlice({
-    name: 'transactionUsers',
+const FinanceUserSlice = createSlice({
+    name: 'FinanceUsers',
     initialState,
     reducers: {
         // Optionally add synchronous reducers here
     },
     extraReducers: (builder) => {
-        // Handle createTransactionUser lifecycle
-        builder.addCase(createTransactionUser.pending, (state) => {
+        // Handle createFinanceUser lifecycle
+        builder.addCase(createFinanceUser.pending, (state) => {
             state.loading = true;
             state.error = null;
         });
-        builder.addCase(createTransactionUser.rejected, (state, action) => {
+        builder.addCase(createFinanceUser.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload as string;
         });
-        // Handle searchTransactionUsers lifecycle
-        builder.addCase(searchTransactionUsers.pending, (state) => {
+        // Handle searchFinanceUsers lifecycle
+        builder.addCase(searchFinanceUsers.pending, (state) => {
             state.loading = true;
             state.error = null;
         });
-        builder.addCase(searchTransactionUsers.rejected, (state, action) => {
+        builder.addCase(searchFinanceUsers.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload as string;
         });
     },
 });
 
-export default transactionUserSlice.reducer;
+export default FinanceUserSlice.reducer;

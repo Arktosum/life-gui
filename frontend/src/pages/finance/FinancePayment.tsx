@@ -3,26 +3,27 @@ import { Header } from "./FinanceDashboard";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../app/hooks";
 import {
-  fetchTransactionUserById,
-  TransactionUser,
-} from "../../features/transactionUserSlice";
+  fetchFinanceUserById,
+  FinanceUser,
+} from "../../features/financeUserSlice";
 import moment from "moment";
 import {
   createTransaction,
   Transaction,
+  TransactionCategory,
 } from "../../features/transactionSlice";
 
 export default function FinancePayment() {
   const params = useParams();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [paymentUser, setPaymentUser] = useState<TransactionUser>();
+  const [paymentUser, setPaymentUser] = useState<FinanceUser>();
   //n <div>FinancePayment : {params.user_id}</div>;
   const user_id = params.user_id;
   useEffect(() => {
     if (!user_id) return;
-    dispatch(fetchTransactionUserById({ _id: user_id })).then((action) => {
-      setPaymentUser(action.payload as TransactionUser);
+    dispatch(fetchFinanceUserById({ _id: user_id })).then((action) => {
+      setPaymentUser(action.payload as FinanceUser);
     });
   }, [dispatch, user_id]);
 
@@ -39,7 +40,7 @@ export default function FinancePayment() {
   const isSending = formData.mode == "SEND";
 
   function handleSubmit() {
-    dispatch(createTransaction(formData)).then((action) => {
+    dispatch(createTransaction(formData)).then(() => {
       navigate("/finance");
     });
   }
@@ -95,8 +96,8 @@ export default function FinancePayment() {
       ></textarea>
       <select
         onChange={(e) => {
-          setFormData((data) => {
-            return { ...data, category: e.target.value };
+          setFormData((prev) => {
+            return { ...prev, category: e.target.value as TransactionCategory };
           });
         }}
         name="category"
@@ -131,7 +132,10 @@ export default function FinancePayment() {
           <input
             onChange={(e) => {
               setFormData((data) => {
-                return { ...data, completedAt: e.target.value };
+                return {
+                  ...data,
+                  completedAt: moment(e.target.value).toDate(),
+                };
               });
             }}
             defaultValue={moment().format("YYYY-MM-DDTHH:mm:ss")}

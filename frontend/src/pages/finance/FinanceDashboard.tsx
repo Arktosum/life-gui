@@ -2,28 +2,26 @@ import { useEffect, useState } from "react";
 import { setState } from "../../app/types";
 import { useAppDispatch } from "../../app/hooks";
 import {
-  createTransactionUser,
-  searchTransactionUsers,
-  TransactionUser,
-} from "../../features/transactionUserSlice";
+  createFinanceUser,
+  searchFinanceUsers,
+  FinanceUser,
+} from "../../features/financeUserSlice";
 import { useNavigate } from "react-router";
 // import { RootState } from "../../app/store";
 // import { useAppSelector } from "../../app/hooks";
 
 export default function FinanceDashboard() {
   const [searchUser, setSearchUser] = useState("");
-  const [regexUsers, setRegexUsers] = useState<TransactionUser[]>([]);
+  const [regexUsers, setRegexUsers] = useState<FinanceUser[]>([]);
   // const { loading, error } = useAppSelector(
-  //   (state: RootState) => state.transactionUsers
+  //   (state: RootState) => state.FinanceUsers
   // );
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(searchTransactionUsers({ username: searchUser })).then(
-      (action) => {
-        setRegexUsers(action.payload as TransactionUser[]);
-      }
-    );
+    dispatch(searchFinanceUsers({ username: searchUser })).then((action) => {
+      setRegexUsers(action.payload as FinanceUser[]);
+    });
   }, [dispatch, searchUser]);
   return (
     <>
@@ -39,7 +37,7 @@ export default function FinanceDashboard() {
           ) : (
             <>
               <BalanceDisplayGroup />
-              <RecentTransactionsGroup />
+              <RecentFinancesGroup />
             </>
           )}
           <BottomNav />
@@ -54,7 +52,7 @@ function SearchUserContent({
   regexUsers,
 }: {
   searchUser: string;
-  regexUsers: TransactionUser[];
+  regexUsers: FinanceUser[];
 }) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -76,9 +74,9 @@ function SearchUserContent({
     userElements.push(
       <div
         onClick={() => {
-          dispatch(createTransactionUser({ username: searchUser })).then(
+          dispatch(createFinanceUser({ username: searchUser })).then(
             (action) => {
-              const new_created_user = action.payload as TransactionUser;
+              const new_created_user = action.payload as FinanceUser;
               navigate(`/finance/payment/${new_created_user._id}`);
             }
           );
@@ -152,7 +150,7 @@ function BalanceDisplayGroup() {
   );
 }
 
-function RecentTransactionsGroup() {
+function RecentFinancesGroup() {
   const recent_users = [1, 2, 3, 4, 5, 6, 7, 8];
 
   const gridElements = recent_users.map((item) => {
@@ -165,7 +163,7 @@ function RecentTransactionsGroup() {
   });
   return (
     <div className="bg-[#1C1C1C] flex flex-col gap-5 p-5 rounded-xl">
-      <div className="text-white">Recent Transactions</div>
+      <div className="text-white">Recent Finances</div>
       <div className="grid grid-cols-4 gap-5">{gridElements}</div>
     </div>
   );

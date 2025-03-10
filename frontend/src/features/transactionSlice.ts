@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+
+export type TransactionCategory = "EDUCATION" | "FOOD" | "TRANSPORTATION" | "HOUSING" | "GROOMING" | "OTHER" | "LENDING"
 export interface Transaction {
     _id?: string;
     transactee?: { username: string } | string;
@@ -9,7 +11,7 @@ export interface Transaction {
     mode: "SEND" | "RECEIVE";
     isCompleted: boolean;
     completedAt?: Date;
-    category: "EDUCATION" | "FOOD" | "TRANSPORTATION" | "HOUSING" | "GROOMING" | "OTHER" | "LENDING";
+    category: TransactionCategory
     createdAt?: string;
     updatedAt?: string;
 }

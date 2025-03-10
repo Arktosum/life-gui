@@ -8,7 +8,7 @@ import store from "./app/store.ts";
 import axios from "axios";
 
 // const baseURL = "http://localhost:4000";
-const baseURL = "http://192.168.0.126:4000"; // To Work on Local host for other devices.
+const baseURL = "http://192.168.56.1:4000"; // To Work on Local host for other devices.
 // const baseURL = "https://life-gui.onrender.com";
 
 axios.defaults.baseURL = baseURL;

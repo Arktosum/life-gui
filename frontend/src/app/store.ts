@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import counterReducer from '../features/counterSlice'
-import transactionUserReducer from '../features/transactionUserSlice'
+import transactionUserReducer from '../features/financeUserSlice'
 
 const store = configureStore({
     reducer: {
