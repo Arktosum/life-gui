@@ -3,7 +3,6 @@ import "./App.css";
 import AuthLayout from "./pages/auth/AuthLayout";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import Landing from "./pages/landing/Landing";
 import FinanceDashboard from "./pages/finance/FinanceDashboard";
 import FinancePayment from "./pages/finance/FinancePayment";
 import FinanceAnalytics from "./pages/finance/FinanceAnalytics";

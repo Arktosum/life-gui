@@ -9,7 +9,12 @@ export const createTransaction = asyncHandler(async (req: Request, res: Response
     res.status(201).json(transaction);
 });
 
-export const getTransactions = asyncHandler(async (req: Request, res: Response) => {
+export const findTransactionById = asyncHandler(async (req: Request, res: Response) => {
+    const transaction = await transactionService.getTransactionById(req.body);
+    res.json(transaction);
+});
+
+export const getAllTransactions = asyncHandler(async (req: Request, res: Response) => {
     const transactions = await transactionService.getAllTransactions();
     res.json(transactions);
 });

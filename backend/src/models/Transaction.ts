@@ -3,10 +3,11 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface ITransaction extends Document {
   transactee: mongoose.Types.ObjectId;
   amount: number;
+  remarks: string;
   mode: "SEND" | "RECEIVE";
   isCompleted: boolean;
   completedAt?: Date;
-  category: "EDUCATION" | "FOOD" | "TRANSPORTATION" | "GROOMING" | "OTHER" | "LEND";
+  category: "EDUCATION" | "FOOD" | "HOUSING" | "TRANSPORTATION" | "GROOMING" | "OTHER" | "LENDING";
 }
 
 const TransactionSchema = new Schema<ITransaction>(
@@ -18,7 +19,7 @@ const TransactionSchema = new Schema<ITransaction>(
     completedAt: { type: Date },
     category: {
       type: String,
-      enum: ["EDUCATION", "FOOD", "TRANSPORTATION", "GROOMING", "OTHER", "LEND"],
+      enum: ["EDUCATION", "FOOD", "TRANSPORTATION", "GROOMING", "OTHER", "LENDING"],
       required: true,
     },
   },

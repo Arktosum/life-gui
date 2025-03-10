@@ -5,5 +5,7 @@ const router = express.Router();
 
 router.post("/", transactionUserController.createTransactionUser);
 router.get("/search", transactionUserController.searchTransactionUsers);
+router.get("/searchById", transactionUserController.searchTransactionUserById);
+
 
 export default router;

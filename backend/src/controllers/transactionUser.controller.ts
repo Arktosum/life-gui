@@ -14,3 +14,13 @@ export const searchTransactionUsers = asyncHandler(async (req: Request, res: Res
     const users = await transactionUserService.findTransactionUsersByName(username as string);
     res.json(users);
 });
+
+
+export const searchTransactionUserById = asyncHandler(async (req: Request, res: Response) => {
+    const { _id } = req.query;
+
+    const user = await transactionUserService.findTransactionUserById(_id as string);
+    res.json(user);
+});
+
+

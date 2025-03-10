@@ -6,6 +6,7 @@ import {
   searchTransactionUsers,
   TransactionUser,
 } from "../../features/transactionUserSlice";
+import { useNavigate } from "react-router";
 // import { RootState } from "../../app/store";
 // import { useAppSelector } from "../../app/hooks";
 
@@ -56,9 +57,15 @@ function SearchUserContent({
   regexUsers: TransactionUser[];
 }) {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const userElements = regexUsers.map((item) => {
     return (
-      <div className="flex items-center gap-2 bg-[#1C1C1C] p-3 rounded-xl">
+      <div
+        onClick={() => {
+          navigate(`/finance/payment/${item._id}`);
+        }}
+        className="flex items-center gap-2 bg-[#1C1C1C] p-3 rounded-xl"
+      >
         <div className="w-10 h-10 bg-white rounded-full"></div>
         <div className="text-white">{item.username}</div>
       </div>
@@ -71,7 +78,8 @@ function SearchUserContent({
         onClick={() => {
           dispatch(createTransactionUser({ username: searchUser })).then(
             (action) => {
-              console.log(action.payload);
+              const new_created_user = action.payload as TransactionUser;
+              navigate(`/finance/payment/${new_created_user._id}`);
             }
           );
         }}
@@ -87,7 +95,7 @@ function SearchUserContent({
 export function Header() {
   return (
     <div className="flex items-center justify-between p-2">
-      <img src="brand.svg" alt="" />
+      <img src="/brand.svg" alt="" />
       <div className="bg-white w-10 h-10 rounded-full"></div>
     </div>
   );
@@ -96,7 +104,7 @@ export function Header() {
 export function BottomNav() {
   return (
     <div className="bg-[#1C1C1C] flex justify-center items-center rounded-xl">
-      <img src="homeIcon.svg" alt="" className="p-5" />
+      <img src="/homeIcon.svg" alt="" className="p-5" />
     </div>
   );
 }
@@ -107,7 +115,7 @@ function SearchBar({ setSearchUser }: { setSearchUser: setState<string> }) {
       <img src="searchIcon.svg" className="w-5 h-5"></img>
       <input
         onChange={(e) => {
-          setSearchUser(e.target.value);
+          setSearchUser(e.target.value.toUpperCase());
         }}
         type="text"
         className="w-full p-2 text-white outline-none"

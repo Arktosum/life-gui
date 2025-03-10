@@ -4,7 +4,7 @@ import * as transactionController from "../controllers/transaction.controller";
 const router = express.Router();
 
 router.post("/", transactionController.createTransaction);
-router.get("/", transactionController.getTransactions);
+router.get("/", transactionController.getAllTransactions);
 router.put("/:id", transactionController.updateTransaction);
 router.delete("/:id", transactionController.deleteTransaction);
 

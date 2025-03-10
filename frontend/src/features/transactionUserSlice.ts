@@ -68,6 +68,33 @@ export const searchTransactionUsers = createAsyncThunk<
 );
 
 
+// Async thunk for searching Transaction users by name
+export const fetchTransactionUserById = createAsyncThunk<
+    TransactionUser, // Return type on success
+    { _id: string }, // Parameter type
+    { rejectValue: string }
+>(
+    'transactionUsers/fetchTransactionUserById',
+    async ({ _id }, thunkAPI) => {
+        try {
+            const response = await axios.get('/api/transactionUser/searchById', {
+                params: { _id },
+            });
+            return response.data; // Assumes API returns an array of TransactionUser objects
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return thunkAPI.rejectWithValue(
+                    error.response?.data?.message || error.message
+                );
+            } else {
+                return thunkAPI.rejectWithValue("An unknown error occurred.");
+            }
+        }
+    }
+);
+
+
+
 const transactionUserSlice = createSlice({
     name: 'transactionUsers',
     initialState,
