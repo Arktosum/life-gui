@@ -129,7 +129,7 @@ function SearchUserList({ query }: { query: string }) {
   console.log(query, exactMatch);
 
   return (
-    <div className="p-4 space-y-4 text-white borderize min-h-screen overflow-y-scroll">
+    <div className="my-2 h-[85vh] p-4 space-y-4 text-white overflow-y-scroll">
       {query &&
         exactMatch &&
         users.map((user) => (
