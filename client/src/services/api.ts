@@ -32,7 +32,7 @@ export interface Transaction {
     updatedAt: string;
 }
 
-export const ORIGIN = 'https://life-gui.onrender.com:3000/api'
+export const ORIGIN = 'https://life-gui.onrender.com/api'
 // export const ORIGIN = 'http://localhost:3000/api/'
 // export const ORIGIN = 'http://192.168.0.187:3000/api'
 
