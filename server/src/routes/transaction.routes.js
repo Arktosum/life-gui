@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const transaction_controller_1 = require("../controllers/transaction.controller");
+const router = (0, express_1.Router)();
+router.post('/', transaction_controller_1.addTransaction);
+router.get('/', transaction_controller_1.getTransactions);
+router.get('/:id', transaction_controller_1.getTransaction);
+router.put('/:id', transaction_controller_1.updateTransactionHandler);
+router.delete('/:id', transaction_controller_1.deleteTransactionHandler);
+router.get('/spending/balance', transaction_controller_1.fetchBalance);
+router.get('/spending/daily', transaction_controller_1.fetchDailySpending);
+router.get('/spending/weekly', transaction_controller_1.fetchWeeklySpending);
+exports.default = router;
