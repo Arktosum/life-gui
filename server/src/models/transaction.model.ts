@@ -1,7 +1,9 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
-export type TransactionCategory = 'FOOD' | 'RENT' | 'SALARY' | 'OTHER';
-export type TransactionStatus = 'PAID' | 'PENDING' | 'FAILED';
+
+
+export type TransactionCategory = 'FOOD' | 'TRANSPORT' | 'RENT' | 'SALARY' | 'GROOMING' | 'EDUCATION' | 'OTHER';
+export type TransactionStatus = 'PAID' | 'PENDING';
 export type TransactionMode = 'SEND' | 'RECEIVE';
 
 export interface ITransaction extends Document {

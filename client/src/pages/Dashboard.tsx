@@ -1,11 +1,19 @@
 import { useState } from "react";
 import PageScreen from "../components/PageScreen";
+import {
+  useGetBalanceQuery,
+  useGetDailySpendingQuery,
+  useGetWeeklySpendingQuery,
+  useSearchFinanceUsersQuery,
+} from "../services/api";
 
 function BalanceCard() {
+  const { data: balance } = useGetBalanceQuery();
+
   return (
     <div className="flex flex-col text-white bg-gradient-to-tr from-pink-600 to-yellow-300 p-4 rounded-xl my-5 py-6 px-4">
       <div className="text-sm">Balance</div>
-      <div className="text-2xl font-bold">$ 100,000,000</div>
+      <div className="text-2xl font-bold">₹ {balance}</div>
     </div>
   );
 }
@@ -76,10 +84,17 @@ function SearchBox({
 }
 
 function LimitCard() {
+  const { data: daily_balance } = useGetDailySpendingQuery();
+  const { data: weekly_balance } = useGetWeeklySpendingQuery();
+
   return (
     <>
-      <LimitBar type={"Daily"} value={153} max={200} />
-      <LimitBar type={"Weekly"} value={153} max={1500} />
+      {daily_balance && (
+        <LimitBar type={"Daily"} value={daily_balance} max={200} />
+      )}
+      {weekly_balance && (
+        <LimitBar type={"Weekly"} value={weekly_balance} max={1500} />
+      )}
     </>
   );
 }
@@ -113,40 +128,37 @@ function RecentsCard() {
     </div>
   );
 }
-function SearchUserList({ query }: { query: string }) {
-  function handleAddUser() {}
-  const users = [];
-  for (let i = 0; i < 20; i++) {
-    users.push({
-      avatar: `https://robohash.org/${Math.random() * 10000}`,
-      id: Math.random() * 100,
-      name: "Jacob",
-    });
-  }
-  const exactMatch = users.some(
-    (user) => user.name.toLowerCase() === query.toLowerCase()
-  );
-  console.log(query, exactMatch);
 
+function SearchUserList({ query }: { query: string }) {
+  const { data: users, isLoading } = useSearchFinanceUsersQuery(query, {
+    skip: query.length < 1,
+  });
+  if (isLoading || !users || !query) {
+    return <></>;
+  }
+
+  function handleAddUser() {
+    console.log("Added: ", query);
+  }
   return (
     <div className="my-2 h-[85vh] p-4 space-y-4 text-white overflow-y-scroll">
-      {query &&
-        exactMatch &&
+      {users.length > 0 &&
         users.map((user) => (
           <a
-            href={`/users/${user.id}`}
-            key={user.id}
+            href={`/payment/${user._id}`}
+            key={user._id}
             className="flex items-center p-3 bg-neutral-800 rounded-xl shadow hover:bg-neutral-700 transition group"
           >
             <img
-              src={user.avatar}
-              alt={user.name}
+              src={`https://robohash.org/${user.username}`}
+              alt={user.username}
               className="w-10 h-10 rounded-full mr-4 border border-white/10"
             />
-            <div className="font-medium">{user.name}</div>
+            <div className="font-medium">{user.username}</div>
           </a>
         ))}
-      {query && !exactMatch && (
+
+      {users.length == 0 && (
         <button
           onClick={handleAddUser}
           className="w-full flex items-center justify-center gap-2 text-white font-medium text-sm py-3 rounded-xl bg-gradient-to-r from-green-500 to-lime-500 hover:scale-[1.02] hover:brightness-110 transition"
@@ -172,11 +184,10 @@ function SearchUserList({ query }: { query: string }) {
   );
 }
 
-type setStateType<T> = React.Dispatch<React.SetStateAction<T>>;
+export type setStateType<T> = React.Dispatch<React.SetStateAction<T>>;
 
 export default function Dashboard() {
   const [inputFinanceUserName, setinputFinanceUserName] = useState("");
-  console.log(inputFinanceUserName);
   return (
     <PageScreen>
       <SearchBox
